@@ -1,7 +1,5 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from beanie import init_beanie
-from pydantic import BaseModel
-from typing import List
 import os
 
 client = AsyncIOMotorClient(os.getenv('MONGODB_URI'))
