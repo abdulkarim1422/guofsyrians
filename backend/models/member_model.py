@@ -9,7 +9,7 @@ class Member(Document):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     ar_name: str
-    team_id: ObjectId
+    team_id: str
     role: str # default: member
     membership_number: str
     email: str
