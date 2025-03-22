@@ -11,9 +11,11 @@ class Team(Document):
     logo: str
     intro: str
     website: str
+    social_media: Dict[str, str] = Field(default={})
     country: str
     city: str
     district: str
     leadership: List[Dict[str, str]] = Field(default=[]) # role and member_id
     number_of_members: int = 0
+    
 
