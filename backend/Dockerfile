@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 2011
 
-CMD ["unicorn", "main:app", "--host", "0.0.0.0", "--port", "2011"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "2011"]
