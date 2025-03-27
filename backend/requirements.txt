@@ -9,6 +9,7 @@ h11==0.14.0
 idna==3.10
 lazy-model==0.2.0
 motor==3.7.0
+passlib==1.7.4
 pydantic==2.10.6
 pydantic_core==2.27.2
 pymongo==4.11.3
