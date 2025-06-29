@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 const UserInfo = ({ className = '', showEmail = true, showRole = true }) => {
   const { user } = useAuth();

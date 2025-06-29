@@ -1,5 +1,5 @@
-import { BoxIcon } from './BoxIcon';
-import { Options } from "./Options";
+import { BoxIcon } from '../common/BoxIcon';
+import { Options } from "../common/Options";
 
 export const Profile = ({
   name,

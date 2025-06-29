@@ -9,7 +9,7 @@ import {
 } from 'recharts';
 import clsx from 'clsx';
 import { useSpring, animated, config } from '@react-spring/web';
-import AuthTest from '../AuthTest';
+import AuthTest from '../auth-components/AuthTest';
 import { useAuth } from '../../contexts/AuthContext';
 
 const map = (value, sMin, sMax, dMin, dMax) => {
