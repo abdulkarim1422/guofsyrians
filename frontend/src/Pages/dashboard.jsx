@@ -6,6 +6,7 @@ import './dashboard.css';
 import DashboardContent from '../Components/dashboard-components/dashboard.jsx';
 import StudentsList from '../Components/dashboard-components/StudentsList.jsx';
 import { ContactForm } from './form.jsx';
+import { useAuth } from '../contexts/AuthContext';
 
 const sidebarItems = [
   [
@@ -23,8 +24,10 @@ const sidebarItems = [
 
 const DashboardApp = () => {
   const [showSidebar, onSetShowSidebar] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuth();
   
   useEffect(() => {
     // Apply dashboard styles to body
@@ -35,6 +38,20 @@ const DashboardApp = () => {
       document.body.className = '';
     };
   }, []);
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showUserMenu && !event.target.closest('.user-menu-container')) {
+        setShowUserMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showUserMenu, setShowUserMenu]);
 
   // Get selected page from URL
   const getSelectedPageFromPath = (pathname) => {
@@ -60,6 +77,11 @@ const DashboardApp = () => {
   };
 
   const selectedPage = getSelectedPageFromPath(location.pathname);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const handlePageSelect = (pageId) => {
     switch (pageId) {
@@ -117,13 +139,17 @@ const DashboardApp = () => {
         showSidebar={showSidebar}
         selectedPage={selectedPage}
         onPageSelect={handlePageSelect}
+        user={user}
+        onLogout={handleLogout}
+        showUserMenu={showUserMenu}
+        setShowUserMenu={setShowUserMenu}
       />
       {renderCurrentPage()}
     </div>
   );
 }
 
-function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect }) {
+function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user, onLogout, showUserMenu, setShowUserMenu }) {
   const { dashOffset, indicatorWidth, precentage } = useSpring({
     dashOffset: 26.015,
     indicatorWidth: 70,
@@ -258,18 +284,63 @@ function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect }) {
         </div>
       </div>
 
-      <div className="flex-shrink-0 overflow-hidden p-2">
+      <div className="flex-shrink-0 overflow-hidden p-2 relative user-menu-container">
         <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-bottom">
-          <Image path="mock_faces_8" className="w-10 h-10" />
-          <div className="block sm:hidden xl:block ml-2 font-bold ">
-            Current User Name
+          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+            <span className="text-white text-sm font-bold">
+              {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+            </span>
+          </div>
+          <div className="block sm:hidden xl:block ml-2">
+            <div className="font-bold text-white text-sm">{user?.name || 'User'}</div>
+            <div className="text-xs text-gray-400">{user?.role || 'member'}</div>
           </div>
           <div className="flex-grow block sm:hidden xl:block" />
-          <Icon
-            path="res-react-dash-options"
-            className="block sm:hidden xl:block w-3 h-3"
-          />
+          <button
+            onClick={() => setShowUserMenu(!showUserMenu)}
+            className="block sm:hidden xl:block w-6 h-6 text-gray-400 hover:text-white transition-colors"
+          >
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
         </div>
+        
+        {/* User Menu Dropdown */}
+        {showUserMenu && (
+          <div className="absolute bottom-full left-2 right-2 mb-2 bg-gray-800 rounded-lg shadow-lg border border-gray-700 overflow-hidden">
+            <div className="p-3 border-b border-gray-700">
+              <div className="text-white font-medium text-sm">{user?.name}</div>
+              <div className="text-gray-400 text-xs">{user?.email}</div>
+            </div>
+            <div className="py-2">
+              <button
+                onClick={() => {
+                  setShowUserMenu(false);
+                  // Handle profile navigation if needed
+                }}
+                className="w-full px-3 py-2 text-left text-gray-300 hover:bg-gray-700 hover:text-white transition-colors text-sm flex items-center"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                Profile
+              </button>
+              <button
+                onClick={() => {
+                  setShowUserMenu(false);
+                  onLogout();
+                }}
+                className="w-full px-3 py-2 text-left text-red-400 hover:bg-red-600 hover:text-white transition-colors text-sm flex items-center"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Logout
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
