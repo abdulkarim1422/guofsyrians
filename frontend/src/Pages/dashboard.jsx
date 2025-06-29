@@ -6,6 +6,8 @@ import './dashboard.css';
 import DashboardContent from '@/components/dashboard-components/dashboard.jsx';
 import StudentsList from '@/components/dashboard-components/StudentsList.jsx';
 import { ResumeForm } from '@/pages/ResumeForm.jsx';
+import Settings from '@/components/settings/Settings.jsx';
+import ProfileSettings from '@/components/settings/ProfileSettings.jsx';
 import { useAuth } from '@/contexts/AuthContext.tsx';
 
 const sidebarItems = [
@@ -71,6 +73,8 @@ const DashboardApp = () => {
         return '5';
       case '/settings':
         return '6';
+      case '/profile':
+        return 'profile';
       default:
         return '0';
     }
@@ -120,10 +124,13 @@ const DashboardApp = () => {
         return <ResumeForm onSidebarHide={() => onSetShowSidebar(true)} />;
       case '/students-list':
         return <StudentsList onSidebarHide={() => onSetShowSidebar(true)} />;
+      case '/settings':
+        return <Settings onSidebarHide={() => onSetShowSidebar(true)} />;
+      case '/profile':
+        return <ProfileSettings onSidebarHide={() => onSetShowSidebar(true)} />;
       case '/chat':
       case '/tasks':
       case '/reports':
-      case '/settings':
         return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
       default:
         return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
@@ -317,7 +324,7 @@ function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user,
               <button
                 onClick={() => {
                   setShowUserMenu(false);
-                  // Handle profile navigation if needed
+                  navigate('/profile');
                 }}
                 className="w-full px-3 py-2 text-left text-gray-300 hover:bg-gray-700 hover:text-white transition-colors text-sm flex items-center"
               >
