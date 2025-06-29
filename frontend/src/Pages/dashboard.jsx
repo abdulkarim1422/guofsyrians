@@ -5,7 +5,7 @@ import { useSpring, animated, config } from '@react-spring/web';
 import './dashboard.css';
 import DashboardContent from '@/components/dashboard-components/dashboard.jsx';
 import StudentsList from '@/components/dashboard-components/StudentsList.jsx';
-import { ResumeForm } from '@/pages/form.jsx';
+import { ResumeForm } from '@/pages/ResumeForm.jsx';
 import { useAuth } from '@/contexts/AuthContext.tsx';
 
 const sidebarItems = [
