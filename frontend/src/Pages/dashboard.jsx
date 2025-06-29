@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { useSpring, animated, config } from '@react-spring/web';
 import './dashboard.css';
-import DashboardContent from '../components/dashboard-components/dashboard.jsx';
-import StudentsList from '../components/dashboard-components/StudentsList.jsx';
+import DashboardContent from '../components_renamed/dashboard-components/dashboard.jsx';
+import StudentsList from '../components_renamed/dashboard-components/StudentsList.js';
 import { ContactForm } from './form.jsx';
 import { useAuth } from '../contexts/AuthContext.js';
 

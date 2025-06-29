@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
-import { Profile } from "../components/Profile";
-import { Academic } from "../components/Academic";
-import { Skills } from "../components/Skills";
-import { Proyects } from "../components/Proyects";
-import { Works } from "../components/Works";
-import { AboutMe } from "../components/AboutMe";
-import { Menu } from "../components/Menu";
-import { SEO } from "../components/SEO";
+import { Profile } from "../components_renamed/Profile";
+import { Academic } from "../components_renamed/Academic";
+import { Skills } from "../components_renamed/Skills";
+import { Proyects } from "../components_renamed/Proyects";
+import { Works } from "../components_renamed/Works";
+import { AboutMe } from "../components_renamed/AboutMe";
+import { Menu } from "../components_renamed/Menu";
+import { SEO } from "../components_renamed/SEO";
 
 import { Data as dataSchema } from '../schemas/Data';
 import { Menu as menuSchema } from '../schemas/Menu';

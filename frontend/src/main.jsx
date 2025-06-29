@@ -8,7 +8,7 @@ import { ContactForm } from "./pages/form";
 import Dashboard from "./pages/dashboard";
 import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./contexts/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components_renamed/ProtectedRoute";
 
 import "./App.css";
 
