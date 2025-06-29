@@ -63,6 +63,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                                 <Dashboard />
                             </ProtectedRoute>
                         } />
+                        <Route path="/announcements" element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        } />
                         <Route path="/profile" element={
                             <ProtectedRoute>
                                 <Dashboard />

@@ -69,3 +69,25 @@
 .sidebar-item:hover {
   color: #a1a0a0;
 }
+
+/* Utility classes for announcements */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Announcement carousel styles */
+.announcement-card-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
