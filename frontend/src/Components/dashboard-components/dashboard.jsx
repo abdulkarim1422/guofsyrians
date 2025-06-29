@@ -649,7 +649,7 @@ function AddComponent() {
           />
         </div>
         <div className="text-white font-bold mt-3">
-          No Components Created Yet
+          No components Created Yet
         </div>
         <div className="mt-2">Simply create your first component</div>
         <div className="mt-1">Just click on the button</div>

@@ -1,12 +1,12 @@
 import React from "react";
 
 import ReactDOM from "react-dom/client";
-import { Resume } from "./Pages/Resume";
+import { Resume } from "./pages/Resume";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async';
-import { ContactForm } from "./Pages/form";
-import Dashboard from "./Pages/dashboard";
-import LoginPage from "./Pages/LoginPage";
+import { ContactForm } from "./pages/form";
+import Dashboard from "./pages/dashboard";
+import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 

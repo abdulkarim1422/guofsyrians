@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Phone, MapPin, Send, User, MessageSquare, Briefcase, GraduationCap, Code, Award, Globe, Plus, Trash2 } from 'lucide-react';
-import { SEO } from '../Components/SEO';
-import { MailInputComponent } from '../Components/form-components/MailInputComponent';
+import { SEO } from '../components/SEO';
+import { MailInputComponent } from '../components/form-components/MailInputComponent';
 
 export const ContactForm = () => {
   const [formData, setFormData] = useState({

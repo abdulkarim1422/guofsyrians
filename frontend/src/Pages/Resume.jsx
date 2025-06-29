@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 
-import { Profile } from "../Components/Profile";
-import { Academic } from "../Components/Academic";
-import { Skills } from "../Components/Skills";
-import { Proyects } from "../Components/Proyects";
-import { Works } from "../Components/Works";
-import { AboutMe } from "../Components/AboutMe";
-import { Menu } from "../Components/Menu";
-import { SEO } from "../Components/SEO";
+import { Profile } from "../components/Profile";
+import { Academic } from "../components/Academic";
+import { Skills } from "../components/Skills";
+import { Proyects } from "../components/Proyects";
+import { Works } from "../components/Works";
+import { AboutMe } from "../components/AboutMe";
+import { Menu } from "../components/Menu";
+import { SEO } from "../components/SEO";
 
-import { Data as dataSchema } from '../Schemas/Data';
-import { Menu as menuSchema } from '../Schemas/Menu';
+import { Data as dataSchema } from '../schemas/Data';
+import { Menu as menuSchema } from '../schemas/Menu';
 
 export const Resume = () => {
   const query = '(min-width: 968px)';
