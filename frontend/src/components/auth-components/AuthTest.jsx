@@ -1,5 +1,4 @@
-import React from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import UserInfo from './UserInfo';
 import LogoutButton from './LogoutButton';
 

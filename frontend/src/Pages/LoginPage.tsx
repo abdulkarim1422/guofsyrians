@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSpring, animated } from '@react-spring/web';
-import { useAuth } from '../contexts/AuthContext';
-import { authAPI } from '../utils/api';
+import { useAuth } from '@/contexts/AuthContext';
+import { authAPI } from '@/utils/api';
 
 interface LoginFormData {
   email: string;
