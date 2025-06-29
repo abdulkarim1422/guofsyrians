@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 import { Resume } from "./pages/Resume";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async';
-import { ContactForm } from "./pages/form";
+import { ResumeForm } from "./pages/ResumeForm";
 import Dashboard from "./pages/dashboard";
 import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -63,7 +63,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                                 <Dashboard />
                             </ProtectedRoute>
                         } />
-                        <Route path="/contact-form" element={<ContactForm />} />
+                        <Route path="/contact-form" element={<ResumeForm />} />
                     </Routes>
                 </BrowserRouter>
             </AuthProvider>

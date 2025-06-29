@@ -3,7 +3,7 @@ import { Phone, MapPin, Send, User, MessageSquare, Briefcase, GraduationCap, Cod
 import { SEO } from '../components/common/SEO';
 import { MailInputComponent } from '../components/form-components/MailInputComponent';
 
-export const ContactForm = () => {
+export const ResumeForm = () => {
   const [formData, setFormData] = useState({
     // Profile data
     name: '',
@@ -603,9 +603,9 @@ export const ContactForm = () => {
   return (
     <>
       <SEO 
-        name="Resume Editor - Matias Lagos"
+        name="Resume Form"
         ocupation="FullStack Software Developer"
-        location="Santiago, Chile"
+        location="Istanbul, Turkey"
         description="Edit and update resume information including profile, skills, experience, and projects."
       />
       
@@ -614,7 +614,7 @@ export const ContactForm = () => {
           {/* Header Section */}
           <div className="text-center mb-12 flex flex-col items-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Resume Editor
+              Resume Form
             </h1>
             <p className="text-lg text-gray-300 max-w-2xl">
               Update your professional information, skills, experience, and projects. 

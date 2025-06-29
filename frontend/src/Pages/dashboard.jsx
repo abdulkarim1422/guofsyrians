@@ -5,7 +5,7 @@ import { useSpring, animated, config } from '@react-spring/web';
 import './dashboard.css';
 import DashboardContent from '@/components/dashboard-components/dashboard.jsx';
 import StudentsList from '@/components/dashboard-components/StudentsList.jsx';
-import { ContactForm } from '@/pages/form.jsx';
+import { ResumeForm } from '@/pages/form.jsx';
 import { useAuth } from '@/contexts/AuthContext.tsx';
 
 const sidebarItems = [
@@ -117,7 +117,7 @@ const DashboardApp = () => {
       case '/dashboard':
         return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
       case '/form':
-        return <ContactForm onSidebarHide={() => onSetShowSidebar(true)} />;
+        return <ResumeForm onSidebarHide={() => onSetShowSidebar(true)} />;
       case '/students-list':
         return <StudentsList onSidebarHide={() => onSetShowSidebar(true)} />;
       case '/chat':
