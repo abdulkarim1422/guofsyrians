@@ -8,13 +8,6 @@ const Settings = ({ onSidebarHide }) => {
   const { user } = useAuth();
   const [activeView, setActiveView] = useState('user');
 
-  // Auto-set to admin view if user is admin and no navigation has been shown yet
-  useEffect(() => {
-    if (isAdmin(user) && activeView === 'user') {
-      setActiveView('admin');
-    }
-  }, [user, activeView]);
-
   const userIsAdmin = isAdmin(user);
 
   return (
