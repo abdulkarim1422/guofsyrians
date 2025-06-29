@@ -116,25 +116,41 @@ const DashboardApp = () => {
   };
 
   const renderCurrentPage = () => {
-    switch (location.pathname) {
-      case '/':
-      case '/dashboard':
-        return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
-      case '/form':
-        return <ResumeForm onSidebarHide={() => onSetShowSidebar(true)} />;
-      case '/students-list':
-        return <StudentsList onSidebarHide={() => onSetShowSidebar(true)} />;
-      case '/settings':
-        return <Settings onSidebarHide={() => onSetShowSidebar(true)} />;
-      case '/profile':
-        return <ProfileSettings onSidebarHide={() => onSetShowSidebar(true)} />;
-      case '/chat':
-      case '/tasks':
-      case '/reports':
-        return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
-      default:
-        return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
+    const currentPath = location.pathname;
+    const content = (() => {
+      switch (currentPath) {
+        case '/':
+        case '/dashboard':
+          return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
+        case '/form':
+          return <ResumeForm onSidebarHide={() => onSetShowSidebar(true)} />;
+        case '/students-list':
+          return <StudentsList onSidebarHide={() => onSetShowSidebar(true)} />;
+        case '/settings':
+          return <Settings onSidebarHide={() => onSetShowSidebar(true)} />;
+        case '/profile':
+          return <ProfileSettings onSidebarHide={() => onSetShowSidebar(true)} />;
+        case '/chat':
+        case '/tasks':
+        case '/reports':
+          return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
+        default:
+          return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
+      }
+    })();
+
+    // Only apply margin for settings pages
+    const isSettingsPage = currentPath === '/settings' || currentPath === '/profile';
+    
+    if (isSettingsPage) {
+      return (
+        <div className="flex-1 ml-0 sm:ml-20 xl:ml-60 overflow-hidden h-screen bg-gray-100">
+          {content}
+        </div>
+      );
     }
+    
+    return content;
   };
 
   return (

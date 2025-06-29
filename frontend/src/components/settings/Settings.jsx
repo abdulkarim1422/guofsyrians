@@ -18,10 +18,10 @@ const Settings = ({ onSidebarHide }) => {
   const userIsAdmin = isAdmin(user);
 
   return (
-    <div className="flex-1 overflow-hidden">
+    <div className="h-full flex flex-col bg-gray-50 dark:bg-gray-900">
       {/* Navigation */}
       {userIsAdmin && (
-        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
           <div className="px-4 sm:px-6 lg:px-8">
             <nav className="flex space-x-8" aria-label="Settings">
               <button
@@ -50,13 +50,15 @@ const Settings = ({ onSidebarHide }) => {
       )}
 
       {/* Content */}
-      {activeView === 'user' ? (
-        <UserSettings onSidebarHide={onSidebarHide} />
-      ) : userIsAdmin ? (
-        <AdminSettings onSidebarHide={onSidebarHide} />
-      ) : (
-        <UserSettings onSidebarHide={onSidebarHide} />
-      )}
+      <div className="flex-1 overflow-hidden">
+        {activeView === 'user' ? (
+          <UserSettings onSidebarHide={onSidebarHide} />
+        ) : userIsAdmin ? (
+          <AdminSettings onSidebarHide={onSidebarHide} />
+        ) : (
+          <UserSettings onSidebarHide={onSidebarHide} />
+        )}
+      </div>
     </div>
   );
 };

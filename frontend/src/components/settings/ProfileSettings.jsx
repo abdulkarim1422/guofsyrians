@@ -47,9 +47,9 @@ const ProfileSettings = ({ onSidebarHide }) => {
   };
 
   return (
-    <div className="flex-1 overflow-hidden">
+    <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 shadow">
+      <div className="bg-white dark:bg-gray-800 shadow flex-shrink-0">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
