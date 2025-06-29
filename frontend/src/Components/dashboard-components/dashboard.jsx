@@ -9,6 +9,8 @@ import {
 } from 'recharts';
 import clsx from 'clsx';
 import { useSpring, animated, config } from '@react-spring/web';
+import AuthTest from '../AuthTest';
+import { useAuth } from '../../contexts/AuthContext';
 
 const map = (value, sMin, sMax, dMin, dMax) => {
   return dMin + ((value - sMin) / (sMax - sMin)) * (dMax - dMin);
@@ -82,6 +84,8 @@ const graphData = [
 });
 
 function DashboardContent({ onSidebarHide }) {
+  const { user } = useAuth();
+  
   return (
     <div className="flex w-full">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
@@ -92,7 +96,7 @@ function DashboardContent({ onSidebarHide }) {
           <div className="sm:flex-grow flex justify-between">
             <div className="">
               <div className="flex items-center">
-                <div className="text-3xl font-bold text-white">Hello Current User</div>
+                <div className="text-3xl font-bold text-white">Hello {user?.name || 'User'}</div>
                 <div className="flex items-center p-2 bg-card ml-2 rounded-xl">
                   <Icon path="res-react-dash-premium-star" />
                   <div className="ml-2 font-bold text-premium-yellow">
@@ -176,7 +180,7 @@ function DashboardContent({ onSidebarHide }) {
         </div>
         <div className="w-full p-2 lg:w-1/3">
           <div className="rounded-lg bg-card overflow-hidden h-80">
-            <AddComponent />
+            <AuthTest />
           </div>
         </div>
       </div>
