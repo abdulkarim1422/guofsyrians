@@ -10,4 +10,4 @@ class User(Document):
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     email: str
     password: str
-    member_id: str
+    role: str = "member" # default: member
