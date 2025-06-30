@@ -18,39 +18,6 @@ const map = (value, sMin, sMax, dMin, dMax) => {
 const pi = Math.PI;
 const tau = 2 * pi;
 
-const topStudentsData = [
-  {
-    id: 1,
-    name: 'Ahmed Al-Hassan',
-    position: "Computer Science Student",
-    university: 'Harvard University',
-    gpa: 3.9,
-    rise: true,
-    activitiesCompleted: 8,
-    imgId: 0,
-  },
-  {
-    id: 2,
-    name: 'Fatima Al-Zahra',
-    position: "Medical Student",
-    university: 'Johns Hopkins',
-    gpa: 3.7,
-    rise: true,
-    activitiesCompleted: 12,
-    imgId: 2,
-  },
-  {
-    id: 3,
-    name: 'Omar Khalil',
-    position: "Engineering Student",
-    university: 'MIT',
-    gpa: 3.8,
-    rise: false,
-    activitiesCompleted: 6,
-    imgId: 3,
-  },
-];
-
 const universityStatsData = [
   { name: 'Harvard University', rise: true, value: 156, id: 1 },
   { name: 'MIT', rise: true, value: 134, id: 2 },
@@ -138,77 +105,39 @@ function DashboardContent({ onSidebarHide }) {
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
-      <div className=" h-screen flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start p-2">          <div className="w-full sm:flex p-2 items-end">
-            <div className="sm:flex-grow flex justify-between">
-              <div className="">
-                <div className="flex items-center">
-                  <div className="text-3xl font-bold text-white">أهلاً وسهلاً {user?.name || 'User'}</div>
-                  <div className="flex items-center p-2 bg-card ml-2 rounded-xl">
-                    <Icon path="res-react-dash-premium-star" />
-                    <div className="ml-2 font-bold text-premium-yellow">
-                      الاتحاد السوري
-                    </div>
+      <div className=" h-screen flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start p-2">          
+        <div className="w-full sm:flex p-2 items-end">
+          <div className="sm:flex-grow flex justify-between">
+            <div className="">
+              <div className="flex items-center">
+                <div className="text-3xl font-bold text-white">أهلاً وسهلاً {user?.name || 'User'}</div>
+                <div className="flex items-center p-2 bg-card ml-2 rounded-xl">
+                  <Icon path="res-react-dash-premium-star" />
+                  <div className="ml-2 font-bold text-premium-yellow">
+                    الاتحاد السوري
                   </div>
                 </div>
-                <div className="flex items-center">
-                  <Icon
-                    path="res-react-dash-date-indicator"
-                    className="w-3 h-3"
-                  />
-                  <div className="ml-2">{new Date().toLocaleDateString('ar-SA', { 
-                    weekday: 'long',
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}</div>
-                </div>
               </div>
-              <IconButton
-                icon="res-react-dash-sidebar-open"
-                className="block sm:hidden"
-                onClick={onSidebarHide}
-              />
-            </div>            <div className="w-full sm:w-56 mt-4 sm:mt-0 relative">
-              <Icon
-                path="res-react-dash-search"
-                className="w-5 h-5 search-icon left-3 absolute"
-              />
-              <form action="#" method="POST">
-                <input
-                  type="text"
-                  name="search_students"
-                  id="search_students"
-                  className="pl-12 py-2 pr-2 block w-full rounded-lg border-gray-300 bg-card"
-                  placeholder="البحث عن طالب..."
+              <div className="flex items-center">
+                <Icon
+                  path="res-react-dash-date-indicator"
+                  className="w-3 h-3"
                 />
-              </form>
+                <div className="ml-2">{new Date().toLocaleDateString('ar-SA', { 
+                  weekday: 'long',
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}</div>
+              </div>
             </div>
-        </div>
-        {topStudentsData.map(
-          ({
-            id,
-            name,
-            position,
-            university,
-            gpa,
-            rise,
-            activitiesCompleted,
-            imgId,
-          }) => (
-            <StudentCard
-              key={id}
-              id={id}
-              name={name}
-              position={position}
-              university={university}
-              gpa={gpa}
-              rise={rise}
-              activitiesCompleted={activitiesCompleted}
-              imgId={imgId}
+            <IconButton
+              icon="res-react-dash-sidebar-open"
+              className="block sm:hidden"
+              onClick={onSidebarHide}
             />
-          ),
-        )}
-
+          </div>
+        </div>
         {/* Quick Stats Section */}
         <div className="w-full p-2">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -338,86 +267,6 @@ function DashboardContent({ onSidebarHide }) {
           <div className="rounded-lg bg-card h-80">
             <RecentActivities />
           </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StudentCard({
-  name,
-  position,
-  university,
-  gpa,
-  rise,
-  activitiesCompleted,
-  imgId,
-}) {
-  const { gpaValue, barPlayhead } = useSpring({
-    gpaValue: gpa,
-    barPlayhead: 1,
-    from: { gpaValue: 0, barPlayhead: 0 },
-  });
-  return (
-    <div className="w-full p-2 lg:w-1/3">
-      <div className="rounded-lg bg-card flex justify-between p-3 h-32">
-        <div className="">
-          <div className="flex items-center">
-            <Image path={`mock_faces_${imgId}`} className="w-10 h-10" />
-            <div className="ml-2">
-              <div className="flex items-center">
-                <div className="mr-2 font-bold text-white">{name}</div>
-                <Icon path="res-react-dash-tick" />
-              </div>
-              <div className="text-sm">{position}</div>
-              <div className="text-xs text-blue-400">{university}</div>
-            </div>
-          </div>
-
-          <div className="text-sm mt-2">{`${activitiesCompleted} من 10 أنشطة مكتملة`}</div>
-          <svg
-            className="w-44 mt-3"
-            height="6"
-            viewBox="0 0 200 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect width="200" height="6" rx="3" fill="#2D2D2D" />
-            <animated.rect
-              width={barPlayhead.to(
-                (i) => i * (activitiesCompleted / 10) * 200,
-              )}
-              height="6"
-              rx="3"
-              fill="url(#paint0_linear)"
-            />
-            <rect x="38" width="2" height="6" fill="#171717" />
-            <rect x="78" width="2" height="6" fill="#171717" />
-            <rect x="118" width="2" height="6" fill="#171717" />
-            <rect x="158" width="2" height="6" fill="#171717" />
-            <defs>
-              <linearGradient id="paint0_linear" x1="0" y1="0" x2="1" y2="0">
-                <stop stopColor="#8E76EF" />
-                <stop offset="1" stopColor="#3912D2" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <div className="flex flex-col items-center">
-          <Icon
-            path={rise ? 'res-react-dash-bull' : 'res-react-dash-bear'}
-            className="w-8 h-8"
-          />
-          <animated.div
-            className={clsx(
-              gpa >= 3.5 ? 'text-green-500' : gpa >= 3.0 ? 'text-yellow-500' : 'text-red-500',
-              'font-bold',
-              'text-lg',
-            )}
-          >
-            {gpaValue.to((i) => `${i.toFixed(1)} GPA`)}
-          </animated.div>
-          <div className="text-sm">المعدل التراكمي</div>
         </div>
       </div>
     </div>
