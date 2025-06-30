@@ -14,7 +14,7 @@ class Member(Document):
     membership_number: Optional[str] = None
     email: Optional[str] = None
     phone: Optional[str] = None
-    sex: Optional[str] = None
+    sex: str # male, female
     birthdate: Optional[datetime] = None
     nationality: Optional[str] = None
     country: Optional[str] = None
