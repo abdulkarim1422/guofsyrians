@@ -12,6 +12,8 @@ import { SEO } from "@/components/common/SEO";
 import { Data as dataSchema } from '@/schemas/Data';
 import { Menu as menuSchema } from '@/schemas/Menu';
 
+import "./Resume.css";
+
 export const Resume = () => {
   const query = '(min-width: 968px)';
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
