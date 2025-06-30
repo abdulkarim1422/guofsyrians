@@ -191,28 +191,6 @@ function DashboardContent({ onSidebarHide }) {
           </div>
         </div>
 
-        <div className="w-full p-2 lg:w-2/3">
-          <div className="rounded-lg bg-card sm:h-80 h-60">
-            <MembershipGrowthGraph />
-          </div>
-        </div>
-        <div className="w-full p-2 lg:w-1/3">
-          <div className="rounded-lg bg-card h-80">
-            <TopUniversities />
-          </div>
-        </div>
-
-        <div className="w-full p-2 lg:w-1/3">
-          <div className="rounded-lg bg-card h-80">
-            <AcademicLevelBreakdown />
-          </div>
-        </div>
-        <div className="w-full p-2 lg:w-1/3">
-          <div className="rounded-lg bg-card h-80">
-            <MemberSatisfaction />
-          </div>
-        </div>
-
         {/* Welcome Banner for New Users */}
         {user?.role === 'member' && (
           <div className="w-full p-2">
@@ -242,6 +220,7 @@ function DashboardContent({ onSidebarHide }) {
           </div>
         )}
 
+        {/* Dashboard Components Grid */}
         <div className="w-full p-2 lg:w-2/3">
           <div className="rounded-lg bg-card sm:h-80 h-60">
             <MembershipGrowthGraph />
