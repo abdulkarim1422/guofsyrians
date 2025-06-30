@@ -557,7 +557,7 @@ export const ResumeForm = () => {
       console.log('Sending resume data:', resumeData);
 
       // Send to backend
-      const response = await fetch('http://localhost:8000/api/resume/submit', {
+      const response = await fetch('/api/resume/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -566,8 +566,15 @@ export const ResumeForm = () => {
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.detail || 'Failed to submit resume');
+        let errorMessage = 'Failed to submit resume';
+        try {
+          const error = await response.json();
+          errorMessage = error.detail || error.message || errorMessage;
+        } catch (e) {
+          // If response is not JSON, use status text
+          errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+        }
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();
