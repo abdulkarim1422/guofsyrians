@@ -216,17 +216,17 @@ function StudentsList({ onSidebarHide }) {
           <div className="sm:flex-grow flex justify-between">
             <div className="">
               <div className="flex items-center">
-                <div className="text-3xl font-bold text-white">Students List</div>
+                <div className="text-3xl font-bold text-carbon">Students List</div>
                 <div className="flex items-center p-2 bg-card ml-2 rounded-xl">
                   <Icon path="res-react-dash-premium-star" />
-                  <div className="ml-2 font-bold text-premium-yellow">
+                  <div className="ml-2 font-bold text-rich-gold">
                     {sortedStudents.length} Students
                   </div>
                 </div>
                 {activeFiltersCount > 0 && (
-                  <div className="flex items-center p-2 bg-blue-600 ml-2 rounded-xl">
+                  <div className="flex items-center p-2 bg-rich-gold ml-2 rounded-xl">
                     <Icon path="res-react-dash-search" className="w-4 h-4" />
-                    <div className="ml-2 font-bold text-white">
+                    <div className="ml-2 font-bold text-deep-green">
                       {activeFiltersCount} Filter{activeFiltersCount > 1 ? 's' : ''} Active
                     </div>
                   </div>
@@ -235,9 +235,9 @@ function StudentsList({ onSidebarHide }) {
               <div className="flex items-center">
                 <Icon
                   path="res-react-dash-date-indicator"
-                  className="w-3 h-3"
+                  className="w-3 h-3 text-deep-green"
                 />
-                <div className="ml-2">Manage all students</div>
+                <div className="ml-2 text-carbon">Manage all students</div>
               </div>
             </div>
             <IconButton
@@ -251,13 +251,13 @@ function StudentsList({ onSidebarHide }) {
             <div className="relative">
               <Icon
                 path="res-react-dash-search"
-                className="w-5 h-5 search-icon left-3 absolute"
+                className="w-5 h-5 search-icon left-3 absolute text-deep-green"
               />
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-12 py-2 pr-2 w-full sm:w-56 rounded-lg border-gray-300 bg-card text-white"
+                className="brand-form-input pl-12 py-2 pr-2 w-full sm:w-56 rounded-lg border-2 border-gray-300 bg-white text-carbon focus:border-rich-gold"
                 placeholder="Search students..."
               />
             </div>
@@ -268,14 +268,14 @@ function StudentsList({ onSidebarHide }) {
               className={clsx(
                 "px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2",
                 showFilters 
-                  ? "bg-blue-600 text-white" 
-                  : "bg-card text-white border border-gray-600 hover:bg-gray-700"
+                  ? "bg-rich-gold text-deep-green" 
+                  : "bg-white text-carbon border-2 border-gray-300 hover:border-rich-gold"
               )}
             >
               <Icon path="res-react-dash-options" className="w-4 h-4" />
               <span>Filters</span>
               {activeFiltersCount > 0 && (
-                <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="bg-deep-green text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {activeFiltersCount}
                 </span>
               )}
@@ -290,7 +290,7 @@ function StudentsList({ onSidebarHide }) {
                   setSortBy(field);
                   setSortOrder(order);
                 }}
-                className="px-4 py-2 pr-8 bg-card text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="brand-form-input px-4 py-2 pr-8 bg-white text-carbon rounded-lg border-2 border-gray-300 focus:border-rich-gold"
               >
                 <option value="name-asc">Name A-Z</option>
                 <option value="name-desc">Name Z-A</option>
@@ -440,14 +440,14 @@ function StudentsList({ onSidebarHide }) {
         <div className="w-full p-2">
           {/* Results Summary */}
           <div className="mb-4 flex items-center justify-between">
-            <div className="text-gray-300">
+            <div className="text-carbon">
               Showing {studentsToShow.length} of {sortedStudents.length} students
               {sortedStudents.length !== studentsData.length && (
-                <span className="text-blue-400"> (filtered from {studentsData.length} total)</span>
+                <span className="text-rich-gold"> (filtered from {studentsData.length} total)</span>
               )}
             </div>
             {sortedStudents.length > 0 && (
-              <div className="text-sm text-gray-400">
+              <div className="text-sm text-deep-green">
                 Sorted by {sortBy.replace(/([A-Z])/g, ' $1').toLowerCase()} ({sortOrder === 'asc' ? 'ascending' : 'descending'})
               </div>
             )}
@@ -479,7 +479,7 @@ function StudentsList({ onSidebarHide }) {
                 <div className="text-center mt-8">
                   <button
                     onClick={() => setShowMore(!showMore)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2 mx-auto"
+                    className="brand-btn-primary bg-rich-gold hover:bg-gold-dark text-deep-green px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2 mx-auto"
                   >
                     <span>{showMore ? 'Show Less' : `View More (${sortedStudents.length - 9} remaining)`}</span>
                     <svg 
@@ -499,38 +499,28 @@ function StudentsList({ onSidebarHide }) {
 
         {/* Add Student Button */}
         <div className="w-full p-2">
-          <div className="rounded-lg bg-card p-6 text-center">
+          <div className="brand-card rounded-lg bg-white p-6 text-center border-2 border-dashed border-rich-gold">
             <div className="flex flex-col items-center">
               <div
-                className="mb-4"
+                className="mb-4 bg-sand flex items-center justify-center"
                 style={{
-                  background: '#414455',
                   width: '80px',
                   height: '80px',
                   borderRadius: '999px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
                 }}
               >
-                <Icon path="res-react-dash-add-component" className="w-8 h-8" />
+                <Icon path="res-react-dash-add-component" className="w-8 h-8 text-deep-green" />
               </div>
-              <div className="text-white font-bold mb-2">
+              <div className="text-carbon font-bold mb-2">
                 Add New Student
               </div>
-              <div className="text-gray-400 mb-4">
+              <div className="text-gray-600 mb-4">
                 Register a new student to the system
               </div>
               <button
-                className="flex items-center p-3"
+                className="brand-btn-primary bg-rich-gold hover:bg-gold-dark text-deep-green flex items-center p-3 rounded-2xl font-medium transition-colors"
                 style={{
-                  background: '#2f49d1',
-                  borderRadius: '15px',
-                  padding: '8px 16px',
-                  justifyContent: 'center',
-                  color: 'white',
-                  border: 'none',
-                  cursor: 'pointer',
+                  padding: '12px 24px',
                 }}
                 onClick={() => navigate("/form")}
               >
@@ -550,12 +540,12 @@ function StudentsList({ onSidebarHide }) {
 function StudentCard({ student }) {
   const getYearColor = (year) => {
     switch (year) {
-      case 'Ön Lisans': return 'bg-blue-100 text-blue-700';
-      case 'Yüksek Lisans': return 'bg-green-100 text-green-700';
-      case 'Lisans': return 'bg-yellow-100 text-yellow-700';
-      case 'Doktora': return 'bg-orange-100 text-orange-700';
-      case 'Graduate': return 'bg-purple-100 text-purple-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'Ön Lisans': return 'bg-sand text-deep-green border border-deep-green';
+      case 'Yüksek Lisans': return 'bg-deep-green text-white';
+      case 'Lisans': return 'bg-rich-gold text-deep-green';
+      case 'Doktora': return 'bg-carbon text-white';
+      case 'Graduate': return 'bg-green-light text-white';
+      default: return 'bg-gray-100 text-carbon';
     }
   };
 
@@ -577,19 +567,19 @@ function StudentCard({ student }) {
   const isGraduatingSoon = daysTillGraduation > 0 && daysTillGraduation <= 90;
 
   return (
-    <div className="bg-gray-800 rounded-2xl shadow-lg p-6 space-y-4 border border-gray-700 hover:shadow-xl transition-all duration-300 hover:border-blue-500 group">
+    <div className="brand-card bg-white rounded-2xl shadow-lg p-6 space-y-4 border border-gray-200 hover:shadow-xl transition-all duration-300 hover:border-rich-gold group">
       {/* Header Section */}
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-4">
-          <div className="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center overflow-hidden ring-2 ring-gray-700 group-hover:ring-blue-500 transition-all">
+          <div className="w-16 h-16 rounded-full bg-rich-gold flex items-center justify-center overflow-hidden ring-2 ring-gray-200 group-hover:ring-rich-gold transition-all">
             <Image 
               path={`mock_faces_${student.avatar}`} 
               className="w-full h-full object-cover" 
             />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-white group-hover:text-blue-300 transition-colors">{student.name}</h2>
-            <p className="text-sm text-gray-400 mt-1">{student.major}</p>
+            <h2 className="text-lg font-semibold text-carbon group-hover:text-deep-green transition-colors">{student.name}</h2>
+            <p className="text-sm text-gray-600 mt-1">{student.major}</p>
             <p className="text-xs text-gray-500">{student.university}</p>
           </div>
         </div>
@@ -598,12 +588,12 @@ function StudentCard({ student }) {
             <span className="text-xs font-medium">{student.year}</span>
           </div>
           {isGraduatingSoon && (
-            <div className="px-2 py-1 bg-yellow-600 text-yellow-100 rounded-full">
+            <div className="px-2 py-1 bg-rich-gold text-deep-green rounded-full">
               <span className="text-xs font-medium">Graduating Soon</span>
             </div>
           )}
           {isGraduated && (
-            <div className="px-2 py-1 bg-green-600 text-green-100 rounded-full">
+            <div className="px-2 py-1 bg-deep-green text-white rounded-full">
               <span className="text-xs font-medium">Graduated</span>
             </div>
           )}
@@ -612,11 +602,11 @@ function StudentCard({ student }) {
 
       {/* Contact Info */}
       <div className="space-y-2">
-        <div className="text-sm text-gray-300 flex items-center space-x-2">
-          <Icon path="res-react-dash-search" className="w-4 h-4 text-gray-500" />
+        <div className="text-sm text-carbon flex items-center space-x-2">
+          <Icon path="res-react-dash-search" className="w-4 h-4 text-deep-green" />
           <button 
             onClick={handleEmailClick}
-            className="hover:text-blue-400 transition-colors hover:underline"
+            className="hover:text-rich-gold transition-colors hover:underline"
           >
             {student.email}
           </button>
@@ -624,12 +614,12 @@ function StudentCard({ student }) {
       </div>
 
       {/* Graduation Date */}
-      <div className="text-sm text-gray-300 flex items-center justify-between">
+      <div className="text-sm text-carbon flex items-center justify-between">
         <div>
           <span className="font-medium">Graduation:</span> {new Date(student.graduationDate).toLocaleDateString()}
         </div>
         {!isGraduated && (
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-gray-500">
             {daysTillGraduation > 0 ? `${daysTillGraduation} days` : 'Overdue'}
           </div>
         )}
@@ -637,29 +627,29 @@ function StudentCard({ student }) {
 
       {/* University and Major Tags */}
       <div>
-        <div className="text-sm font-medium text-gray-300 mb-2">Academic Info:</div>
+        <div className="text-sm font-medium text-carbon mb-2">Academic Info:</div>
         <div className="flex flex-wrap gap-2">
-          <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
+          <span className="px-3 py-1 bg-sand text-deep-green text-xs font-medium rounded-full border border-deep-green">
             {student.university}
           </span>
-          <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+          <span className="px-3 py-1 bg-rich-gold text-deep-green text-xs font-medium rounded-full">
             {student.major}
           </span>
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+      <div className="flex items-center justify-between pt-4 border-t border-gray-200">
         <button
           onClick={() => handleCVClick(student.cvLink)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors"
+          className="brand-btn-secondary bg-deep-green hover:bg-green-dark text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors"
         >
           <Icon path="res-react-dash-options" className="w-4 h-4" />
           <span>View CV</span>
         </button>
         <button 
           onClick={handleViewProfile}
-          className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors"
+          className="brand-btn-primary bg-rich-gold hover:bg-gold-dark text-deep-green px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors"
         >
           <span>Profile</span>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
