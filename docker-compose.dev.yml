@@ -16,7 +16,7 @@ services:
       - MONGODB_URI=mongodb://db:27017/mydb
     volumes:
       - ./backend:/app
-    command: sh -c "cd /app && python create_admin.py && uvicorn main:app --host 0.0.0.0 --port 8000"
+    command: sh -c "cd /app && python create_admin.py && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
 
   frontend:
     build: ./frontend
