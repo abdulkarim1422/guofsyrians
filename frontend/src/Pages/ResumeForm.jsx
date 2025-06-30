@@ -540,24 +540,62 @@ export const ResumeForm = () => {
     setIsSubmitting(true);
     
     try {
+      // Validate required fields before submission
+      if (!formData.sex) {
+        setSubmitStatus('error');
+        setSubmitMessage('Please select your gender');
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (!formData.name.trim()) {
+        setSubmitStatus('error');
+        setSubmitMessage('Please enter your full name');
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (!formData.professional_title.trim()) {
+        setSubmitStatus('error');
+        setSubmitMessage('Please enter your professional title');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Phone validation function
+      const isValidPhone = (phone) => {
+        const phoneRegex = /^\+\d{7,15}$/;
+        return phoneRegex.test(phone.replace(/\s/g, ''));
+      };
+
+      // Validate phone number before submission
+      if (!isValidPhone(formData.phone)) {
+        setSubmitStatus('error');
+        setSubmitMessage('Please enter a valid phone number (7-15 digits after country code)');
+        setIsSubmitting(false);
+        return;
+      }
+
       // Prepare the data in the format expected by the backend
       const resumeData = {
-        name: formData.name,
-        professional_title: formData.professional_title,
-        city: formData.city,
-        email: formData.email,
+        name: formData.name.trim(),
+        professional_title: formData.professional_title.trim(),
+        sex: formData.sex, // Required: "male" or "female"
+        city: formData.city || null,
+        email: formData.email || null,
         phone: formData.phone.replace(/\s/g, ''), // Clean phone number (remove spaces)
-        image: formData.image,
-        relocateToSyria: formData.relocateToSyria,
-        bio: formData.bio,
-        skills: formData.skills,
-        social_media: formData.social_media,
-        works: formData.works.filter(work => work.title || work.company),
-        academic: formData.academic.filter(edu => edu.degreeLevel || edu.institution),
-        projects: formData.projects.filter(proj => proj.name || proj.company)
+        image: formData.image || null,
+        relocateToSyria: formData.relocateToSyria || null,
+        bio: formData.bio || null,
+        skills: formData.skills && formData.skills.length > 0 ? formData.skills : [],
+        social_media: formData.social_media || {},
+        works: formData.works.filter(work => work.title && work.company),
+        academic: formData.academic.filter(edu => edu.degreeLevel && edu.institution),
+        projects: formData.projects.filter(proj => proj.name && proj.company)
       };
 
       console.log('Sending resume data:', resumeData);
+      console.log('Form validation - sex:', formData.sex, 'name:', formData.name, 'professional_title:', formData.professional_title);
 
       // Get API base URL from environment or use default
       const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -575,9 +613,24 @@ export const ResumeForm = () => {
         let errorMessage = 'Failed to submit resume';
         try {
           const error = await response.json();
+          console.error('Backend error response:', error);
           errorMessage = error.detail || error.message || errorMessage;
+          
+          // Handle validation errors specifically
+          if (response.status === 422) {
+            if (typeof error.detail === 'string') {
+              errorMessage = `Validation Error: ${error.detail}`;
+            } else if (Array.isArray(error.detail)) {
+              // Handle Pydantic validation errors
+              const validationErrors = error.detail.map(err => 
+                `${err.loc?.join(' → ') || 'Field'}: ${err.msg}`
+              ).join(', ');
+              errorMessage = `Validation Errors: ${validationErrors}`;
+            }
+          }
         } catch (e) {
           // If response is not JSON, use status text
+          console.error('Error parsing error response:', e);
           errorMessage = `HTTP ${response.status}: ${response.statusText}`;
         }
         throw new Error(errorMessage);
@@ -670,7 +723,7 @@ export const ResumeForm = () => {
 
                             {MailInputComponent(formData, setFormData)}
 
-                            {PhoneInputComponent(formData, setFormData)}
+                            <PhoneInputComponent formData={formData} setFormData={setFormData} />
 
                             <div>
                               <label htmlFor="city" className="block text-sm font-medium text-carbon mb-2 arabic-text-medium" dir="rtl">
@@ -733,7 +786,7 @@ export const ResumeForm = () => {
                                 <option value="female">أنثى</option>
                               </select>
                             </div>
-                            
+
                             <div className="md:col-span-2">
                               <label htmlFor="imageFile" className="block text-sm font-medium text-carbon mb-2 arabic-text-medium" dir="rtl">
                                 صورة الملف الشخصي

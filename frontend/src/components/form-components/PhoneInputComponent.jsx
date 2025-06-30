@@ -1,6 +1,6 @@
 import { Phone } from 'lucide-react';
 
-export function PhoneInputComponent(formData, setFormData) {
+export function PhoneInputComponent({ formData, setFormData }) {
   // Phone validation function
   const isValidPhone = (phone) => {
     const phoneRegex = /^\+\d{7,15}$/;
@@ -143,7 +143,6 @@ export function PhoneInputComponent(formData, setFormData) {
               value={formData.phone}
               onChange={handlePhoneChange}
               required
-              pattern="\+\d{7,15}"
               className="w-full pl-10 pr-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-r-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
               placeholder="+90 5xx xxx xx xx"
               dir="ltr"
