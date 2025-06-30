@@ -46,8 +46,8 @@ async def create_member_work_experience(work_experience: member_model.MemberWork
     await work_experience.insert()
     return work_experience
 
-async def get_member_work_experience_by_id(work_experience_id: ObjectId) -> member_model.MemberWorkExperience:
-    return await member_model.MemberWorkExperience.get(work_experience_id)
+async def get_member_education_by_member_id(member_id: str) -> member_model.MemberEducation:
+    return await member_model.MemberEducation.find_one({"member_id": member_id})
 
 async def update_member_work_experience(work_experience_id: ObjectId, work_experience: member_model.MemberWorkExperience) -> member_model.MemberWorkExperience:
     existing = await member_model.MemberWorkExperience.get(work_experience_id)

@@ -1,229 +1,7 @@
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-
-const studentsData = [
-  {
-    id: 1,
-    name: 'Alice Johnson',
-    email: 'alice.johnson@example.com',
-    university: 'Harvard University',
-    major: 'Computer Science',
-    year: 'Doktora',
-    graduationDate: '2024-05-15',
-    cvLink: 'https://drive.google.com/file/d/alice-cv',
-    avatar: 0
-  },
-  {
-    id: 2,
-    name: 'Bob Smith',
-    email: 'bob.smith@example.com',
-    university: 'MIT',
-    major: 'Mathematics',
-    year: 'Lisans',
-    graduationDate: '2025-06-10',
-    cvLink: 'https://drive.google.com/file/d/bob-cv',
-    avatar: 1
-  },
-  {
-    id: 3,
-    name: 'Carol Williams',
-    email: 'carol.williams@example.com',
-    university: 'Stanford University',
-    major: 'Physics',
-    year: 'Graduate',
-    graduationDate: '2023-12-15',
-    cvLink: 'https://drive.google.com/file/d/carol-cv',
-    avatar: 2
-  },
-  {
-    id: 4,
-    name: 'David Brown',
-    email: 'david.brown@example.com',
-    university: 'UC Berkeley',
-    major: 'Chemistry',
-    year: 'Yüksek Lisans',
-    graduationDate: '2026-05-20',
-    cvLink: 'https://drive.google.com/file/d/david-cv',
-    avatar: 3
-  },
-  {
-    id: 5,
-    name: 'Eva Davis',
-    email: 'eva.davis@example.com',
-    university: 'Caltech',
-    major: 'Biology',
-    year: 'Doktora',
-    graduationDate: '2024-06-05',
-    cvLink: 'https://drive.google.com/file/d/eva-cv',
-    avatar: 4
-  },
-  {
-    id: 6,
-    name: 'Frank Miller',
-    email: 'frank.miller@example.com',
-    university: 'Yale University',
-    major: 'English Literature',
-    year: 'Lisans',
-    graduationDate: '2025-05-25',
-    cvLink: 'https://drive.google.com/file/d/frank-cv',
-    avatar: 5
-  },
-  {
-    id: 7,
-    name: 'Grace Wilson',
-    email: 'grace.wilson@example.com',
-    university: 'Princeton University',
-    major: 'History',
-    year: 'Graduate',
-    graduationDate: '2023-05-30',
-    cvLink: 'https://drive.google.com/file/d/grace-cv',
-    avatar: 6
-  },
-  {
-    id: 8,
-    name: 'Henry Moore',
-    email: 'henry.moore@example.com',
-    university: 'Columbia University',
-    major: 'Art History',
-    year: 'Ön Lisans',
-    graduationDate: '2027-05-15',
-    cvLink: 'https://drive.google.com/file/d/henry-cv',
-    avatar: 7
-  },
-  {
-    id: 9,
-    name: 'Isabella Garcia',
-    email: 'isabella.garcia@example.com',
-    university: 'University of Chicago',
-    major: 'Economics',
-    year: 'Lisans',
-    graduationDate: '2024-12-15',
-    cvLink: 'https://drive.google.com/file/d/isabella-cv',
-    avatar: 0
-  },
-  {
-    id: 10,
-    name: 'Jack Thompson',
-    email: 'jack.thompson@example.com',
-    university: 'Northwestern University',
-    major: 'Journalism',
-    year: 'Yüksek Lisans',
-    graduationDate: '2025-08-20',
-    cvLink: 'https://drive.google.com/file/d/jack-cv',
-    avatar: 1
-  },
-  {
-    id: 11,
-    name: 'Katherine Lee',
-    email: 'katherine.lee@example.com',
-    university: 'University of Pennsylvania',
-    major: 'Business Administration',
-    year: 'Doktora',
-    graduationDate: '2026-03-10',
-    cvLink: 'https://drive.google.com/file/d/katherine-cv',
-    avatar: 2
-  },
-  {
-    id: 12,
-    name: 'Liam Rodriguez',
-    email: 'liam.rodriguez@example.com',
-    university: 'Duke University',
-    major: 'Engineering',
-    year: 'Lisans',
-    graduationDate: '2024-08-15',
-    cvLink: 'https://drive.google.com/file/d/liam-cv',
-    avatar: 3
-  },
-  {
-    id: 13,
-    name: 'Mia Anderson',
-    email: 'mia.anderson@example.com',
-    university: 'Georgetown University',
-    major: 'International Relations',
-    year: 'Graduate',
-    graduationDate: '2023-10-20',
-    cvLink: 'https://drive.google.com/file/d/mia-cv',
-    avatar: 4
-  },
-  {
-    id: 14,
-    name: 'Noah Martinez',
-    email: 'noah.martinez@example.com',
-    university: 'Vanderbilt University',
-    major: 'Medicine',
-    year: 'Doktora',
-    graduationDate: '2027-06-30',
-    cvLink: 'https://drive.google.com/file/d/noah-cv',
-    avatar: 5
-  },
-  {
-    id: 15,
-    name: 'Olivia Taylor',
-    email: 'olivia.taylor@example.com',
-    university: 'Brown University',
-    major: 'Psychology',
-    year: 'Yüksek Lisans',
-    graduationDate: '2025-12-15',
-    cvLink: 'https://drive.google.com/file/d/olivia-cv',
-    avatar: 6
-  },
-  {
-    id: 16,
-    name: 'Parker Wilson',
-    email: 'parker.wilson@example.com',
-    university: 'Cornell University',
-    major: 'Agriculture',
-    year: 'Lisans',
-    graduationDate: '2024-09-10',
-    cvLink: 'https://drive.google.com/file/d/parker-cv',
-    avatar: 7
-  },
-  {
-    id: 17,
-    name: 'Quinn Davis',
-    email: 'quinn.davis@example.com',
-    university: 'Rice University',
-    major: 'Architecture',
-    year: 'Ön Lisans',
-    graduationDate: '2026-07-25',
-    cvLink: 'https://drive.google.com/file/d/quinn-cv',
-    avatar: 0
-  },
-  {
-    id: 18,
-    name: 'Riley Johnson',
-    email: 'riley.johnson@example.com',
-    university: 'Emory University',
-    major: 'Environmental Science',
-    year: 'Graduate',
-    graduationDate: '2023-11-30',
-    cvLink: 'https://drive.google.com/file/d/riley-cv',
-    avatar: 1
-  },
-  {
-    id: 19,
-    name: 'Sophia Chen',
-    email: 'sophia.chen@example.com',
-    university: 'Carnegie Mellon University',
-    major: 'Computer Engineering',
-    year: 'Doktora',
-    graduationDate: '2026-04-15',
-    cvLink: 'https://drive.google.com/file/d/sophia-cv',
-    avatar: 2
-  },
-  {
-    id: 20,
-    name: 'Tyler White',
-    email: 'tyler.white@example.com',
-    university: 'Washington University',
-    major: 'Political Science',
-    year: 'Lisans',
-    graduationDate: '2025-01-20',
-    cvLink: 'https://drive.google.com/file/d/tyler-cv',
-    avatar: 3
-  }
-];
+import { useState, useEffect } from 'react';
+import { memberApi } from '../../utils/apiService';
 
 function StudentsList({ onSidebarHide }) {
   const navigate = useNavigate();
@@ -236,6 +14,51 @@ function StudentsList({ onSidebarHide }) {
   const [sortOrder, setSortOrder] = useState('asc');
   const [showMore, setShowMore] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [studentsData, setStudentsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch members data from API
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        setLoading(true);
+        const members = await memberApi.getAllMembers();
+        
+        // Transform the API data to match the expected format
+        const transformedData = members.map(member => ({
+          id: member.id,
+          name: member.name,
+          email: member.email || '',
+          university: member.university || 'Unknown University',
+          major: member.major || member.professional_title || 'Unknown Major',
+          year: member.year || 'Unknown',
+          graduationDate: member.graduation_date || new Date().toISOString().split('T')[0],
+          cvLink: `https://drive.google.com/file/d/${member.id}-cv`, // Placeholder CV link
+          avatar: member.avatar || 0,
+          bio: member.bio || '',
+          skills: member.skills || [],
+          interests: member.interests || [],
+          phone: member.phone || '',
+          country: member.country || '',
+          city: member.city || '',
+          social_media: member.social_media || {}
+        }));
+        
+        setStudentsData(transformedData);
+        setError(null);
+      } catch (err) {
+        console.error('Failed to fetch members:', err);
+        setError('Failed to load students data. Please try again later.');
+        // Fallback to empty array or you could keep the dummy data as fallback
+        setStudentsData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMembers();
+  }, []);
 
   // Get unique values for filter options
   const uniqueUniversities = [...new Set(studentsData.map(student => student.university))].sort();
@@ -360,7 +183,36 @@ function StudentsList({ onSidebarHide }) {
         .
       </div>
       <div className="h-screen flex-grow overflow-x-hidden overflow-auto flex flex-col p-2">
-        <div className="w-full sm:flex p-2 items-end">
+        {/* Loading State */}
+        {loading && (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              <div className="text-white text-lg">Loading students...</div>
+            </div>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && !loading && (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center bg-red-600 bg-opacity-20 border border-red-600 rounded-lg p-6">
+              <div className="text-red-400 text-lg mb-2">Error Loading Data</div>
+              <div className="text-red-300 text-sm mb-4">{error}</div>
+              <button
+                onClick={() => window.location.reload()}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              >
+                Retry
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Main Content */}
+        {!loading && !error && (
+          <>
+            <div className="w-full sm:flex p-2 items-end">
           <div className="sm:flex-grow flex justify-between">
             <div className="">
               <div className="flex items-center">
@@ -688,6 +540,8 @@ function StudentsList({ onSidebarHide }) {
             </div>
           </div>
         </div>
+          </>
+        )}
       </div>
     </div>
   );

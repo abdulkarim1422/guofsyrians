@@ -2,7 +2,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from beanie import init_beanie
 import os
 
-client = AsyncIOMotorClient(os.getenv('MONGODB_URI'))
+# Default to localhost if MONGODB_URI is not set
+mongodb_uri = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
+client = AsyncIOMotorClient(mongodb_uri)
 db = client.guofsyrians_db
 
 # Function to initialize the database connection and bind models
