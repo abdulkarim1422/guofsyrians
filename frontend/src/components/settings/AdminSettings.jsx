@@ -11,9 +11,17 @@ const AdminSettings = ({ onSidebarHide }) => {
   const [message, setMessage] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [editForm, setEditForm] = useState({
     name: '',
     role: '',
+    is_active: true
+  });
+  const [createForm, setCreateForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    role: 'member',
     is_active: true
   });
 
@@ -119,6 +127,51 @@ const AdminSettings = ({ onSidebarHide }) => {
     }));
   };
 
+  const handleCreateInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setCreateForm(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleCreateUser = async (e) => {
+    e.preventDefault();
+    
+    try {
+      setLoading(true);
+      await userAPI.createUser(createForm);
+      setMessage({ type: 'success', text: 'User created successfully!' });
+      setShowCreateModal(false);
+      setCreateForm({
+        name: '',
+        email: '',
+        password: '',
+        role: 'member',
+        is_active: true
+      });
+      fetchUsers();
+    } catch (error) {
+      setMessage({
+        type: 'error',
+        text: error.response?.data?.detail || 'Failed to create user'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getRoleColor = (role) => {
+    const colors = {
+      admin: 'bg-purple-100 text-purple-800',
+      sub_admin: 'bg-indigo-100 text-indigo-800',
+      team_leader: 'bg-blue-100 text-blue-800',
+      employer: 'bg-green-100 text-green-800',
+      member: 'bg-gray-100 text-gray-800'
+    };
+    return colors[role] || 'bg-gray-100 text-gray-800';
+  };
+
   // Check if user has admin permissions
   if (user?.role !== 'admin') {
     return (
@@ -152,28 +205,35 @@ const AdminSettings = ({ onSidebarHide }) => {
     <div className="h-full flex flex-col">
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 shadow flex-shrink-0">
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <button
-                onClick={onSidebarHide}
-                className="sm:hidden -ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-              >
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-              <h1 className="ml-4 text-lg font-medium text-gray-900 dark:text-white">
-                Admin Settings
-              </h1>
+        <div className="px-4 sm:px-6 lg:px-8">            <div className="flex items-center justify-between h-16">
+              <div className="flex items-center">
+                <button
+                  onClick={onSidebarHide}
+                  className="sm:hidden -ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                >
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </button>
+                <h1 className="ml-4 text-lg font-medium text-gray-900 dark:text-white">
+                  Admin Settings
+                </h1>
+              </div>
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => setShowCreateModal(true)}
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                >
+                  Add User
+                </button>
+                <button
+                  onClick={fetchUsers}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                >
+                  Refresh
+                </button>
+              </div>
             </div>
-            <button
-              onClick={fetchUsers}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium"
-            >
-              Refresh
-            </button>
-          </div>
         </div>
       </div>
 
@@ -253,12 +313,8 @@ const AdminSettings = ({ onSidebarHide }) => {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            userData.role === 'admin' 
-                              ? 'bg-purple-100 text-purple-800' 
-                              : 'bg-gray-100 text-gray-800'
-                          }`}>
-                            {userData.role}
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRoleColor(userData.role)}`}>
+                            {userData.role.replace('_', ' ')}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -365,6 +421,9 @@ const AdminSettings = ({ onSidebarHide }) => {
                     >
                       <option value="member">Member</option>
                       <option value="admin">Admin</option>
+                      <option value="sub_admin">Sub Admin</option>
+                      <option value="team_leader">Team Leader</option>
+                      <option value="employer">Employer</option>
                     </select>
                   </div>
                   <div className="flex items-center">
@@ -395,6 +454,118 @@ const AdminSettings = ({ onSidebarHide }) => {
                     className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md disabled:opacity-50"
                   >
                     {loading ? 'Updating...' : 'Update User'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create User Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
+            <div className="mt-3">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                Create New User
+              </h3>
+              <form onSubmit={handleCreateUser}>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Name *
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={createForm.name}
+                      onChange={handleCreateInputChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={createForm.email}
+                      onChange={handleCreateInputChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Password *
+                    </label>
+                    <input
+                      type="password"
+                      name="password"
+                      value={createForm.password}
+                      onChange={handleCreateInputChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      minLength="6"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Role
+                    </label>
+                    <select
+                      name="role"
+                      value={createForm.role}
+                      onChange={handleCreateInputChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    >
+                      <option value="member">Member</option>
+                      <option value="admin">Admin</option>
+                      <option value="sub_admin">Sub Admin</option>
+                      <option value="team_leader">Team Leader</option>
+                      <option value="employer">Employer</option>
+                    </select>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      id="create_is_active"
+                      name="is_active"
+                      type="checkbox"
+                      checked={createForm.is_active}
+                      onChange={handleCreateInputChange}
+                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor="create_is_active" className="ml-2 block text-sm text-gray-900 dark:text-white">
+                      Active user
+                    </label>
+                  </div>
+                </div>
+                <div className="flex justify-end space-x-3 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowCreateModal(false);
+                      setCreateForm({
+                        name: '',
+                        email: '',
+                        password: '',
+                        role: 'member',
+                        is_active: true
+                      });
+                    }}
+                    className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-md"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md disabled:opacity-50"
+                  >
+                    {loading ? 'Creating...' : 'Create User'}
                   </button>
                 </div>
               </form>

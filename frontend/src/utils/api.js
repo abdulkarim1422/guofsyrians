@@ -69,6 +69,11 @@ export const authAPI = {
 
 // User management API calls (Admin only)
 export const userAPI = {
+  createUser: async (userData) => {
+    const response = await api.post('/api/auth/admin/users', userData);
+    return response.data;
+  },
+  
   getAllUsers: async (skip = 0, limit = 100) => {
     const response = await api.get(`/api/auth/users?skip=${skip}&limit=${limit}`);
     return response.data;

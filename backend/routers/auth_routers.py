@@ -163,6 +163,30 @@ async def change_password(
     return {"message": "Password updated successfully"}
 
 # Admin routes
+@router.post("/admin/users", response_model=UserResponse)
+async def create_user_by_admin(
+    user_data: UserCreate,
+    admin_user: User = Depends(get_admin_user)
+):
+    """Create a new user (Admin only)"""
+    try:
+        user = await UserCRUD.create_user(user_data)
+        return UserResponse(
+            id=str(user.id),
+            email=user.email,
+            name=user.name,
+            role=user.role,
+            is_active=user.is_active,
+            is_verified=user.is_verified
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to create user"
+        )
+
 @router.get("/users", response_model=List[UserResponse])
 async def get_all_users(
     skip: int = 0,
