@@ -1,12 +1,3 @@
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
 import clsx from 'clsx';
 import { useSpring, animated, config } from '@react-spring/web';
 import { useAuth } from '@/contexts/AuthContext';
@@ -31,27 +22,6 @@ const academicLevelData = [
   { c1: 'Doktora (PhD)', c2: '89', c3: '#2c365d', color: '#232942' },
   { c1: 'Ön Lisans (Associate)', c2: '67', c3: '#334ed8', color: '#2c3051' },
 ];
-
-const membershipGrowthData = [
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-].map((i) => {
-  const newMembers = 15 + Math.random() * 35;
-  const expectedMembers = Math.max(newMembers + (Math.random() - 0.5) * 20, 0);
-  return {
-    name: i,
-    newMembers,
-    expectedMembers,
-    activeMembers: Math.floor(Math.random() * 150 + 300),
-  };
-});
 
 function DashboardContent({ onSidebarHide }) {
   const { user } = useAuth();
@@ -221,11 +191,6 @@ function DashboardContent({ onSidebarHide }) {
         )}
 
         {/* Dashboard Components Grid */}
-        <div className="w-full p-2 lg:w-2/3">
-          <div className="rounded-lg bg-card sm:h-80 h-60">
-            <MembershipGrowthGraph />
-          </div>
-        </div>
         <div className="w-full p-2 lg:w-1/3">
           <div className="rounded-lg bg-card h-80">
             <TopUniversities />
@@ -242,80 +207,6 @@ function DashboardContent({ onSidebarHide }) {
             <MemberSatisfaction />
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function MembershipGrowthGraph() {
-  const CustomTooltip = () => (
-    <div className="rounded-xl overflow-hidden tooltip-head">
-      <div className="flex items-center justify-between p-2">
-        <div className="">عضوية جديدة</div>
-        <Icon path="res-react-dash-options" className="w-2 h-2" />
-      </div>
-      <div className="tooltip-body text-center p-3">
-        <div className="text-white font-bold">42 عضو</div>
-        <div className="">أعضاء جدد هذا الشهر</div>
-      </div>
-    </div>
-  );
-  return (
-    <div className="flex p-4 h-full flex-col">
-      <div className="">
-        <div className="flex items-center">
-          <div className="font-bold text-white">نمو العضوية في الاتحاد</div>
-          <div className="flex-grow" />
-
-          <Icon path="res-react-dash-graph-range" className="w-4 h-4" />
-          <div className="ml-2">آخر 9 أشهر</div>
-          <div className="ml-6 w-5 h-5 flex justify-center items-center rounded-full icon-background">
-            ?
-          </div>
-        </div>
-        <div className="font-bold ml-5">سبتمبر - مايو</div>
-      </div>
-
-      <div className="flex-grow">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart width={500} height={300} data={membershipGrowthData}>
-            <defs>
-              <linearGradient id="paint0_linear" x1="0" y1="0" x2="1" y2="0">
-                <stop stopColor="#6B8DE3" />
-                <stop offset="1" stopColor="#7D1C8D" />
-              </linearGradient>
-            </defs>
-            <CartesianGrid
-              horizontal={false}
-              strokeWidth="6"
-              stroke="#252525"
-            />
-            <XAxis
-              dataKey="name"
-              axisLine={false}
-              tickLine={false}
-              tickMargin={10}
-            />
-            <YAxis axisLine={false} tickLine={false} tickMargin={10} />
-            <Tooltip content={<CustomTooltip />} cursor={false} />
-            <Line
-              activeDot={false}
-              type="monotone"
-              dataKey="expectedMembers"
-              stroke="#242424"
-              strokeWidth="3"
-              dot={false}
-              strokeDasharray="8 8"
-            />
-            <Line
-              type="monotone"
-              dataKey="newMembers"
-              stroke="url(#paint0_linear)"
-              strokeWidth="4"
-              dot={false}
-            />
-          </LineChart>
-        </ResponsiveContainer>
       </div>
     </div>
   );
