@@ -228,10 +228,10 @@ const studentsData = [
 function StudentsList({ onSidebarHide }) {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [yearFilter, setYearFilter] = useState('');
-  const [universityFilter, setUniversityFilter] = useState('');
-  const [majorFilter, setMajorFilter] = useState('');
-  const [graduationYearFilter, setGraduationYearFilter] = useState('');
+  const [yearFilter, setYearFilter] = useState([]);
+  const [universityFilter, setUniversityFilter] = useState([]);
+  const [majorFilter, setMajorFilter] = useState([]);
+  const [graduationYearFilter, setGraduationYearFilter] = useState([]);
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
   const [showMore, setShowMore] = useState(false);
@@ -251,11 +251,11 @@ function StudentsList({ onSidebarHide }) {
                          student.university.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          student.major.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesYear = yearFilter === '' || student.year === yearFilter;
-    const matchesUniversity = universityFilter === '' || student.university === universityFilter;
-    const matchesMajor = majorFilter === '' || student.major === majorFilter;
-    const matchesGraduationYear = graduationYearFilter === '' || 
-                                 new Date(student.graduationDate).getFullYear().toString() === graduationYearFilter;
+    const matchesYear = yearFilter.length === 0 || yearFilter.includes(student.year);
+    const matchesUniversity = universityFilter.length === 0 || universityFilter.includes(student.university);
+    const matchesMajor = majorFilter.length === 0 || majorFilter.includes(student.major);
+    const matchesGraduationYear = graduationYearFilter.length === 0 || 
+                                 graduationYearFilter.includes(new Date(student.graduationDate).getFullYear().toString());
     
     return matchesSearch && matchesYear && matchesUniversity && matchesMajor && matchesGraduationYear;
   });
@@ -305,17 +305,55 @@ function StudentsList({ onSidebarHide }) {
   // Clear all filters function
   const clearAllFilters = () => {
     setSearchTerm('');
-    setYearFilter('');
-    setUniversityFilter('');
-    setMajorFilter('');
-    setGraduationYearFilter('');
+    setYearFilter([]);
+    setUniversityFilter([]);
+    setMajorFilter([]);
+    setGraduationYearFilter([]);
     setSortBy('name');
     setSortOrder('asc');
   };
 
   // Count active filters
-  const activeFiltersCount = [searchTerm, yearFilter, universityFilter, majorFilter, graduationYearFilter]
-    .filter(filter => filter !== '').length;
+  const activeFiltersCount = [
+    searchTerm, 
+    ...yearFilter, 
+    ...universityFilter, 
+    ...majorFilter, 
+    ...graduationYearFilter
+  ].filter(filter => filter !== '').length;
+
+  // Helper functions for checkbox filters
+  const handleYearFilterChange = (year) => {
+    setYearFilter(prev => 
+      prev.includes(year) 
+        ? prev.filter(y => y !== year)
+        : [...prev, year]
+    );
+  };
+
+  const handleUniversityFilterChange = (university) => {
+    setUniversityFilter(prev => 
+      prev.includes(university) 
+        ? prev.filter(u => u !== university)
+        : [...prev, university]
+    );
+  };
+
+  const handleMajorFilterChange = (major) => {
+    setMajorFilter(prev => 
+      prev.includes(major) 
+        ? prev.filter(m => m !== major)
+        : [...prev, major]
+    );
+  };
+
+  const handleGraduationYearFilterChange = (year) => {
+    setGraduationYearFilter(prev => 
+      prev.includes(year) 
+        ? prev.filter(y => y !== year)
+        : [...prev, year]
+    );
+  };
   return (
     <div className="flex w-full">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
@@ -435,63 +473,73 @@ function StudentsList({ onSidebarHide }) {
               {/* Academic Level Filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Academic Level</label>
-                <select
-                  value={yearFilter}
-                  onChange={(e) => setYearFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-card text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">All Levels</option>
-                  <option value="Ön Lisans">Ön Lisans</option>
-                  <option value="Lisans">Lisans</option>
-                  <option value="Yüksek Lisans">Yüksek Lisans</option>
-                  <option value="Doktora">Doktora</option>
-                  <option value="Graduate">Graduate</option>
-                </select>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
+                  {['Ön Lisans', 'Lisans', 'Yüksek Lisans', 'Doktora', 'Graduate'].map(year => (
+                    <label key={year} className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={yearFilter.includes(year)}
+                        onChange={() => handleYearFilterChange(year)}
+                        className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className="text-sm text-gray-300">{year}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
 
               {/* University Filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">University</label>
-                <select
-                  value={universityFilter}
-                  onChange={(e) => setUniversityFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-card text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">All Universities</option>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
                   {uniqueUniversities.map(university => (
-                    <option key={university} value={university}>{university}</option>
+                    <label key={university} className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={universityFilter.includes(university)}
+                        onChange={() => handleUniversityFilterChange(university)}
+                        className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className="text-sm text-gray-300">{university}</span>
+                    </label>
                   ))}
-                </select>
+                </div>
               </div>
 
               {/* Major Filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Major</label>
-                <select
-                  value={majorFilter}
-                  onChange={(e) => setMajorFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-card text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">All Majors</option>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
                   {uniqueMajors.map(major => (
-                    <option key={major} value={major}>{major}</option>
+                    <label key={major} className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={majorFilter.includes(major)}
+                        onChange={() => handleMajorFilterChange(major)}
+                        className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className="text-sm text-gray-300">{major}</span>
+                    </label>
                   ))}
-                </select>
+                </div>
               </div>
 
               {/* Graduation Year Filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Graduation Year</label>
-                <select
-                  value={graduationYearFilter}
-                  onChange={(e) => setGraduationYearFilter(e.target.value)}
-                  className="w-full px-3 py-2 bg-card text-white rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="">All Years</option>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
                   {uniqueGraduationYears.map(year => (
-                    <option key={year} value={year}>{year}</option>
+                    <label key={year} className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={graduationYearFilter.includes(year)}
+                        onChange={() => handleGraduationYearFilterChange(year)}
+                        className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className="text-sm text-gray-300">{year}</span>
+                    </label>
                   ))}
-                </select>
+                </div>
               </div>
             </div>
 
@@ -506,30 +554,30 @@ function StudentsList({ onSidebarHide }) {
                       <button onClick={() => setSearchTerm('')} className="hover:text-gray-200">×</button>
                     </span>
                   )}
-                  {yearFilter && (
-                    <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
-                      <span>Level: {yearFilter}</span>
-                      <button onClick={() => setYearFilter('')} className="hover:text-gray-200">×</button>
+                  {yearFilter.map(year => (
+                    <span key={year} className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
+                      <span>Level: {year}</span>
+                      <button onClick={() => handleYearFilterChange(year)} className="hover:text-gray-200">×</button>
                     </span>
-                  )}
-                  {universityFilter && (
-                    <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
-                      <span>University: {universityFilter}</span>
-                      <button onClick={() => setUniversityFilter('')} className="hover:text-gray-200">×</button>
+                  ))}
+                  {universityFilter.map(university => (
+                    <span key={university} className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
+                      <span>University: {university}</span>
+                      <button onClick={() => handleUniversityFilterChange(university)} className="hover:text-gray-200">×</button>
                     </span>
-                  )}
-                  {majorFilter && (
-                    <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
-                      <span>Major: {majorFilter}</span>
-                      <button onClick={() => setMajorFilter('')} className="hover:text-gray-200">×</button>
+                  ))}
+                  {majorFilter.map(major => (
+                    <span key={major} className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
+                      <span>Major: {major}</span>
+                      <button onClick={() => handleMajorFilterChange(major)} className="hover:text-gray-200">×</button>
                     </span>
-                  )}
-                  {graduationYearFilter && (
-                    <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
-                      <span>Grad Year: {graduationYearFilter}</span>
-                      <button onClick={() => setGraduationYearFilter('')} className="hover:text-gray-200">×</button>
+                  ))}
+                  {graduationYearFilter.map(year => (
+                    <span key={year} className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
+                      <span>Grad Year: {year}</span>
+                      <button onClick={() => handleGraduationYearFilterChange(year)} className="hover:text-gray-200">×</button>
                     </span>
-                  )}
+                  ))}
                 </div>
               </div>
             )}
@@ -743,23 +791,6 @@ function StudentCard({ student }) {
           <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
             {student.major}
           </span>
-        </div>
-      </div>
-
-      {/* Progress Indicator */}
-      <div className="pt-2">
-        <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
-          <span>Academic Progress</span>
-          <span>{isGraduated ? 'Completed' : 'In Progress'}</span>
-        </div>
-        <div className="w-full bg-gray-700 rounded-full h-2">
-          <div 
-            className={clsx(
-              "h-2 rounded-full transition-all",
-              isGraduated ? "bg-green-500" : isGraduatingSoon ? "bg-yellow-500" : "bg-blue-500"
-            )}
-            style={{ width: isGraduated ? '100%' : `${Math.max(20, Math.min(90, ((new Date().getFullYear() - 2020) / 8) * 100))}%` }}
-          ></div>
         </div>
       </div>
 
