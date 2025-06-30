@@ -171,10 +171,9 @@ async def upload_member_image(member_id: str, file: UploadFile = File(...)):
     image_url = f"/uploads/{unique_filename}"
     
     # Create updated member data
-    updated_member_data = member_model.Member(
-        **member.dict(),
-        image=image_url
-    )
+    member_dict = member.dict()
+    member_dict["image"] = image_url
+    updated_member_data = member_model.Member(**member_dict)
     
     # Update the member in database
     updated_member = await member_crud.update_member_by_string_id(member_id, updated_member_data)
