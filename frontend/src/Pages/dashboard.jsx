@@ -7,8 +7,7 @@ import StudentsList from '@/components/dashboard-components/StudentsList.jsx';
 import { ResumeForm } from '@/pages/ResumeForm.jsx';
 import Settings from '@/components/settings/Settings.jsx';
 import ProfileSettings from '@/components/settings/ProfileSettings.jsx';
-import Announcements from '@/components/announcements/Announcements.jsx';
-import AnnouncementCarousel from '@/components/announcements/AnnouncementCarousel.jsx';
+// import Announcements from '@/components/announcements/Announcements.jsx';
 import { useAuth } from '@/contexts/AuthContext.tsx';
 
 const sidebarItems = [
@@ -240,9 +239,6 @@ function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user,
           />
         ))}
         <div className="flex-grow" />
-        <div className="w-full p-3 h-28 hidden sm:block sm:h-20 xl:h-32">
-          <AnnouncementCarousel />
-        </div>
       </div>
 
       <div className="flex-shrink-0 p-2 relative user-menu-container">
