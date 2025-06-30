@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
-import './dashboard.css';
+import '@/styles/dashboard.css';
 import DashboardContent from '@/components/dashboard-components/dashboard.jsx';
 import StudentsList from '@/components/dashboard-components/StudentsList.jsx';
 import { ResumeForm } from '@/pages/ResumeForm.jsx';

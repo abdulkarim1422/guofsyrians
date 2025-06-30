@@ -15,7 +15,7 @@ import { getMemberImageUrl } from "@/utils/imageUtils";
 import { Data as dataSchema } from '@/schemas/Data';
 import { Menu as menuSchema } from '@/schemas/Menu';
 
-import "./Resume.css";
+import "@/styles//Resume.css";
 
 export const Resume = () => {
   const { memberId } = useParams();
