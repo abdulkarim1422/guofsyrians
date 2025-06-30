@@ -25,6 +25,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^2.0.5",
+    "react-international-phone": "^4.5.0",
     "recharts": "^3.0.1",
     "tailwindcss": "^4.1.11"
   },
