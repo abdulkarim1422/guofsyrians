@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { memberApi } from '../../utils/apiService';
+import { getMemberImageUrl, getDefaultAvatarPath } from '../../utils/imageUtils';
 
 function StudentsList({ onSidebarHide }) {
   const navigate = useNavigate();
@@ -570,31 +571,15 @@ function StudentCard({ student }) {
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-4">
           <div className="w-16 h-16 rounded-full bg-rich-gold flex items-center justify-center overflow-hidden ring-2 ring-gray-200 group-hover:ring-rich-gold transition-all">
-            {student.imageUrl ? (
-              <>
-                <img 
-                  src={student.imageUrl.startsWith('http') ? student.imageUrl : `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}${student.imageUrl}`}
-                  alt={student.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Fallback to gender-based avatar if image fails to load
-                    e.target.style.display = 'none';
-                    const fallback = e.target.parentNode.querySelector('.fallback-avatar');
-                    if (fallback) fallback.style.display = 'block';
-                  }}
-                />
-                <Image 
-                  path={student.sex === 'female' ? 'default_female_avatar' : 'default_male_avatar'}
-                  className="fallback-avatar w-full h-full object-cover hidden"
-                />
-              </>
-            ) : (
-              // No image URL provided, show gender-based avatar directly
-              <Image 
-                path={student.sex === 'female' ? 'default_female_avatar' : 'default_male_avatar'}
-                className="w-full h-full object-cover"
-              />
-            )}
+            <img 
+              src={getMemberImageUrl(student.imageUrl, student.sex)}
+              alt={student.name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // Fallback to gender-based avatar if image fails to load
+                e.target.src = getDefaultAvatarPath(student.sex);
+              }}
+            />
           </div>
           <div>
             <h2 className="text-lg font-semibold text-carbon group-hover:text-deep-green transition-colors">{student.name}</h2>

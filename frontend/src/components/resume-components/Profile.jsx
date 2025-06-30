@@ -1,5 +1,6 @@
 import { BoxIcon } from '@/components/common/BoxIcon';
 import { Options } from "@/components/common/Options";
+import { getDefaultAvatarPath } from "@/utils/imageUtils";
 
 export const Profile = ({
   name,
@@ -17,7 +18,15 @@ export const Profile = ({
       <Options />
       <div className="home__container bd-grid">
         <div className="home__data bd-grid">
-          <img src={image} alt="profile_image" className="home__img no-print" />
+          <img 
+            src={image} 
+            alt="profile_image" 
+            className="home__img no-print"
+            onError={(e) => {
+              // Fallback to default male avatar if image fails to load
+              e.target.src = getDefaultAvatarPath('male');
+            }}
+          />
           <h1 className="home__title">{name}</h1>
           <h3 className="home__profession">{ocupation}</h3>
           <span className="home__information no-print">

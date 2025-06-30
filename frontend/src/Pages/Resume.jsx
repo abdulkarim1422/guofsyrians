@@ -10,6 +10,7 @@ import { Works } from "@/components/resume-components/Works";
 import { AboutMe } from "@/components/resume-components/AboutMe";
 import { Menu } from "@/components/common/Menu";
 import { SEO } from "@/components/common/SEO";
+import { getMemberImageUrl } from "@/utils/imageUtils";
 
 import { Data as dataSchema } from '@/schemas/Data';
 import { Menu as menuSchema } from '@/schemas/Menu';
@@ -70,7 +71,7 @@ export const Resume = () => {
         location: member.city && member.country ? `${member.city}, ${member.country}` : (member.city || member.country || "Location"),
         email: member.email || "",
         telephone: member.phone || "",
-        image: "/images/me.webp", // Using fallback image for now
+        image: getMemberImageUrl(member.image, member.sex),
       },
       aboutMe: {
         label: "About Me",

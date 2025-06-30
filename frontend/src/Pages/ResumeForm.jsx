@@ -3,6 +3,7 @@ import { Phone, MapPin, Send, User, MessageSquare, Briefcase, GraduationCap, Cod
 import { SEO } from '@/components/common/SEO';
 import { MailInputComponent } from '@/components/form-components/MailInputComponent';
 import { PhoneInputComponent } from '@/components/form-components/PhoneInputComponent';
+import { getMemberImageUrl, getDefaultAvatarPath } from '@/utils/imageUtils';
 
 export const ResumeForm = () => {
   const [formData, setFormData] = useState({
@@ -108,7 +109,7 @@ export const ResumeForm = () => {
     setFormData(prev => ({
       ...prev,
       imageFile: null,
-      image: ''
+      image: '' // Clear both uploaded file and existing image path
     }));
     setImagePreview(null);
     // Reset the file input
@@ -793,13 +794,17 @@ export const ResumeForm = () => {
                               </label>
                               
                               {/* Image Preview */}
-                              {imagePreview && (
-                                <div className="mb-4 relative inline-block">
-                                  <img 
-                                    src={imagePreview} 
-                                    alt="Profile preview" 
-                                    className="w-32 h-32 object-cover rounded-lg border-2 border-gray-200"
-                                  />
+                              <div className="mb-4 relative inline-block">
+                                <img 
+                                  src={imagePreview || getMemberImageUrl(formData.image, formData.sex)} 
+                                  alt="Profile preview" 
+                                  className="w-32 h-32 object-cover rounded-lg border-2 border-gray-200"
+                                  onError={(e) => {
+                                    // Fallback to default image if the backend image fails to load
+                                    e.target.src = getDefaultAvatarPath(formData.sex);
+                                  }}
+                                />
+                                {(imagePreview || formData.image) && (
                                   <button
                                     type="button"
                                     onClick={removeImage}
@@ -808,8 +813,8 @@ export const ResumeForm = () => {
                                   >
                                     ×
                                   </button>
-                                </div>
-                              )}
+                                )}
+                              </div>
                               
                               {/* File Upload */}
                               <div className="relative">
@@ -828,13 +833,17 @@ export const ResumeForm = () => {
                                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                   </svg>
-                                  <span className="mr-2">{formData.imageFile ? 'تغيير الصورة' : '+ تحميل صورة الملف الشخصي'}</span>
+                                  <span className="mr-2">
+                                    {formData.imageFile ? 'تغيير الصورة' : 
+                                     formData.image ? 'تغيير الصورة' : 
+                                     '+ تحميل صورة الملف الشخصي'}
+                                  </span>
                                 </label>
                               </div>
                               
-                              {formData.imageFile && (
+                              {(formData.imageFile || formData.image) && (
                                 <p className="text-sm text-gray-600 mt-2 arabic-text" dir="rtl">
-                                  المحدد: {formData.imageFile.name}
+                                  المحدد: {formData.imageFile ? formData.imageFile.name : formData.image || 'صورة من النظام'}
                                 </p>
                               )}
                               
