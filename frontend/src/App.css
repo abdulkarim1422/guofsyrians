@@ -3,11 +3,9 @@
 @import "./styles/brand-components.css";
 
 /*===== FONTS & ICONS =====*/
-@import "@fontsource/tajawal";
 @import "@fontsource/tajawal/400.css";
 @import "@fontsource/tajawal/500.css";
 @import "@fontsource/tajawal/700.css";
-@import "boxicons/css/boxicons.min.css";
 @import "boxicons/css/boxicons.min.css";
 
 /*===== VARIABLES CSS =====*/
@@ -31,7 +29,7 @@
   --secondary-color: var(--deep-green);
 
   /*========== Font and typography ==========*/
-  --body-font: 'Poppins', sans-serif;
+  --body-font: 'Tajawal', sans-serif;
   --arabic-font: 'Tajawal', sans-serif;
   --h1-font-size: 1.5rem;
   --h2-font-size: 1.25rem;
