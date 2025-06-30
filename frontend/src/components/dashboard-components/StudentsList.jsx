@@ -539,6 +539,8 @@ function StudentsList({ onSidebarHide }) {
 }
 
 function StudentCard({ student }) {
+  const navigate = useNavigate();
+  
   const getYearColor = (year) => {
     switch (year) {
       case 'Ön Lisans': return 'bg-sand text-deep-green border border-deep-green';
@@ -574,22 +576,30 @@ function StudentCard({ student }) {
         <div className="flex items-center space-x-4">
           <div className="w-16 h-16 rounded-full bg-rich-gold flex items-center justify-center overflow-hidden ring-2 ring-gray-200 group-hover:ring-rich-gold transition-all">
             {student.imageUrl ? (
-              <img 
-                src={student.imageUrl.startsWith('http') ? student.imageUrl : `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}${student.imageUrl}`}
-                alt={student.name}
+              <>
+                <img 
+                  src={student.imageUrl.startsWith('http') ? student.imageUrl : `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}${student.imageUrl}`}
+                  alt={student.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback to gender-based avatar if image fails to load
+                    e.target.style.display = 'none';
+                    const fallback = e.target.parentNode.querySelector('.fallback-avatar');
+                    if (fallback) fallback.style.display = 'block';
+                  }}
+                />
+                <Image 
+                  path={student.sex === 'female' ? 'default_female_avatar' : 'default_male_avatar'}
+                  className="fallback-avatar w-full h-full object-cover hidden"
+                />
+              </>
+            ) : (
+              // No image URL provided, show gender-based avatar directly
+              <Image 
+                path={student.sex === 'female' ? 'default_female_avatar' : 'default_male_avatar'}
                 className="w-full h-full object-cover"
-                onError={(e) => {
-                  // Fallback to gender-based avatar if image fails to load
-                  e.target.style.display = 'none';
-                  const fallback = e.target.parentNode.querySelector('.fallback-avatar');
-                  if (fallback) fallback.style.display = 'block';
-                }}
               />
-            ) : null}
-            <Image 
-              path={student.sex === 'female' ? 'default_female_avatar' : 'default_male_avatar'}
-              className={`fallback-avatar w-full h-full object-cover ${student.imageUrl ? 'hidden' : ''}`}
-            />
+            )}
           </div>
           <div>
             <h2 className="text-lg font-semibold text-carbon group-hover:text-deep-green transition-colors">{student.name}</h2>
@@ -702,9 +712,20 @@ function IconButton({
 }
 
 function Image({ path = '1', className = 'w-4 h-4' }) {
+  const getImageSrc = () => {
+    if (path === 'default_male_avatar') {
+      return '/images/default_male_avatar.jpg';
+    }
+    if (path === 'default_female_avatar') {
+      return '/images/default_female_avatar.jpg';
+    }
+    // Fallback to original codepen URL for other images
+    return `https://assets.codepen.io/3685267/${path}.jpg`;
+  };
+
   return (
     <img
-      src={`https://assets.codepen.io/3685267/${path}.jpg`}
+      src={getImageSrc()}
       alt=""
       className={clsx(className, 'rounded-full')}
     />
