@@ -660,8 +660,24 @@ input:focus, textarea:focus, select:focus {
 /* Hover states */
 .hover\:bg-rich-gold:hover { background-color: #c9a249 !important; }
 .hover\:bg-deep-green:hover { background-color: #1a3c2e !important; }
+.hover\:bg-gold-dark:hover { background-color: #c9a249 !important; }
+.hover\:bg-green-dark:hover { background-color: #1a3c2e !important; }
 .hover\:text-rich-gold:hover { color: var(--rich-gold) !important; }
 .hover\:text-deep-green:hover { color: var(--deep-green) !important; }
+
+/* Additional brand color classes */
+.bg-gold-dark { background-color: #c9a249 !important; }
+.bg-green-dark { background-color: #1a3c2e !important; }
+.text-gold-dark { color: #c9a249 !important; }
+.text-green-dark { color: #1a3c2e !important; }
+
+/* Focus ring colors */
+.focus\:ring-rich-gold:focus { 
+  --tw-ring-color: var(--rich-gold) !important; 
+}
+.focus\:border-rich-gold:focus { 
+  border-color: var(--rich-gold) !important; 
+}
 
 /*========== ARABIC FONT ==========*/
 .arabic-text {

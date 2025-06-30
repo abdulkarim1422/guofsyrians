@@ -608,13 +608,13 @@ export const ResumeForm = () => {
       />
       
       <>
-        <div className="flex-1 flex flex-col items-center px-4 py-8">
+        <div className="flex-1 flex flex-col items-center px-4 py-8 bg-sand min-h-screen">
           {/* Header Section */}
           <div className="text-center mb-12 flex flex-col items-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-carbon mb-4">
               Resume Form
             </h1>
-            <p className="text-lg text-gray-300 max-w-2xl">
+            <p className="text-lg text-gray-700 max-w-2xl">
               Update your professional information, skills, experience, and projects. 
               All changes will be saved to the database.
             </p>
@@ -623,15 +623,15 @@ export const ResumeForm = () => {
           <form onSubmit={handleSubmit} className="w-full max-w-4xl space-y-8">
             
             {/* Profile Information */}
-                        <div className="bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-700">
-                          <h2 className="text-2xl font-semibold text-white mb-6 flex items-center arabic-text-semibold" dir="rtl">
-                            <User className="w-6 h-6 ml-2 text-blue-500" />
+                        <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                          <h2 className="text-2xl font-semibold text-carbon mb-6 flex items-center arabic-text-semibold" dir="rtl">
+                            <User className="w-6 h-6 ml-2 text-rich-gold" />
                             معلومات الملف الشخصي
                           </h2>
                           
                           <div className="grid md:grid-cols-2 gap-6">
                             <div>
-                              <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2 arabic-text-medium" dir="rtl">
+                              <label htmlFor="name" className="block text-sm font-medium text-carbon mb-2 arabic-text-medium" dir="rtl">
                                 الاسم الكامل *
                               </label>
                               <input
@@ -641,14 +641,14 @@ export const ResumeForm = () => {
                                 value={formData.name}
                                 onChange={handleInputChange}
                                 required
-                                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all arabic-text"
+                                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text"
                                 placeholder="اسمك الكامل"
                                 dir="rtl"
                               />
                             </div>
 
                             <div>
-                              <label htmlFor="professional_title" className="block text-sm font-medium text-gray-300 mb-2 arabic-text-medium" dir="rtl">
+                              <label htmlFor="professional_title" className="block text-sm font-medium text-carbon mb-2 arabic-text-medium" dir="rtl">
                                 المسمى الوظيفي *
                               </label>
                               <input
@@ -658,7 +658,7 @@ export const ResumeForm = () => {
                                 value={formData.professional_title}
                                 onChange={handleInputChange}
                                 required
-                                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all arabic-text"
+                                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text"
                                 placeholder="المسمى الوظيفي"
                                 dir="rtl"
                               />
@@ -667,7 +667,7 @@ export const ResumeForm = () => {
                             {MailInputComponent(formData, setFormData)}
 
                             <div>
-                              <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-2 arabic-text-medium" dir="rtl">
+                              <label htmlFor="phone" className="block text-sm font-medium text-carbon mb-2 arabic-text-medium" dir="rtl">
                                 رقم الهاتف *
                               </label>
                               <div className="relative">
@@ -679,7 +679,7 @@ export const ResumeForm = () => {
                                   value={formData.phone}
                                   onChange={handleInputChange}
                                   required
-                                  className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                  className="w-full pl-10 pr-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                                   placeholder="+90 5xx xxx xx xx"
                                   dir="ltr"
                                 />
@@ -687,7 +687,7 @@ export const ResumeForm = () => {
                             </div>
 
                             <div>
-                              <label htmlFor="city" className="block text-sm font-medium text-gray-300 mb-2 arabic-text-medium" dir="rtl">
+                              <label htmlFor="city" className="block text-sm font-medium text-carbon mb-2 arabic-text-medium" dir="rtl">
                                 المدينة (داخل تركيا) *
                               </label>
                               <div className="relative">
@@ -698,7 +698,7 @@ export const ResumeForm = () => {
                                   value={formData.city}
                                   onChange={handleInputChange}
                                   required
-                                  className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all arabic-text"
+                                  className="w-full pl-10 pr-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text"
                                   dir="rtl"
                                 >
                                   <option value="">اختر مدينة تركية</option>
@@ -710,7 +710,7 @@ export const ResumeForm = () => {
                             </div>
 
                             <div>
-                              <label htmlFor="relocateToSyria" className="block text-sm font-medium text-gray-300 mb-2 arabic-text-medium" dir="rtl">
+                              <label htmlFor="relocateToSyria" className="block text-sm font-medium text-carbon mb-2 arabic-text-medium" dir="rtl">
                                 هل ستنتقل بشكل دائم إلى سوريا هذا الصيف؟ *
                               </label>
                               <select
@@ -719,7 +719,7 @@ export const ResumeForm = () => {
                                 value={formData.relocateToSyria}
                                 onChange={handleInputChange}
                                 required
-                                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all arabic-text"
+                                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text"
                                 dir="rtl"
                               >
                                 <option value="">اختر إجابتك</option>
@@ -730,7 +730,7 @@ export const ResumeForm = () => {
                             </div>
 
                             <div className="md:col-span-2">
-                              <label htmlFor="imageFile" className="block text-sm font-medium text-gray-300 mb-2 arabic-text-medium" dir="rtl">
+                              <label htmlFor="imageFile" className="block text-sm font-medium text-carbon mb-2 arabic-text-medium" dir="rtl">
                                 صورة الملف الشخصي
                               </label>
                               
@@ -740,7 +740,7 @@ export const ResumeForm = () => {
                                   <img 
                                     src={imagePreview} 
                                     alt="Profile preview" 
-                                    className="w-32 h-32 object-cover rounded-lg border-2 border-gray-600"
+                                    className="w-32 h-32 object-cover rounded-lg border-2 border-gray-200"
                                   />
                                   <button
                                     type="button"
@@ -764,7 +764,7 @@ export const ResumeForm = () => {
                                 />
                                 <label
                                   htmlFor="imageFile"
-                                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer hover:bg-gray-600 flex items-center justify-center space-x-2 arabic-text"
+                                  className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all cursor-pointer hover:bg-gray-50 flex items-center justify-center space-x-2 arabic-text"
                                   dir="rtl"
                                 >
                                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -775,12 +775,12 @@ export const ResumeForm = () => {
                               </div>
                               
                               {formData.imageFile && (
-                                <p className="text-sm text-gray-400 mt-2 arabic-text" dir="rtl">
+                                <p className="text-sm text-gray-600 mt-2 arabic-text" dir="rtl">
                                   المحدد: {formData.imageFile.name}
                                 </p>
                               )}
                               
-                              <p className="text-xs text-gray-400 mt-1 arabic-text" dir="rtl">
+                              <p className="text-xs text-gray-500 mt-1 arabic-text" dir="rtl">
                                 الصيغ المدعومة: JPG، PNG، GIF. الحجم الأقصى: 5MB
                               </p>
                             </div>
@@ -788,18 +788,18 @@ export const ResumeForm = () => {
                         </div>
 
             {/* Academic Section */}
-            <div className="bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-700">
+            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
                 <div className="mb-6">
-                    <h2 className="text-2xl font-semibold text-white flex items-center">
-                        <GraduationCap className="w-6 h-6 mr-2 text-red-500" />
+                    <h2 className="text-2xl font-semibold text-carbon flex items-center">
+                        <GraduationCap className="w-6 h-6 mr-2 text-rich-gold" />
                         Academic Background
                     </h2>
                 </div>
                 
                 {formData.academic.map((edu, index) => (
-                    <div key={index} className="border border-gray-600 rounded-lg p-6 mb-6 bg-gray-750 relative">
+                    <div key={index} className="border border-gray-200 rounded-lg p-6 mb-6 bg-sand relative">
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-semibold text-white">Education {index + 1}</h3>
+                            <h3 className="text-lg font-semibold text-carbon">Education {index + 1}</h3>
                             {formData.academic.length > 1 && (
                                 <button
                                     type="button"
@@ -813,13 +813,13 @@ export const ResumeForm = () => {
                         </div>
                         <div className="grid md:grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-carbon mb-2">
                                     Degree Level *
                                 </label>
                                 <select
                                     value={edu.degreeLevel}
                                     onChange={(e) => handleAcademicChange(index, 'degreeLevel', e.target.value)}
-                                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                                     required
                                 >
                                     <option value="">Select degree level</option>
@@ -829,19 +829,19 @@ export const ResumeForm = () => {
                                     <option value="Associate">Associate Degree</option>
                                     <option value="Certificate/Diploma">Certificate/Diploma</option>
                                 </select>
-                                <p className="text-xs text-gray-400 mt-1">
+                                <p className="text-xs text-gray-600 mt-1">
                                     Select your degree level to see available fields of study
                                 </p>
                             </div>
                             
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-carbon mb-2">
                                     Field of Study *
                                 </label>
                                 <select
                                     value={edu.major}
                                     onChange={(e) => handleAcademicChange(index, 'major', e.target.value)}
-                                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                                     required
                                     disabled={!edu.degreeLevel}
                                 >
@@ -862,35 +862,35 @@ export const ResumeForm = () => {
                                     )}
                                 </select>
                                 {edu.degreeLevel && (
-                                    <p className="text-xs text-gray-400 mt-1">
+                                    <p className="text-xs text-gray-600 mt-1">
                                         Categories available for {edu.degreeLevel} level. Select &quot;Other&quot; if your field is not listed.
                                     </p>
                                 )}
                             </div>
                             
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-carbon mb-2">
                                     Graduation Date *
                                 </label>
                                 <input
                                     type="text"
                                     value={edu.date}
                                     onChange={(e) => handleAcademicChange(index, 'date', e.target.value)}
-                                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                                     placeholder="2019 or May 2019"
                                     required
                                 />
                             </div>
                             
                             <div>
-                                <label className="block text-sm font-medium text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-carbon mb-2">
                                     Institution *
                                 </label>
                                 <input
                                     type="text"
                                     value={edu.institution}
                                     onChange={(e) => handleAcademicChange(index, 'institution', e.target.value)}
-                                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                                     placeholder="University name"
                                     required
                                 />
@@ -900,7 +900,7 @@ export const ResumeForm = () => {
                 ))}
                 
                 {formData.academic.length === 0 && (
-                    <div className="text-center py-8 text-gray-400">
+                    <div className="text-center py-8 text-gray-600">
                         <GraduationCap className="w-12 h-12 mx-auto mb-4 opacity-50" />
                         <p>No education entries yet. Click &quot;Add Education&quot; to get started.</p>
                     </div>
@@ -911,7 +911,7 @@ export const ResumeForm = () => {
                     <button
                         type="button"
                         onClick={addAcademicEntry}
-                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+                        className="bg-deep-green hover:bg-green-dark text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
                     >
                         <Plus className="w-4 h-4" />
                         <span>Add Education</span>
@@ -920,15 +920,15 @@ export const ResumeForm = () => {
             </div>
 
             {/* About Me Section */}
-            <div className="bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-700">
-              <h2 className="text-2xl font-semibold text-white mb-6 flex items-center">
-                <MessageSquare className="w-6 h-6 mr-2 text-green-500" />
+            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+              <h2 className="text-2xl font-semibold text-carbon mb-6 flex items-center">
+                <MessageSquare className="w-6 h-6 mr-2 text-rich-gold" />
                 About Me
               </h2>
               
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="aboutLabel" className="block text-sm font-medium text-gray-300 mb-2">
+                  <label htmlFor="aboutLabel" className="block text-sm font-medium text-carbon mb-2">
                     Section Label
                   </label>
                   <input
@@ -937,13 +937,13 @@ export const ResumeForm = () => {
                     name="aboutLabel"
                     value={formData.aboutLabel}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                     placeholder="Profile / About"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="bio" className="block text-sm font-medium text-gray-300 mb-2">
+                  <label htmlFor="bio" className="block text-sm font-medium text-carbon mb-2">
                     Description *
                   </label>
                   <textarea
@@ -953,7 +953,7 @@ export const ResumeForm = () => {
                     onChange={handleInputChange}
                     required
                     rows={4}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                    className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none"
                     placeholder="Brief description about yourself..."
                   />
                 </div>
@@ -961,9 +961,9 @@ export const ResumeForm = () => {
             </div>
 
             {/* Skills Section */}
-            <div className="bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-700">
-              <h2 className="text-2xl font-semibold text-white mb-6 flex items-center">
-                <Code className="w-6 h-6 mr-2 text-purple-500" />
+            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+              <h2 className="text-2xl font-semibold text-carbon mb-6 flex items-center">
+                <Code className="w-6 h-6 mr-2 text-rich-gold" />
                 Skills
               </h2>
               
@@ -976,14 +976,14 @@ export const ResumeForm = () => {
                       value={currentSkill}
                       onChange={(e) => setCurrentSkill(e.target.value)}
                       onKeyPress={handleSkillKeyPress}
-                      className="w-full px-4 py-2.5 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-2.5 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                       placeholder="Enter a skill (e.g., JavaScript, Project Management, etc.)"
                     />
                   </div>
                   <button
                     type="button"
                     onClick={addSkill}
-                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg flex items-center space-x-2 transition-colors whitespace-nowrap"
+                    className="bg-deep-green hover:bg-green-dark text-white px-4 py-2.5 rounded-lg flex items-center space-x-2 transition-colors whitespace-nowrap"
                   >
                     <Plus className="w-4 h-4" />
                     <span>Add Skill</span>
@@ -993,18 +993,18 @@ export const ResumeForm = () => {
                 {/* Skills List */}
                 {formData.skills.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-lg font-medium text-white">Your Skills:</h3>
+                    <h3 className="text-lg font-medium text-carbon">Your Skills:</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                       {formData.skills.map((skill, index) => (
                         <div
                           key={index}
-                          className="bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 min-h-[3rem] flex items-center justify-center group hover:bg-gray-600 transition-colors relative"
+                          className="bg-sand border border-gray-200 rounded-lg px-4 py-3 min-h-[3rem] flex items-center justify-center group hover:bg-gray-100 transition-colors relative"
                         >
-                          <span className="text-white text-sm text-center flex-1 pr-6">{skill}</span>
+                          <span className="text-carbon text-sm text-center flex-1 pr-6">{skill}</span>
                           <button
                             type="button"
                             onClick={() => removeSkill(index)}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-400 hover:text-red-300 opacity-0 group-hover:opacity-100 transition-all"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-all"
                             title="Remove skill"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -1017,7 +1017,7 @@ export const ResumeForm = () => {
                 
                 {/* Empty State - Only show when no skills exist */}
                 {formData.skills.length === 0 && (
-                  <div className="text-center py-6 text-gray-400">
+                  <div className="text-center py-6 text-gray-600">
                     <Code className="w-10 h-10 mx-auto mb-3 opacity-50" />
                     <p className="text-sm">No skills added yet. Enter a skill above and click &quot;Add Skill&quot;.</p>
                   </div>
@@ -1026,17 +1026,17 @@ export const ResumeForm = () => {
             </div>
 
             {/* Social Media Section */}
-            <div className="bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-700">
+            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
               <div className="mb-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-semibold text-white flex items-center">
-                    <Globe className="w-6 h-6 mr-2 text-orange-500" />
+                  <h2 className="text-2xl font-semibold text-carbon flex items-center">
+                    <Globe className="w-6 h-6 mr-2 text-rich-gold" />
                     Social Media
                   </h2>
                   <button
                     type="button"
                     onClick={addSocialMedia}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors"
+                    className="bg-rich-gold hover:bg-gold-dark text-deep-green px-4 py-2 rounded-lg flex items-center transition-colors font-medium"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Social Media
@@ -1046,30 +1046,30 @@ export const ResumeForm = () => {
               
               <div className="space-y-4">
                 {socialMediaList.map((social, index) => (
-                  <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-800 rounded-lg">
+                  <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-sand rounded-lg">
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-carbon mb-2">
                         Platform
                       </label>
                       <input
                         type="text"
                         value={social.platform}
                         onChange={(e) => handleSocialMediaChange(index, 'platform', e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                         placeholder="e.g., LinkedIn, GitHub, Twitter, Portfolio"
                       />
                     </div>
 
                     <div className="flex items-end space-x-2">
                       <div className="flex-1">
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <label className="block text-sm font-medium text-carbon mb-2">
                           URL
                         </label>
                         <input
                           type="url"
                           value={social.url}
                           onChange={(e) => handleSocialMediaChange(index, 'url', e.target.value)}
-                          className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                          className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                           placeholder="https://..."
                         />
                       </div>
@@ -1090,18 +1090,18 @@ export const ResumeForm = () => {
             </div>
 
             {/* Work Experience Section */}
-            <div className="bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-700">
+            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
               <div className="mb-6">
-                <h2 className="text-2xl font-semibold text-white flex items-center">
-                  <Briefcase className="w-6 h-6 mr-2 text-indigo-500" />
+                <h2 className="text-2xl font-semibold text-carbon flex items-center">
+                  <Briefcase className="w-6 h-6 mr-2 text-rich-gold" />
                   Work Experience
                 </h2>
               </div>
               
               {formData.works.map((work, index) => (
-                <div key={index} className="border border-gray-600 rounded-lg p-6 mb-6 bg-gray-750">
+                <div key={index} className="border border-gray-200 rounded-lg p-6 mb-6 bg-sand">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-white">Position {index + 1}</h3>
+                    <h3 className="text-lg font-semibold text-carbon">Position {index + 1}</h3>
                     {formData.works.length > 1 && (
                       <button
                         type="button"
@@ -1116,40 +1116,40 @@ export const ResumeForm = () => {
                   
                   <div className="grid md:grid-cols-2 gap-4 mb-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-carbon mb-2">
                         Job Title *
                       </label>
                       <input
                         type="text"
                         value={work.title}
                         onChange={(e) => handleWorkChange(index, 'title', e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                         placeholder="Full-Stack Developer, Software Engineer, Data Scientist, etc."
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-carbon mb-2">
                         Period *
                       </label>
                       <input
                         type="text"
                         value={work.period}
                         onChange={(e) => handleWorkChange(index, 'period', e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                         placeholder="Oct. 2021 - Present, Jan 2020 - Dec 2021"
                         required
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-carbon mb-2">
                         Company *
                       </label>
                       <input
                         type="text"
                         value={work.company}
                         onChange={(e) => handleWorkChange(index, 'company', e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                         placeholder="Company Name, Organization, etc."
                         required
                       />
@@ -1158,13 +1158,13 @@ export const ResumeForm = () => {
                   
                   <div className="mb-4">
                     <div className="flex items-center justify-between mb-2">
-                      <label className="block text-sm font-medium text-gray-300">
+                      <label className="block text-sm font-medium text-carbon">
                         Job Description *
                       </label>
                       <button
                         type="button"
                         onClick={() => addWorkDescription(index)}
-                        className="text-green-400 hover:text-green-300 text-sm flex items-center space-x-1 transition-colors"
+                        className="text-deep-green hover:text-green-dark text-sm flex items-center space-x-1 transition-colors"
                       >
                         <Plus className="w-3 h-3" />
                         <span>Add Description</span>
@@ -1176,7 +1176,7 @@ export const ResumeForm = () => {
                           value={desc}
                           onChange={(e) => handleWorkDescriptionChange(index, descIndex, e.target.value)}
                           rows={2}
-                          className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                          className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none"
                           placeholder={`• Key responsibility or achievement ${descIndex + 1}`}
                           required={descIndex === 0}
                         />
@@ -1184,7 +1184,7 @@ export const ResumeForm = () => {
                           <button
                             type="button"
                             onClick={() => removeWorkDescription(index, descIndex)}
-                            className="absolute top-2 right-2 text-red-400 hover:text-red-300 transition-colors"
+                            className="absolute top-2 right-2 text-red-400 hover:text-red-600 transition-colors"
                             title="Remove this description"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -1192,7 +1192,7 @@ export const ResumeForm = () => {
                         )}
                       </div>
                     ))}
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-gray-600 mt-1">
                       Add multiple bullet points to highlight key achievements and responsibilities
                     </p>
                   </div>
@@ -1200,7 +1200,7 @@ export const ResumeForm = () => {
               ))}
               
               {formData.works.length === 0 && (
-                <div className="text-center py-8 text-gray-400">
+                <div className="text-center py-8 text-gray-600">
                   <Briefcase className="w-12 h-12 mx-auto mb-4 opacity-50" />
                   <p>No work experience entries yet. Click &quot;Add Position&quot; to get started.</p>
                 </div>
@@ -1211,7 +1211,7 @@ export const ResumeForm = () => {
                 <button
                   type="button"
                   onClick={addWorkEntry}
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+                  className="bg-deep-green hover:bg-green-dark text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Add Position</span>
@@ -1222,18 +1222,18 @@ export const ResumeForm = () => {
 
 
             {/* Projects Section */}
-            <div className="bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-700">
+            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
               <div className="mb-6">
-                <h2 className="text-2xl font-semibold text-white flex items-center">
-                  <Award className="w-6 h-6 mr-2 text-yellow-500" />
+                <h2 className="text-2xl font-semibold text-carbon flex items-center">
+                  <Award className="w-6 h-6 mr-2 text-rich-gold" />
                   Projects
                 </h2>
               </div>
               
               {formData.projects.map((project, index) => (
-                <div key={index} className="border border-gray-600 rounded-lg p-6 mb-6 bg-gray-750">
+                <div key={index} className="border border-gray-200 rounded-lg p-6 mb-6 bg-sand">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-white">Project {index + 1}</h3>
+                    <h3 className="text-lg font-semibold text-carbon">Project {index + 1}</h3>
                     {formData.projects.length > 1 && (
                       <button
                         type="button"
@@ -1248,39 +1248,39 @@ export const ResumeForm = () => {
                   
                   <div className="grid md:grid-cols-2 gap-4 mb-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-carbon mb-2">
                         Project Name *
                       </label>
                       <input
                         type="text"
                         value={project.name}
                         onChange={(e) => handleProjectChange(index, 'name', e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                         placeholder="E-commerce Platform, Mobile App, etc."
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-carbon mb-2">
                         Company/Client
                       </label>
                       <input
                         type="text"
                         value={project.company}
                         onChange={(e) => handleProjectChange(index, 'company', e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                         placeholder="Client Name, Personal Project, etc."
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <label className="block text-sm font-medium text-carbon mb-2">
                         Period *
                       </label>
                       <input
                         type="text"
                         value={project.period}
                         onChange={(e) => handleProjectChange(index, 'period', e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                         placeholder="Nov. 2019 - Jan. 2020, 6 months, etc."
                         required
                       />
@@ -1289,13 +1289,13 @@ export const ResumeForm = () => {
                   
                   <div className="mb-4">
                     <div className="flex items-center justify-between mb-2">
-                      <label className="block text-sm font-medium text-gray-300">
+                      <label className="block text-sm font-medium text-carbon">
                         Project Description *
                       </label>
                       <button
                         type="button"
                         onClick={() => addProjectDescription(index)}
-                        className="text-green-400 hover:text-green-300 text-sm flex items-center space-x-1 transition-colors"
+                        className="text-deep-green hover:text-green-dark text-sm flex items-center space-x-1 transition-colors"
                       >
                         <Plus className="w-3 h-3" />
                         <span>Add Description</span>
@@ -1307,7 +1307,7 @@ export const ResumeForm = () => {
                           value={desc}
                           onChange={(e) => handleProjectDescriptionChange(index, descIndex, e.target.value)}
                           rows={2}
-                          className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                          className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none"
                           placeholder={`• Project feature or achievement ${descIndex + 1}`}
                           required={descIndex === 0}
                         />
@@ -1315,7 +1315,7 @@ export const ResumeForm = () => {
                           <button
                             type="button"
                             onClick={() => removeProjectDescription(index, descIndex)}
-                            className="absolute top-2 right-2 text-red-400 hover:text-red-300 transition-colors"
+                            className="absolute top-2 right-2 text-red-400 hover:text-red-600 transition-colors"
                             title="Remove this description"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -1323,7 +1323,7 @@ export const ResumeForm = () => {
                         )}
                       </div>
                     ))}
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-gray-600 mt-1">
                       Highlight key features, technologies used, and project outcomes
                     </p>
                   </div>
@@ -1331,7 +1331,7 @@ export const ResumeForm = () => {
               ))}
               
               {formData.projects.length === 0 && (
-                <div className="text-center py-8 text-gray-400">
+                <div className="text-center py-8 text-gray-600">
                   <Award className="w-12 h-12 mx-auto mb-4 opacity-50" />
                   <p>No project entries yet. Click &quot;Add Project&quot; to get started.</p>
                 </div>
@@ -1342,7 +1342,7 @@ export const ResumeForm = () => {
                 <button
                   type="button"
                   onClick={addProjectEntry}
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+                  className="bg-deep-green hover:bg-green-dark text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Add Project</span>
@@ -1351,15 +1351,15 @@ export const ResumeForm = () => {
             </div>
 
             {/* Submit Button */}
-            <div className="bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-700">
+            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-4 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2 text-lg"
+                className="w-full bg-rich-gold hover:bg-gold-dark disabled:bg-gray-400 text-deep-green font-medium py-4 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2 text-lg"
               >
                 {isSubmitting ? (
                   <>
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-deep-green"></div>
                     <span>Saving Changes...</span>
                   </>
                 ) : (
@@ -1372,13 +1372,13 @@ export const ResumeForm = () => {
 
               {/* Success/Error Messages */}
               {submitStatus === 'success' && (
-                <div className="bg-green-800 border border-green-600 text-green-200 px-4 py-3 rounded-lg mt-4">
+                <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mt-4">
                   {submitMessage}
                 </div>
               )}
 
               {submitStatus === 'error' && (
-                <div className="bg-red-800 border border-red-600 text-red-200 px-4 py-3 rounded-lg mt-4">
+                <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mt-4">
                   {submitMessage}
                 </div>
               )}
