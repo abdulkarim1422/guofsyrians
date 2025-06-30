@@ -1,7 +1,7 @@
 /*===== FONTS & ICONS =====*/
-@import "@fontsource/poppins";
-@import "@fontsource/poppins/500.css";
-@import "@fontsource/poppins/600.css";
+@import "@fontsource/tajawal";
+@import "@fontsource/tajawal/500.css";
+@import "@fontsource/tajawal/700.css";
 @import "boxicons/css/boxicons.min.css";
 
 /*===== VARIABLES CSS =====*/
@@ -25,7 +25,7 @@
   --secondary-color: var(--deep-green);
 
   /*========== Font and typography ==========*/
-  --body-font: 'Poppins', sans-serif;
+  --body-font: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --h1-font-size: 1.5rem;
   --h2-font-size: 1.25rem;
   --h3-font-size: 1rem;
@@ -36,7 +36,7 @@
 
   /*========== Font weight ==========*/
   --font-medium: 500;
-  --font-semi-bold: 600;
+  --font-semi-bold: 700;
 
   /*========== Margenes ==========*/
   --mb-0-25: 0.25rem;
@@ -50,6 +50,10 @@
 }
 
 /*========== BASE ==========*/
+* {
+  font-family: var(--body-font) !important;
+}
+
 *,
 ::before,
 ::after {
@@ -58,6 +62,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-family: var(--body-font);
 }
 
 body {
@@ -75,6 +80,7 @@ h3,
 ul,
 p {
   margin: 0;
+  font-family: var(--body-font);
 }
 
 h1,
@@ -82,6 +88,7 @@ h2,
 h3 {
   color: var(--title-color);
   font-weight: var(--font-medium);
+  font-family: var(--body-font);
 }
 
 ul {
