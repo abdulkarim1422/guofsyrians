@@ -123,7 +123,7 @@ function DashboardContent({ onSidebarHide }) {
                   path="res-react-dash-date-indicator"
                   className="w-3 h-3"
                 />
-                <div className="ml-2">{new Date().toLocaleDateString('ar-SA', { 
+                <div className="ml-2">{new Date().toLocaleDateString('ar-u-ca-islamic', { 
                   weekday: 'long',
                   year: 'numeric', 
                   month: 'long', 
