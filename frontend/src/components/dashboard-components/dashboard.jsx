@@ -9,13 +9,6 @@ const map = (value, sMin, sMax, dMin, dMax) => {
 const pi = Math.PI;
 const tau = 2 * pi;
 
-const universityStatsData = [
-  { name: 'Harvard University', rise: true, value: 156, id: 1 },
-  { name: 'MIT', rise: true, value: 134, id: 2 },
-  { name: 'Stanford University', rise: false, value: 98, id: 3 },
-  { name: 'Yale University', rise: true, value: 87, id: 4 },
-];
-
 const academicLevelData = [
   { c1: 'Lisans (Bachelor)', c2: '245', c3: '#363636', color: '#535353' },
   { c1: 'Yüksek Lisans (Master)', c2: '156', c3: '#818bb1', color: '#595f77' },
@@ -193,12 +186,6 @@ function DashboardContent({ onSidebarHide }) {
         {/* Dashboard Components Grid */}
         <div className="w-full p-2 lg:w-1/3">
           <div className="rounded-lg bg-card h-80">
-            <TopUniversities />
-          </div>
-        </div>
-
-        <div className="w-full p-2 lg:w-1/3">
-          <div className="rounded-lg bg-card h-80">
             <AcademicLevelBreakdown />
           </div>
         </div>
@@ -207,39 +194,6 @@ function DashboardContent({ onSidebarHide }) {
             <MemberSatisfaction />
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function TopUniversities() {
-  return (
-    <div className="flex p-4 flex-col h-full">
-      <div className="flex justify-between items-center">
-        <div className="text-white font-bold">أفضل الجامعات</div>
-        <Icon path="res-react-dash-plus" className="w-5 h-5" />
-      </div>
-      <div className="">بحسب عدد الطلاب</div>
-      {universityStatsData.map(({ name, rise, value, id }) => (
-        <div className="flex items-center mt-3" key={id}>
-          <div className="">{id}</div>
-
-          <Image path={`res-react-dash-flag-${id}`} className="ml-2 w-6 h-6" />
-          <div className="ml-2 text-sm">{name}</div>
-          <div className="flex-grow" />
-          <div className="">{`${value} طالب`}</div>
-          <Icon
-            path={
-              rise ? 'res-react-dash-country-up' : 'res-react-dash-country-down'
-            }
-            className="w-4 h-4 mx-3"
-          />
-          <Icon path="res-react-dash-options" className="w-2 h-2" />
-        </div>
-      ))}
-      <div className="flex-grow" />
-      <div className="flex justify-center">
-        <div className="">عرض الكل</div>
       </div>
     </div>
   );
