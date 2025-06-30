@@ -1,73 +1,87 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
 
-/*===== DASHBOARD STYLES =====*/
+/*===== DASHBOARD STYLES - BRAND COLORS =====*/
 .dashboard-body {
   font-family: 'Tajawal', sans-serif;
-  color: #676767;
-  background-color: #1e1e1e;
+  color: #1f1f1f;
+  background-color: #efe8d7;
 }
 
 .bg-card {
-  background-color: #171717;
+  background-color: #ffffff;
+  border: 1px solid rgba(31, 31, 31, 0.1);
+  box-shadow: 0 2px 8px rgba(31, 31, 31, 0.1);
 }
 
 .bg-sidebar-card-top {
-  background-color: hsl(0, 0%, 21%);
+  background-color: #214937;
+  color: white;
 }
 
 .sidebar-separator-top {
-  border-bottom: 1px solid #2e2e2e;
+  border-bottom: 1px solid rgba(220, 181, 87, 0.3);
 }
 
 .sidebar-separator-bottom {
-  border-top: 1px solid #2e2e2e;
+  border-top: 1px solid rgba(220, 181, 87, 0.3);
 }
 
 .text-premium-yellow {
-  color: #f7b91c;
+  color: #dcb557;
 }
 
 .icon-background {
-  background: #2d2d2d;
+  background: #efe8d7;
+  color: #1f1f1f;
 }
 
 .tooltip-head {
-  background: #1d1d1d;
+  background: #214937;
+  color: white;
 }
 
 .tooltip-body {
-  background: #252525;
+  background: #ffffff;
+  color: #1f1f1f;
+  border: 1px solid rgba(31, 31, 31, 0.1);
 }
 
 .search-icon {
   top: 50%;
   transform: translate(0, -50%);
+  color: #214937;
 }
 
 .card-stack-border {
-  border-bottom: 2px solid #696969;
+  border-bottom: 2px solid #dcb557;
 }
 
 .bg-details {
-  background-color: #1e1e1e;
+  background-color: #efe8d7;
+  color: #1f1f1f;
 }
 
 .add-component-head {
-  background-color: #181818;
-  background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+  background-color: #214937;
+  background-image: none;
+  color: white;
 }
 
 .sidebar-item-selected {
-  color: white;
-  border-right: 2px solid white;
+  color: #dcb557;
+  border-right: 2px solid #dcb557;
+  background-color: rgba(220, 181, 87, 0.1);
 }
 
 .sidebar-item {
   border-right: 2px solid transparent;
+  color: #1f1f1f;
+  transition: all 0.3s ease;
 }
 
 .sidebar-item:hover {
-  color: #a1a0a0;
+  color: #214937;
+  background-color: rgba(33, 73, 55, 0.05);
 }
 
 /* Utility classes for announcements */
@@ -89,5 +103,6 @@
 
 /* Announcement carousel styles */
 .announcement-card-gradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #dcb557 0%, #214937 100%);
+  color: var(--brand-sand);
 }

@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "./styles/brand-theme.css";
+@import "./styles/brand-components.css";
 
 /*===== FONTS & ICONS =====*/
 @import "@fontsource/tajawal";
@@ -12,13 +14,21 @@
 :root {
   --header-height: 3rem;
 
+  /*========== Brand Colors ==========*/
+  --carbon: #1f1f1f;
+  --rich-gold: #dcb557;
+  --deep-green: #214937;
+  --sand: #efe8d7;
+
   /*========== Colors ==========*/
-  --title-color: #434c5e;
-  --text-color: #4c566a;
-  --text-color-light: #7b88a1;
+  --title-color: var(--carbon);
+  --text-color: var(--carbon);
+  --text-color-light: #5a5a5a;
   --container-color: #ffffff;
-  --container-color-alt: #f7f9fb;
-  --body-color: #f2f4f8;
+  --container-color-alt: var(--sand);
+  --body-color: var(--sand);
+  --accent-color: var(--rich-gold);
+  --secondary-color: var(--deep-green);
 
   /*========== Font and typography ==========*/
   --body-font: 'Poppins', sans-serif;
@@ -97,11 +107,12 @@ img {
 
 /*========== Variables Dark theme ==========*/
 body.dark-theme {
-  --title-color: #eceff4;
-  --text-color: #b5c4db;
-  --container-color: #2e3440;
-  --container-color-alt: #3b4252;
-  --body-color: #242933;
+  --title-color: var(--sand);
+  --text-color: #d4d4d4;
+  --text-color-light: #a0a0a0;
+  --container-color: var(--carbon);
+  --container-color-alt: #2a2a2a;
+  --body-color: #181818;
 }
 
 /*========== Options button ==========*/
@@ -138,13 +149,25 @@ body.dark-theme {
 }
 
 .section-title {
+  position: relative;
   font-size: var(--h2-font-size);
-  color: var(--title-color);
+  color: var(--carbon);
   font-weight: var(--font-semi-bold);
   text-transform: uppercase;
   letter-spacing: 0.35rem;
   text-align: center;
   margin-bottom: var(--mb-3);
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--rich-gold), var(--deep-green));
 }
 
 .bd-container {
@@ -463,6 +486,182 @@ button.generate__btn {
   }
 
 }
+
+/*========== BRAND ENHANCEMENTS ==========*/
+/* Accent elements with Rich Gold */
+.btn-primary, .button, .primary-btn {
+  background-color: var(--rich-gold);
+  color: var(--deep-green);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: var(--font-medium);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-primary:hover, .button:hover, .primary-btn:hover {
+  background-color: #c9a249;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 181, 87, 0.3);
+}
+
+.btn-secondary {
+  background-color: var(--deep-green);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: var(--font-medium);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: #1a3c2e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(33, 73, 55, 0.3);
+}
+
+/* Enhanced section titles with brand colors */
+.section-title {
+  position: relative;
+  font-size: var(--h2-font-size);
+  color: var(--carbon);
+  font-weight: var(--font-semi-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.35rem;
+  text-align: center;
+  margin-bottom: var(--mb-3);
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--rich-gold), var(--deep-green));
+}
+
+/* Card enhancements */
+.card, .resume-card, .dashboard-card {
+  background-color: var(--container-color);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 16px rgba(31, 31, 31, 0.1);
+  border-left: 4px solid var(--rich-gold);
+  transition: all 0.3s ease;
+}
+
+.card:hover, .resume-card:hover, .dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(31, 31, 31, 0.15);
+  border-left-color: var(--deep-green);
+}
+
+/* Links and interactive elements */
+a, .link {
+  color: var(--deep-green);
+  transition: color 0.3s ease;
+}
+
+a:hover, .link:hover {
+  color: var(--rich-gold);
+}
+
+/* Form elements */
+input, textarea, select {
+  border: 1px solid rgba(31, 31, 31, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  font-family: var(--body-font);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: var(--container-color);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--rich-gold);
+  box-shadow: 0 0 0 3px rgba(220, 181, 87, 0.1);
+}
+
+/* Navigation and header enhancements */
+.nav-link, .menu-item {
+  color: var(--carbon);
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover, .menu-item:hover {
+  color: var(--rich-gold);
+}
+
+.nav-link.active, .menu-item.active {
+  color: var(--deep-green);
+}
+
+.nav-link.active::after, .menu-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--rich-gold);
+}
+
+/* Status indicators */
+.status-success {
+  color: var(--deep-green);
+  background-color: rgba(33, 73, 55, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: var(--small-font-size);
+}
+
+.status-warning {
+  color: #b8860b;
+  background-color: rgba(220, 181, 87, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: var(--small-font-size);
+}
+
+.status-info {
+  color: var(--carbon);
+  background-color: var(--sand);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: var(--small-font-size);
+}
+
+/*========== BRAND UTILITY CLASSES ==========*/
+/* Background colors */
+.bg-carbon { background-color: var(--carbon) !important; }
+.bg-rich-gold { background-color: var(--rich-gold) !important; }
+.bg-deep-green { background-color: var(--deep-green) !important; }
+.bg-sand { background-color: var(--sand) !important; }
+
+/* Text colors */
+.text-carbon { color: var(--carbon) !important; }
+.text-rich-gold { color: var(--rich-gold) !important; }
+.text-deep-green { color: var(--deep-green) !important; }
+.text-sand { color: var(--sand) !important; }
+
+/* Border colors */
+.border-carbon { border-color: var(--carbon) !important; }
+.border-rich-gold { border-color: var(--rich-gold) !important; }
+.border-deep-green { border-color: var(--deep-green) !important; }
+.border-sand { border-color: var(--sand) !important; }
+
+/* Hover states */
+.hover\:bg-rich-gold:hover { background-color: #c9a249 !important; }
+.hover\:bg-deep-green:hover { background-color: #1a3c2e !important; }
+.hover\:text-rich-gold:hover { color: var(--rich-gold) !important; }
+.hover\:text-deep-green:hover { color: var(--deep-green) !important; }
 
 /*========== ARABIC FONT ==========*/
 .arabic-text {

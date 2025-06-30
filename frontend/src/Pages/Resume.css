@@ -8,13 +8,21 @@
 :root {
   --header-height: 3rem;
 
+  /*========== Brand Colors ==========*/
+  --carbon: #1f1f1f;
+  --rich-gold: #dcb557;
+  --deep-green: #214937;
+  --sand: #efe8d7;
+
   /*========== Colors ==========*/
-  --title-color: #434c5e;
-  --text-color: #4c566a;
-  --text-color-light: #7b88a1;
+  --title-color: var(--carbon);
+  --text-color: var(--carbon);
+  --text-color-light: #5a5a5a;
   --container-color: #ffffff;
-  --container-color-alt: #f7f9fb;
-  --body-color: #f2f4f8;
+  --container-color-alt: var(--sand);
+  --body-color: var(--sand);
+  --accent-color: var(--rich-gold);
+  --secondary-color: var(--deep-green);
 
   /*========== Font and typography ==========*/
   --body-font: 'Poppins', sans-serif;
