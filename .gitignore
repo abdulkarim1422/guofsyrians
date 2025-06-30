@@ -174,3 +174,5 @@ package-lock.json
 
 data/
 PRD.md
+
+.vscode/
