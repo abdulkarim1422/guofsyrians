@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/db:/data/db
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - MONGODB_URI=mongodb://db:27017/mydb
+    volumes:
+      - ./backend:/app
+    command: sh -c "cd /app && python create_admin.py && uvicorn main:app --host 0.0.0.0 --port 8000"
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/src:/app/src
+    expose:
+      - "5173"
+    command: npm run dev -- --host 0.0.0.0 --port 5173
