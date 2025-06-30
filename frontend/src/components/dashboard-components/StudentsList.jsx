@@ -556,11 +556,6 @@ function StudentCard({ student }) {
     navigate(cvLink);
   };
 
-  const handleViewProfile = () => {
-    // You can navigate to a detailed student profile page here
-    console.log('View profile for:', student.name);
-  };
-
   const handleEmailClick = () => {
     window.location.href = `mailto:${student.email}`;
   };
@@ -663,21 +658,20 @@ function StudentCard({ student }) {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+      <div className="flex items-center justify-center pt-4 border-t border-gray-200">
         <button
           onClick={() => handleCVClick(student.cvLink)}
-          className="brand-btn-secondary bg-deep-green hover:bg-green-dark text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors"
+          className="brand-btn-secondary bg-deep-green hover:bg-green-dark text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-all duration-300 group"
         >
           <Icon path="res-react-dash-options" className="w-4 h-4" />
           <span>View CV</span>
-        </button>
-        <button 
-          onClick={handleViewProfile}
-          className="brand-btn-primary bg-rich-gold hover:bg-gold-dark text-deep-green px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-colors"
-        >
-          <span>Profile</span>
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7-7" />
+          <svg 
+            className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
       </div>
