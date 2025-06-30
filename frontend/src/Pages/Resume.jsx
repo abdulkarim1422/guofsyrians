@@ -5,7 +5,7 @@ import api from "@/utils/api";
 import { Profile } from "@/components/resume-components/Profile";
 import { Academic } from "@/components/resume-components/Academic";
 import { Skills } from "@/components/resume-components/Skills";
-import { Proyects } from "@/components/resume-components/Proyects";
+import { Projects } from "@/components/resume-components/Projects";
 import { Works } from "@/components/resume-components/Works";
 import { AboutMe } from "@/components/resume-components/AboutMe";
 import { Menu } from "@/components/common/Menu";
@@ -114,7 +114,7 @@ export const Resume = () => {
           date: edu.end_date ? new Date(edu.end_date).getFullYear().toString() : "Year not specified",
           institution: edu.institution || "Institution",
         })),
-        proyects: projects.map(project => ({
+        projects: projects.map(project => ({
           name: project.project_name || "Project",
           company: member.name || "Personal",
           period: project.start_date && project.end_date ? 
@@ -159,7 +159,7 @@ export const Resume = () => {
           <div className='resume__right'>
             <Works {...experience} />
             <Academic {...experience} />
-            <Proyects {...experience} />
+            <Projects {...experience} />
           </div>
         </div>
       </main>

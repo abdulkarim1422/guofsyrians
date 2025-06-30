@@ -26,8 +26,8 @@ export const Menu = {
       className: "bx-book",
     },
     {
-      label: "Proyectos",
-      section: "#proyects",
+      label: "Projectos",
+      section: "#projects",
       className: "bx-award",
     },
   ],

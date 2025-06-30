@@ -403,7 +403,7 @@ button.generate__btn {
 
 .education__studies,
 .experience__company,
-.experience__proyect {
+.experience__project {
   font-size: var(--small-font-size);
   color: var(--title-color);
 }

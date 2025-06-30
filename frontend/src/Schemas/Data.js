@@ -84,7 +84,7 @@ export const Data = {
         institution: "Universidad Tecnológica de Chile INACAP",
       },
     ],
-    proyects: [
+    projects: [
       {
         name: "Onboarding Digital",
         company: "Banco de Chile",

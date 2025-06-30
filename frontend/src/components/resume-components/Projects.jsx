@@ -1,19 +1,19 @@
 import { Description } from "./Description";
 
-export const Proyects = ({ proyects }) => {
+export const Projects = ({ projects }) => {
   return (
-    <section className="proyects-experience section" id="proyects">
-      <h2 className="section-title">Proyectos</h2>
+    <section className="projects-experience section" id="projects">
+      <h2 className="section-title">Projects</h2>
       <div className="experience__container bd-grid">
-        {proyects.map((proyect) => (
-          <Proyect key={proyect.company} {...proyect} />
+        {projects.map((project) => (
+          <Project key={project.company} {...project} />
         ))}
       </div>
     </section>
   );
 };
 
-const Proyect = ({ name, company, period, description }) => {
+const Project = ({ name, company, period, description }) => {
   return (
     <div className="experience__content">
       <div className="experience__time">
@@ -24,7 +24,7 @@ const Proyect = ({ name, company, period, description }) => {
         <h3 className="experience__title">
           {name} - {company}
         </h3>
-        <span className="experience__proyect">{period}</span>
+        <span className="experience__project">{period}</span>
         {description.map((desc, i) => <Description key={i} desc={desc} />)}
       </div>
     </div>
