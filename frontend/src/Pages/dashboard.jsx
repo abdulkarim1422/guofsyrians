@@ -175,19 +175,21 @@ const DashboardApp = () => {
         onLogout={handleLogout}
         showUserMenu={showUserMenu}
         setShowUserMenu={setShowUserMenu}
+        navigate={navigate}
       />
       {renderCurrentPage()}
     </div>
   );
 }
 
-function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user, onLogout, showUserMenu, setShowUserMenu }) {
+function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user, onLogout, showUserMenu, setShowUserMenu, navigate }) {
   return (
     <div
       className={clsx(
         'fixed inset-y-0 left-0 bg-card w-full sm:w-20 xl:w-60 sm:flex flex-col z-10',
         showSidebar ? 'flex' : 'hidden',
       )}
+      style={{ overflow: 'visible' }}
     >
       <div className="flex-shrink-0 overflow-hidden p-2">
         <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-top">
@@ -243,8 +245,14 @@ function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user,
         </div>
       </div>
 
-      <div className="flex-shrink-0 overflow-hidden p-2 relative user-menu-container">
-        <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-bottom">
+      <div className="flex-shrink-0 p-2 relative user-menu-container">
+        <div 
+          className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-bottom cursor-pointer hover:bg-gray-700/50 rounded-lg transition-colors"
+          onClick={() => {
+            console.log('User menu clicked, current state:', showUserMenu);
+            setShowUserMenu(!showUserMenu);
+          }}
+        >
           <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
             <span className="text-white text-sm font-bold">
               {user?.name?.charAt(0)?.toUpperCase() || 'U'}
@@ -255,23 +263,50 @@ function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user,
             <div className="text-xs text-gray-400">{user?.role || 'member'}</div>
           </div>
           <div className="flex-grow block sm:hidden xl:block" />
-          <button
-            onClick={() => setShowUserMenu(!showUserMenu)}
-            className="block sm:hidden xl:block w-6 h-6 text-gray-400 hover:text-white transition-colors"
-          >
+          <div className="block sm:hidden xl:block w-6 h-6 text-gray-400 hover:text-white transition-colors">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
-          </button>
+          </div>
         </div>
         
         {/* User Menu Dropdown */}
         {showUserMenu && (
-          <div className="absolute bottom-full left-2 right-2 mb-2 bg-gray-800 rounded-lg shadow-lg border border-gray-700 overflow-hidden">
+          <div 
+            className="fixed bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-[1000] min-w-[280px]"
+            style={{
+              bottom: '80px',
+              left: '8px',
+              right: '8px',
+              maxWidth: '280px'
+            }}
+          >
+            {/* Authentication Status Section */}
+            <div className="p-3 border-b border-gray-700">
+              <div className="flex items-center space-x-2 mb-2">
+                <div className={`w-2 h-2 rounded-full ${user ? 'bg-green-400' : 'bg-red-400'}`}></div>
+                <span className="text-white text-xs font-medium">
+                  {user ? 'Authenticated' : 'Not Authenticated'}
+                </span>
+              </div>
+              {user && (
+                <div className="text-xs text-gray-300 space-y-1">
+                  <div>ID: {user.id}</div>
+                  <div>Email: {user.email}</div>
+                  <div>Active: {user.is_active ? 'Yes' : 'No'}</div>
+                  <div>Verified: {user.is_verified ? 'Yes' : 'No'}</div>
+                </div>
+              )}
+            </div>
+            
+            {/* User Info Section */}
             <div className="p-3 border-b border-gray-700">
               <div className="text-white font-medium text-sm">{user?.name}</div>
               <div className="text-gray-400 text-xs">{user?.email}</div>
+              <div className="text-gray-400 text-xs capitalize">{user?.role || 'member'}</div>
             </div>
+            
+            {/* Menu Actions */}
             <div className="py-2">
               <button
                 onClick={() => {

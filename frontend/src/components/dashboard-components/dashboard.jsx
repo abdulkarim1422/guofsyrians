@@ -9,7 +9,6 @@ import {
 } from 'recharts';
 import clsx from 'clsx';
 import { useSpring, animated, config } from '@react-spring/web';
-import AuthTest from '@/components/auth-components/AuthTest';
 import { useAuth } from '@/contexts/AuthContext';
 
 const map = (value, sMin, sMax, dMin, dMax) => {
@@ -176,11 +175,6 @@ function DashboardContent({ onSidebarHide }) {
         <div className="w-full p-2 lg:w-1/3">
           <div className="rounded-lg bg-card h-80">
             <Satisfication />
-          </div>
-        </div>
-        <div className="w-full p-2 lg:w-1/3">
-          <div className="rounded-lg bg-card overflow-hidden h-80">
-            <AuthTest />
           </div>
         </div>
       </div>
