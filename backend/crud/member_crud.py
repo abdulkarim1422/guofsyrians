@@ -31,6 +31,13 @@ async def update_member(member_id: ObjectId, member: member_model.Member) -> mem
     member.id = existing.id
     return await member.replace()
 
+async def update_member_by_string_id(member_id: str, member: member_model.Member) -> member_model.Member:
+    """Update member by string ID - converts to ObjectId"""
+    try:
+        return await update_member(ObjectId(member_id), member)
+    except Exception:
+        return None
+
 async def delete_member(member_id: ObjectId) -> member_model.Member:
     member = await member_model.Member.get(member_id)
     if member:

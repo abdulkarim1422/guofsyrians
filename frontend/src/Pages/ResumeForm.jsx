@@ -9,6 +9,7 @@ export const ResumeForm = () => {
     // Profile data - using backend field names
     name: '',
     professional_title: '', // was occupation
+    sex: '', // Required field for gender
     city: '', // was location
     email: '',
     phone: '+90 ', // was telephone
@@ -664,6 +665,25 @@ export const ResumeForm = () => {
                                 placeholder="المسمى الوظيفي"
                                 dir="rtl"
                               />
+                            </div>
+
+                            <div>
+                              <label htmlFor="sex" className="block text-sm font-medium text-carbon mb-2 arabic-text-medium" dir="rtl">
+                                الجنس *
+                              </label>
+                              <select
+                                id="sex"
+                                name="sex"
+                                value={formData.sex}
+                                onChange={handleInputChange}
+                                required
+                                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text"
+                                dir="rtl"
+                              >
+                                <option value="">اختر الجنس</option>
+                                <option value="male">ذكر</option>
+                                <option value="female">أنثى</option>
+                              </select>
                             </div>
 
                             {MailInputComponent(formData, setFormData)}

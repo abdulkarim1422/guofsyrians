@@ -1,10 +1,13 @@
 from crud import member_crud
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, File, UploadFile
 from models import member_model
 from services import resume_services
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
+import os
+import uuid
+from pathlib import Path
 
 router = APIRouter()
 
@@ -20,12 +23,13 @@ class MemberWithEducation(BaseModel):
     social_media: dict = {}
     country: Optional[str] = None
     city: Optional[str] = None
+    sex: str  # Required field
     # Education fields
     university: Optional[str] = None
     major: Optional[str] = None
     year: Optional[str] = None
     graduation_date: Optional[str] = None
-    avatar: int = 0
+    image: Optional[str] = None
 
 # Member routers
 @router.post("/member")
@@ -83,11 +87,12 @@ async def get_all_members_with_education():
             social_media=member.social_media or {},
             country=member.country,
             city=member.city,
+            sex=member.sex or "male",  # Default to male if not set (for backward compatibility)
             university=education.institution if education else None,
             major=education.field_of_study if education else None,
             year=education.degree if education else None,
             graduation_date=education.end_date.strftime("%Y-%m-%d") if education and education.end_date else None,
-            avatar=hash(member.name) % 8  # Generate avatar index based on name
+            image=member.image
         )
         result.append(member_data)
     
@@ -129,4 +134,56 @@ async def update_member_resume_form_by_email(form_data: ResumeFormData):
         raise HTTPException(status_code=404, detail="Member not found with this email")
     
     return await resume_services.member_resume_form(member.user_id, form_data.dict())
+
+@router.post("/member/{member_id}/upload-image")
+async def upload_member_image(member_id: str, file: UploadFile = File(...)):
+    """
+    Upload an image for a member
+    """
+    # Check if member exists
+    member = await member_crud.get_member_by_id(member_id)
+    if not member:
+        raise HTTPException(status_code=404, detail="Member not found")
+    
+    # Validate file type
+    allowed_types = ["image/jpeg", "image/png", "image/jpg", "image/webp"]
+    if file.content_type not in allowed_types:
+        raise HTTPException(status_code=400, detail="Invalid file type. Only JPEG, PNG, JPG, and WebP are allowed.")
+    
+    # Create uploads directory if it doesn't exist
+    uploads_dir = Path("uploads")
+    uploads_dir.mkdir(exist_ok=True)
+    
+    # Generate unique filename
+    file_extension = file.filename.split(".")[-1]
+    unique_filename = f"{member_id}_{uuid.uuid4().hex}.{file_extension}"
+    file_path = uploads_dir / unique_filename
+    
+    # Save the file
+    try:
+        with open(file_path, "wb") as buffer:
+            content = await file.read()
+            buffer.write(content)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
+    
+    # Update member with image path
+    image_url = f"/uploads/{unique_filename}"
+    
+    # Create updated member data
+    updated_member_data = member_model.Member(
+        **member.dict(),
+        image=image_url
+    )
+    
+    # Update the member in database
+    updated_member = await member_crud.update_member_by_string_id(member_id, updated_member_data)
+    
+    if not updated_member:
+        # Clean up uploaded file if update failed
+        if file_path.exists():
+            file_path.unlink()
+        raise HTTPException(status_code=500, detail="Failed to update member with image")
+    
+    return {"message": "Image uploaded successfully", "image_url": image_url}
 

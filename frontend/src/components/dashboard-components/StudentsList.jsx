@@ -35,7 +35,8 @@ function StudentsList({ onSidebarHide }) {
           year: member.year || 'Unknown',
           graduationDate: member.graduation_date || new Date().toISOString().split('T')[0],
           cvLink: `/cv/${member.id}`, // CV link to our internal CV page
-          avatar: member.avatar || 0,
+          imageUrl: member.image, // Actual image URL from backend
+          sex: member.sex || 'male',
           bio: member.bio || '',
           skills: member.skills || [],
           interests: member.interests || [],
@@ -572,9 +573,22 @@ function StudentCard({ student }) {
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-4">
           <div className="w-16 h-16 rounded-full bg-rich-gold flex items-center justify-center overflow-hidden ring-2 ring-gray-200 group-hover:ring-rich-gold transition-all">
+            {student.imageUrl ? (
+              <img 
+                src={student.imageUrl.startsWith('http') ? student.imageUrl : `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}${student.imageUrl}`}
+                alt={student.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Fallback to gender-based avatar if image fails to load
+                  e.target.style.display = 'none';
+                  const fallback = e.target.parentNode.querySelector('.fallback-avatar');
+                  if (fallback) fallback.style.display = 'block';
+                }}
+              />
+            ) : null}
             <Image 
-              path={`mock_faces_${student.avatar}`} 
-              className="w-full h-full object-cover" 
+              path={student.sex === 'female' ? 'default_female_avatar' : 'default_male_avatar'}
+              className={`fallback-avatar w-full h-full object-cover ${student.imageUrl ? 'hidden' : ''}`}
             />
           </div>
           <div>

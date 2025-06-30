@@ -59,6 +59,22 @@ export const memberApi = {
   createMember: (memberData) => ApiService.post('/api/member', memberData),
   updateMember: (id, memberData) => ApiService.put(`/api/member/${id}`, memberData),
   deleteMember: (id) => ApiService.delete(`/api/member/${id}`),
+  uploadMemberImage: async (memberId, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const url = `${API_BASE_URL}/api/member/${memberId}/upload-image`;
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return response.json();
+  },
 };
 
 export default ApiService;
