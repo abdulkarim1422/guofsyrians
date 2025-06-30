@@ -145,7 +145,7 @@ async def populate_dummy_members():
             "city": "Chicago"
         },
         {
-            "name": "ss",
+            "name": "Jack Thompson",
             "user_id": "user_010",
             "team_id": "team_005",
             "email": "jack.thompson@example.com",
