@@ -34,7 +34,7 @@ function StudentsList({ onSidebarHide }) {
           major: member.major || member.professional_title || 'Unknown Major',
           year: member.year || 'Unknown',
           graduationDate: member.graduation_date || new Date().toISOString().split('T')[0],
-          cvLink: `https://drive.google.com/file/d/${member.id}-cv`, // Placeholder CV link
+          cvLink: `/cv/${member.id}`, // CV link to our internal CV page
           avatar: member.avatar || 0,
           bio: member.bio || '',
           skills: member.skills || [],
@@ -550,7 +550,7 @@ function StudentCard({ student }) {
   };
 
   const handleCVClick = (cvLink) => {
-    window.open(cvLink, '_blank');
+    navigate(cvLink);
   };
 
   const handleViewProfile = () => {

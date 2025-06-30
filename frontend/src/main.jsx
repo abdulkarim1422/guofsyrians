@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                                 <Dashboard />
                             </ProtectedRoute>
                         } />
-                        <Route path="/cv" element={<Resume />} />
+                        <Route path="/cv/:memberId" element={<Resume />} />
                         <Route path="/form" element={
                             <ProtectedRoute>
                                 <Dashboard />

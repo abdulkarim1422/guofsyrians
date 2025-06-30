@@ -17,6 +17,13 @@ async def create_resume_member(member) -> member_model.Member:
 async def get_member_by_member_id(member_id: ObjectId) -> member_model.Member:
     return await member_model.Member.get(member_id)
 
+async def get_member_by_id(member_id: str) -> member_model.Member:
+    """Get member by string ID - converts to ObjectId"""
+    try:
+        return await member_model.Member.get(ObjectId(member_id))
+    except Exception:
+        return None
+
 async def update_member(member_id: ObjectId, member: member_model.Member) -> member_model.Member:
     existing = await member_model.Member.get(member_id)
     if not existing:
