@@ -556,8 +556,11 @@ export const ResumeForm = () => {
 
       console.log('Sending resume data:', resumeData);
 
+      // Get API base URL from environment or use default
+      const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
       // Send to backend
-      const response = await fetch('/api/resume/submit', {
+      const response = await fetch(`${API_BASE_URL}/api/resume/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
