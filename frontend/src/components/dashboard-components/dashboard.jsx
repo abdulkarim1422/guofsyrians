@@ -10,6 +10,7 @@ import {
 import clsx from 'clsx';
 import { useSpring, animated, config } from '@react-spring/web';
 import { useAuth } from '@/contexts/AuthContext';
+import { useState, useEffect } from 'react';
 
 const map = (value, sMin, sMax, dMin, dMax) => {
   return dMin + ((value - sMin) / (sMax - sMin)) * (dMax - dMin);
@@ -17,51 +18,56 @@ const map = (value, sMin, sMax, dMin, dMax) => {
 const pi = Math.PI;
 const tau = 2 * pi;
 
-const employeeData = [
+const topStudentsData = [
   {
     id: 1,
-    name: 'Esther Howard',
-    position: "Sale's manager USA",
-    transactions: 3490,
+    name: 'Ahmed Al-Hassan',
+    position: "Computer Science Student",
+    university: 'Harvard University',
+    gpa: 3.9,
     rise: true,
-    tasksCompleted: 3,
+    activitiesCompleted: 8,
     imgId: 0,
   },
   {
     id: 2,
-    name: 'Eleanor Pena',
-    position: "Sale's manager Europe",
-    transactions: 590,
-    rise: false,
-    tasksCompleted: 5,
+    name: 'Fatima Al-Zahra',
+    position: "Medical Student",
+    university: 'Johns Hopkins',
+    gpa: 3.7,
+    rise: true,
+    activitiesCompleted: 12,
     imgId: 2,
   },
   {
     id: 3,
-    name: 'Robert Fox',
-    position: "Sale's manager Asia",
-    transactions: 2600,
-    rise: true,
-    tasksCompleted: 1,
+    name: 'Omar Khalil',
+    position: "Engineering Student",
+    university: 'MIT',
+    gpa: 3.8,
+    rise: false,
+    activitiesCompleted: 6,
     imgId: 3,
   },
 ];
 
-const Countrydata = [
-  { name: 'USA', rise: true, value: 21942.83, id: 1 },
-  { name: 'Ireland', rise: false, value: 19710.0, id: 2 },
-  { name: 'Ukraine', rise: false, value: 12320.3, id: 3 },
-  { name: 'Sweden', rise: true, value: 9725.0, id: 4 },
+const universityStatsData = [
+  { name: 'Harvard University', rise: true, value: 156, id: 1 },
+  { name: 'MIT', rise: true, value: 134, id: 2 },
+  { name: 'Stanford University', rise: false, value: 98, id: 3 },
+  { name: 'Yale University', rise: true, value: 87, id: 4 },
 ];
 
-const segmentationData = [
-  { c1: 'Not Specified', c2: '800', c3: '#363636', color: '#535353' },
-  { c1: 'Male', c2: '441', c3: '#818bb1', color: '#595f77' },
-  { c1: 'Female', c2: '233', c3: '#2c365d', color: '#232942' },
-  { c1: 'Other', c2: '126', c3: '#334ed8', color: '#2c3051' },
+const academicLevelData = [
+  { c1: 'Lisans (Bachelor)', c2: '245', c3: '#363636', color: '#535353' },
+  { c1: 'Yüksek Lisans (Master)', c2: '156', c3: '#818bb1', color: '#595f77' },
+  { c1: 'Doktora (PhD)', c2: '89', c3: '#2c365d', color: '#232942' },
+  { c1: 'Ön Lisans (Associate)', c2: '67', c3: '#334ed8', color: '#2c3051' },
 ];
 
-const graphData = [
+const membershipGrowthData = [
+  'Sep',
+  'Oct',
   'Nov',
   'Dec',
   'Jan',
@@ -69,112 +75,268 @@ const graphData = [
   'Mar',
   'Apr',
   'May',
-  'June',
-  'July',
 ].map((i) => {
-  const revenue = 500 + Math.random() * 2000;
-  const expectedRevenue = Math.max(revenue + (Math.random() - 0.5) * 2000, 0);
+  const newMembers = 15 + Math.random() * 35;
+  const expectedMembers = Math.max(newMembers + (Math.random() - 0.5) * 20, 0);
   return {
     name: i,
-    revenue,
-    expectedRevenue,
-    sales: Math.floor(Math.random() * 500),
+    newMembers,
+    expectedMembers,
+    activeMembers: Math.floor(Math.random() * 150 + 300),
   };
 });
 
 function DashboardContent({ onSidebarHide }) {
   const { user } = useAuth();
+  const [memberStats, setMemberStats] = useState({
+    totalMembers: 557,
+    newMembersThisMonth: 42,
+    totalUniversities: 89,
+    activeEvents: 156
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMemberStats = async () => {
+      try {
+        const { memberApi } = await import('../../utils/apiService');
+        const members = await memberApi.getAllMembers();
+        
+        // Calculate statistics
+        const totalMembers = members.length;
+        const universities = new Set(members.map(member => member.university).filter(Boolean));
+        const totalUniversities = universities.size;
+        
+        // Calculate new members this month (you can adjust this logic based on your data)
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+        const newMembersThisMonth = members.filter(member => {
+          if (!member.created_at) return false;
+          const memberDate = new Date(member.created_at);
+          return memberDate.getMonth() === currentMonth && memberDate.getFullYear() === currentYear;
+        }).length;
+
+        setMemberStats({
+          totalMembers,
+          newMembersThisMonth: newMembersThisMonth || 42, // fallback to mock data
+          totalUniversities,
+          activeEvents: 156 // This would need a separate API call for events
+        });
+      } catch (error) {
+        console.error('Failed to fetch member statistics:', error);
+        // Keep default values on error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMemberStats();
+  }, []);
   
   return (
     <div className="flex w-full">
       <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
         .
       </div>
-      <div className=" h-screen flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start p-2">
-        <div className="w-full sm:flex p-2 items-end">
-          <div className="sm:flex-grow flex justify-between">
-            <div className="">
-              <div className="flex items-center">
-                <div className="text-3xl font-bold text-white">Hello {user?.name || 'User'}</div>
-                <div className="flex items-center p-2 bg-card ml-2 rounded-xl">
-                  <Icon path="res-react-dash-premium-star" />
-                  <div className="ml-2 font-bold text-premium-yellow">
-                    PREMIUM
+      <div className=" h-screen flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start p-2">          <div className="w-full sm:flex p-2 items-end">
+            <div className="sm:flex-grow flex justify-between">
+              <div className="">
+                <div className="flex items-center">
+                  <div className="text-3xl font-bold text-white">أهلاً وسهلاً {user?.name || 'User'}</div>
+                  <div className="flex items-center p-2 bg-card ml-2 rounded-xl">
+                    <Icon path="res-react-dash-premium-star" />
+                    <div className="ml-2 font-bold text-premium-yellow">
+                      الاتحاد السوري
+                    </div>
                   </div>
                 </div>
+                <div className="flex items-center">
+                  <Icon
+                    path="res-react-dash-date-indicator"
+                    className="w-3 h-3"
+                  />
+                  <div className="ml-2">{new Date().toLocaleDateString('ar-SA', { 
+                    weekday: 'long',
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}</div>
+                </div>
               </div>
-              <div className="flex items-center">
-                <Icon
-                  path="res-react-dash-date-indicator"
-                  className="w-3 h-3"
-                />
-                <div className="ml-2">October 26</div>
-              </div>
-            </div>
-            <IconButton
-              icon="res-react-dash-sidebar-open"
-              className="block sm:hidden"
-              onClick={onSidebarHide}
-            />
-          </div>
-          <div className="w-full sm:w-56 mt-4 sm:mt-0 relative">
-            <Icon
-              path="res-react-dash-search"
-              className="w-5 h-5 search-icon left-3 absolute"
-            />
-            <form action="#" method="POST">
-              <input
-                type="text"
-                name="company_website"
-                id="company_website"
-                className="pl-12 py-2 pr-2 block w-full rounded-lg border-gray-300 bg-card"
-                placeholder="search"
+              <IconButton
+                icon="res-react-dash-sidebar-open"
+                className="block sm:hidden"
+                onClick={onSidebarHide}
               />
-            </form>
-          </div>
+            </div>            <div className="w-full sm:w-56 mt-4 sm:mt-0 relative">
+              <Icon
+                path="res-react-dash-search"
+                className="w-5 h-5 search-icon left-3 absolute"
+              />
+              <form action="#" method="POST">
+                <input
+                  type="text"
+                  name="search_students"
+                  id="search_students"
+                  className="pl-12 py-2 pr-2 block w-full rounded-lg border-gray-300 bg-card"
+                  placeholder="البحث عن طالب..."
+                />
+              </form>
+            </div>
         </div>
-        {employeeData.map(
+        {topStudentsData.map(
           ({
             id,
             name,
             position,
-            transactions,
+            university,
+            gpa,
             rise,
-            tasksCompleted,
+            activitiesCompleted,
             imgId,
           }) => (
-            <NameCard
+            <StudentCard
               key={id}
               id={id}
               name={name}
               position={position}
-              transactionAmount={transactions}
+              university={university}
+              gpa={gpa}
               rise={rise}
-              tasksCompleted={tasksCompleted}
+              activitiesCompleted={activitiesCompleted}
               imgId={imgId}
             />
           ),
         )}
 
+        {/* Quick Stats Section */}
+        <div className="w-full p-2">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg p-4 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-2xl font-bold">
+                    {loading ? '...' : memberStats.totalMembers}
+                  </div>
+                  <div className="text-sm opacity-80">إجمالي الأعضاء</div>
+                </div>
+                <Icon path="res-react-dash-tick" className="w-8 h-8 opacity-60" />
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-r from-green-600 to-green-800 rounded-lg p-4 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-2xl font-bold">
+                    {loading ? '...' : memberStats.newMembersThisMonth}
+                  </div>
+                  <div className="text-sm opacity-80">أعضاء جدد هذا الشهر</div>
+                </div>
+                <Icon path="res-react-dash-premium-star" className="w-8 h-8 opacity-60" />
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-r from-purple-600 to-purple-800 rounded-lg p-4 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-2xl font-bold">
+                    {loading ? '...' : memberStats.totalUniversities}
+                  </div>
+                  <div className="text-sm opacity-80">جامعات مختلفة</div>
+                </div>
+                <Icon path="res-react-dash-graph-range" className="w-8 h-8 opacity-60" />
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-r from-orange-600 to-orange-800 rounded-lg p-4 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-2xl font-bold">
+                    {loading ? '...' : memberStats.activeEvents}
+                  </div>
+                  <div className="text-sm opacity-80">فعالية نشطة</div>
+                </div>
+                <Icon path="res-react-dash-add-component" className="w-8 h-8 opacity-60" />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="w-full p-2 lg:w-2/3">
           <div className="rounded-lg bg-card sm:h-80 h-60">
-            <Graph />
+            <MembershipGrowthGraph />
           </div>
         </div>
         <div className="w-full p-2 lg:w-1/3">
           <div className="rounded-lg bg-card h-80">
-            <TopCountries />
+            <TopUniversities />
           </div>
         </div>
 
         <div className="w-full p-2 lg:w-1/3">
           <div className="rounded-lg bg-card h-80">
-            <Segmentation />
+            <AcademicLevelBreakdown />
           </div>
         </div>
         <div className="w-full p-2 lg:w-1/3">
           <div className="rounded-lg bg-card h-80">
-            <Satisfication />
+            <MemberSatisfaction />
+          </div>
+        </div>
+
+        {/* Welcome Banner for New Users */}
+        {user?.role === 'member' && (
+          <div className="w-full p-2">
+            <div className="bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 rounded-xl p-6 border border-blue-500/20">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-white mb-2">
+                    مرحباً بك في الاتحاد العام للطلاب السوريين
+                  </h3>
+                  <p className="text-blue-100 mb-4">
+                    استكشف الخدمات المتاحة، تواصل مع زملائك الطلاب، وشارك في الفعاليات والأنشطة المختلفة
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                      تحديث البروفايل
+                    </button>
+                    <button className="bg-transparent border border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                      استكشاف الطلاب
+                    </button>
+                  </div>
+                </div>
+                <div className="hidden lg:block">
+                  <Icon path="res-react-dash-premium-star" className="w-16 h-16 text-blue-400" />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="w-full p-2 lg:w-2/3">
+          <div className="rounded-lg bg-card sm:h-80 h-60">
+            <MembershipGrowthGraph />
+          </div>
+        </div>
+        <div className="w-full p-2 lg:w-1/3">
+          <div className="rounded-lg bg-card h-80">
+            <TopUniversities />
+          </div>
+        </div>
+
+        <div className="w-full p-2 lg:w-1/3">
+          <div className="rounded-lg bg-card h-80">
+            <AcademicLevelBreakdown />
+          </div>
+        </div>
+        <div className="w-full p-2 lg:w-1/3">
+          <div className="rounded-lg bg-card h-80">
+            <MemberSatisfaction />
+          </div>
+        </div>
+        <div className="w-full p-2 lg:w-1/3">
+          <div className="rounded-lg bg-card h-80">
+            <RecentActivities />
           </div>
         </div>
       </div>
@@ -182,18 +344,19 @@ function DashboardContent({ onSidebarHide }) {
   );
 }
 
-function NameCard({
+function StudentCard({
   name,
   position,
-  transactionAmount,
+  university,
+  gpa,
   rise,
-  tasksCompleted,
+  activitiesCompleted,
   imgId,
 }) {
-  const { transactions, barPlayhead } = useSpring({
-    transactions: transactionAmount,
+  const { gpaValue, barPlayhead } = useSpring({
+    gpaValue: gpa,
     barPlayhead: 1,
-    from: { transactions: 0, barPlayhead: 0 },
+    from: { gpaValue: 0, barPlayhead: 0 },
   });
   return (
     <div className="w-full p-2 lg:w-1/3">
@@ -206,11 +369,12 @@ function NameCard({
                 <div className="mr-2 font-bold text-white">{name}</div>
                 <Icon path="res-react-dash-tick" />
               </div>
-              <div className="text-sm ">{position}</div>
+              <div className="text-sm">{position}</div>
+              <div className="text-xs text-blue-400">{university}</div>
             </div>
           </div>
 
-          <div className="text-sm  mt-2">{`${tasksCompleted} from 5 tasks completed`}</div>
+          <div className="text-sm mt-2">{`${activitiesCompleted} من 10 أنشطة مكتملة`}</div>
           <svg
             className="w-44 mt-3"
             height="6"
@@ -221,7 +385,7 @@ function NameCard({
             <rect width="200" height="6" rx="3" fill="#2D2D2D" />
             <animated.rect
               width={barPlayhead.to(
-                (i) => i * (tasksCompleted / 5) * 200,
+                (i) => i * (activitiesCompleted / 10) * 200,
               )}
               height="6"
               rx="3"
@@ -246,30 +410,30 @@ function NameCard({
           />
           <animated.div
             className={clsx(
-              rise ? 'text-green-500' : 'text-red-500',
+              gpa >= 3.5 ? 'text-green-500' : gpa >= 3.0 ? 'text-yellow-500' : 'text-red-500',
               'font-bold',
               'text-lg',
             )}
           >
-            {transactions.to((i) => `$${i.toFixed(2)}`)}
+            {gpaValue.to((i) => `${i.toFixed(1)} GPA`)}
           </animated.div>
-          <div className="text-sm ">Last 6 month</div>
+          <div className="text-sm">المعدل التراكمي</div>
         </div>
       </div>
     </div>
   );
 }
 
-function Graph() {
+function MembershipGrowthGraph() {
   const CustomTooltip = () => (
     <div className="rounded-xl overflow-hidden tooltip-head">
       <div className="flex items-center justify-between p-2">
-        <div className="">Revenue</div>
+        <div className="">عضوية جديدة</div>
         <Icon path="res-react-dash-options" className="w-2 h-2" />
       </div>
       <div className="tooltip-body text-center p-3">
-        <div className="text-white font-bold">$1300.50</div>
-        <div className="">Revenue from 230 sales</div>
+        <div className="text-white font-bold">42 عضو</div>
+        <div className="">أعضاء جدد هذا الشهر</div>
       </div>
     </div>
   );
@@ -277,21 +441,21 @@ function Graph() {
     <div className="flex p-4 h-full flex-col">
       <div className="">
         <div className="flex items-center">
-          <div className="font-bold text-white">Your Work Summary</div>
+          <div className="font-bold text-white">نمو العضوية في الاتحاد</div>
           <div className="flex-grow" />
 
           <Icon path="res-react-dash-graph-range" className="w-4 h-4" />
-          <div className="ml-2">Last 9 Months</div>
+          <div className="ml-2">آخر 9 أشهر</div>
           <div className="ml-6 w-5 h-5 flex justify-center items-center rounded-full icon-background">
             ?
           </div>
         </div>
-        <div className="font-bold ml-5">Nov - July</div>
+        <div className="font-bold ml-5">سبتمبر - مايو</div>
       </div>
 
       <div className="flex-grow">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart width={500} height={300} data={graphData}>
+          <LineChart width={500} height={300} data={membershipGrowthData}>
             <defs>
               <linearGradient id="paint0_linear" x1="0" y1="0" x2="1" y2="0">
                 <stop stopColor="#6B8DE3" />
@@ -314,7 +478,7 @@ function Graph() {
             <Line
               activeDot={false}
               type="monotone"
-              dataKey="expectedRevenue"
+              dataKey="expectedMembers"
               stroke="#242424"
               strokeWidth="3"
               dot={false}
@@ -322,7 +486,7 @@ function Graph() {
             />
             <Line
               type="monotone"
-              dataKey="revenue"
+              dataKey="newMembers"
               stroke="url(#paint0_linear)"
               strokeWidth="4"
               dot={false}
@@ -334,22 +498,22 @@ function Graph() {
   );
 }
 
-function TopCountries() {
+function TopUniversities() {
   return (
     <div className="flex p-4 flex-col h-full">
       <div className="flex justify-between items-center">
-        <div className="text-white font-bold">Top Countries</div>
+        <div className="text-white font-bold">أفضل الجامعات</div>
         <Icon path="res-react-dash-plus" className="w-5 h-5" />
       </div>
-      <div className="">favourites</div>
-      {Countrydata.map(({ name, rise, value, id }) => (
+      <div className="">بحسب عدد الطلاب</div>
+      {universityStatsData.map(({ name, rise, value, id }) => (
         <div className="flex items-center mt-3" key={id}>
           <div className="">{id}</div>
 
           <Image path={`res-react-dash-flag-${id}`} className="ml-2 w-6 h-6" />
-          <div className="ml-2">{name}</div>
+          <div className="ml-2 text-sm">{name}</div>
           <div className="flex-grow" />
-          <div className="">{`$${value.toLocaleString()}`}</div>
+          <div className="">{`${value} طالب`}</div>
           <Icon
             path={
               rise ? 'res-react-dash-country-up' : 'res-react-dash-country-down'
@@ -361,22 +525,22 @@ function TopCountries() {
       ))}
       <div className="flex-grow" />
       <div className="flex justify-center">
-        <div className="">Check All</div>
+        <div className="">عرض الكل</div>
       </div>
     </div>
   );
 }
 
-function Segmentation() {
+function AcademicLevelBreakdown() {
   return (
     <div className="p-4 h-full">
       <div className="flex justify-between items-center">
-        <div className="text-white font-bold">Segmentation</div>
+        <div className="text-white font-bold">توزيع المستويات الأكاديمية</div>
 
         <Icon path="res-react-dash-options" className="w-2 h-2" />
       </div>
-      <div className="mt-3">All users</div>
-      {segmentationData.map(({ c1, c2, c3, color }) => (
+      <div className="mt-3">جميع الطلاب</div>
+      {academicLevelData.map(({ c1, c2, c3, color }) => (
         <div className="flex items-center" key={c1}>
           <div
             className="w-2 h-2 rounded-full"
@@ -399,7 +563,7 @@ function Segmentation() {
                 background: c3,
               }}
             >
-              {c1 === 'Other' && (
+              {c1 === 'Doktora (PhD)' && (
                 <img src="https://assets.codepen.io/3685267/res-react-dash-user-card.svg" alt="" />
               )}
             </div>
@@ -408,14 +572,14 @@ function Segmentation() {
       ))}
 
       <div className="flex mt-3 px-3 items-center justify-between bg-details rounded-xl w-36 h-12">
-        <div className="">Details</div>
+        <div className="">التفاصيل</div>
         <Icon path="res-react-dash-chevron-right" className="w-4 h-4" />
       </div>
     </div>
   );
 }
 
-function Satisfication() {
+function MemberSatisfaction() {
   const { dashOffset } = useSpring({
     dashOffset: 78.54,
     from: { dashOffset: 785.4 },
@@ -424,10 +588,10 @@ function Satisfication() {
   return (
     <div className="p-4 h-full">
       <div className="flex justify-between items-center">
-        <div className="text-white font-bold">Satisfication</div>
+        <div className="text-white font-bold">رضا الأعضاء</div>
         <Icon path="res-react-dash-options" className="w-2 h-2" />
       </div>
-      <div className="mt-3">From all projects</div>
+      <div className="mt-3">من جميع الأنشطة</div>
       <div className="flex justify-center">
         <svg
           viewBox="0 0 700 380"
@@ -604,14 +768,138 @@ function Satisfication() {
               className="font-bold"
               style={{ color: '#2f49d1', fontSize: '18px' }}
             >
-              97.78%
+              85%
             </div>
-            <div className="">Based on Likes</div>
+            <div className="">نسبة الرضا العام</div>
           </div>
           <div className="" style={{ width: '50px' }}>
             100%
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function RecentActivities() {
+  const activities = [
+    {
+      id: 1,
+      type: 'new_member',
+      user: 'أحمد محمد',
+      action: 'انضم إلى الاتحاد',
+      time: 'منذ ساعتين',
+      avatar: 1
+    },
+    {
+      id: 2,
+      type: 'event',
+      user: 'إدارة الاتحاد',
+      action: 'أضافت فعالية "ملتقى الطلاب السنوي"',
+      time: 'منذ 3 ساعات',
+      avatar: 2
+    },
+    {
+      id: 3,
+      type: 'graduation',
+      user: 'فاطمة أحمد',
+      action: 'تخرجت من جامعة هارفارد',
+      time: 'منذ يوم',
+      avatar: 3
+    },
+    {
+      id: 4,
+      type: 'achievement',
+      user: 'عمر خليل',
+      action: 'حصل على منحة دراسية',
+      time: 'منذ يومين',
+      avatar: 4
+    },
+    {
+      id: 5,
+      type: 'team',
+      user: 'فريق البحث العلمي',
+      action: 'نشر ورقة بحثية جديدة',
+      time: 'منذ 3 أيام',
+      avatar: 5
+    }
+  ];
+
+  const getActivityIcon = (type) => {
+    switch (type) {
+      case 'new_member':
+        return 'res-react-dash-tick';
+      case 'event':
+        return 'res-react-dash-premium-star';
+      case 'graduation':
+        return 'res-react-dash-bull';
+      case 'achievement':
+        return 'res-react-dash-options';
+      case 'team':
+        return 'res-react-dash-graph-range';
+      default:
+        return 'res-react-dash-options';
+    }
+  };
+
+  const getActivityColor = (type) => {
+    switch (type) {
+      case 'new_member':
+        return 'text-green-400';
+      case 'event':
+        return 'text-blue-400';
+      case 'graduation':
+        return 'text-purple-400';
+      case 'achievement':
+        return 'text-yellow-400';
+      case 'team':
+        return 'text-orange-400';
+      default:
+        return 'text-gray-400';
+    }
+  };
+
+  return (
+    <div className="flex p-4 flex-col h-full">
+      <div className="flex justify-between items-center mb-4">
+        <div className="text-white font-bold">النشاطات الأخيرة</div>
+        <Icon path="res-react-dash-plus" className="w-5 h-5" />
+      </div>
+      
+      <div className="flex-1 overflow-y-auto space-y-3">
+        {activities.map((activity) => (
+          <div key={activity.id} className="flex items-start space-x-3 p-2 hover:bg-gray-700/50 rounded-lg transition-colors">
+            <div className="flex-shrink-0">
+              <Image path={`mock_faces_${activity.avatar}`} className="w-8 h-8" />
+            </div>
+            
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center space-x-2">
+                <Icon 
+                  path={getActivityIcon(activity.type)} 
+                  className={`w-4 h-4 ${getActivityColor(activity.type)}`} 
+                />
+                <div className="text-sm font-medium text-white truncate">
+                  {activity.user}
+                </div>
+              </div>
+              
+              <div className="text-xs text-gray-400 mt-1">
+                {activity.action}
+              </div>
+              
+              <div className="text-xs text-gray-500 mt-1">
+                {activity.time}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div className="flex justify-center pt-4 border-t border-gray-700">
+        <button className="text-blue-400 hover:text-blue-300 text-sm font-medium">
+          عرض المزيد
+        </button>
       </div>
     </div>
   );
