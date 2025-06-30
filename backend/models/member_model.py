@@ -1,16 +1,16 @@
 from datetime import datetime, timezone
 from beanie import Document
-from pydantic import Field
+from pydantic import BaseModel, Field
 from bson import ObjectId
 from typing import List, Dict, Optional
 
 class Member(Document):
     name: str
-    user_id: str
+    user_id: Optional[str] = None  # Made optional for standalone resumes
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     ar_name: Optional[str] = None
-    team_id: str
+    team_id: Optional[str] = None  # Made optional for standalone resumes
     membership_number: Optional[str] = None
     email: Optional[str] = None
     phone: Optional[str] = None
@@ -25,6 +25,9 @@ class Member(Document):
     skills: Optional[List[str]] = Field(default_factory=list)
     interests: Optional[List[str]] = Field(default_factory=list)
     social_media: Dict[str, str] = Field(default={})
+    image: Optional[str] = None
+    relocateToSyria: Optional[str] = None
+    # Removed works, academic, projects fields to avoid duplication
 
 class MemberWorkExperience(Document):
     member_id: str
@@ -52,4 +55,3 @@ class MemberEducation(Document):
     end_date: Optional[datetime] = None
     grade: Optional[str] = None
     academic_standing: Optional[str] = None # e.g., 1, 2, graduate
-    

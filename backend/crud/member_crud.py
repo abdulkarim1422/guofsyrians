@@ -6,6 +6,14 @@ async def create_member(member) -> member_model.Member:
     await member.insert()
     return member
 
+# TODO - remove this function after integrating with loggedin users
+async def create_resume_member(member) -> member_model.Member:
+    """Create a member from resume form without requiring user_id or team_id"""
+    member.user_id = None
+    member.team_id = None
+    await member.insert()
+    return member
+
 async def get_member_by_member_id(member_id: ObjectId) -> member_model.Member:
     return await member_model.Member.get(member_id)
 
@@ -115,3 +123,19 @@ async def delete_member_education(education_id: ObjectId) -> member_model.Member
 
 async def get_all_educations_by_member_id(member_id: ObjectId) -> list:
     return await member_model.MemberEducation.find({"member_id": str(member_id)}).to_list()
+
+# Bulk delete operations for related documents
+async def delete_all_work_experiences_by_member_id(member_id: str) -> int:
+    """Delete all work experiences for a member and return count of deleted documents"""
+    result = await member_model.MemberWorkExperience.find({"member_id": member_id}).delete()
+    return result.deleted_count if result else 0
+
+async def delete_all_educations_by_member_id(member_id: str) -> int:
+    """Delete all education entries for a member and return count of deleted documents"""
+    result = await member_model.MemberEducation.find({"member_id": member_id}).delete()
+    return result.deleted_count if result else 0
+
+async def delete_all_projects_by_member_id(member_id: str) -> int:
+    """Delete all projects for a member and return count of deleted documents"""
+    result = await member_model.MemberProject.find({"member_id": member_id}).delete()
+    return result.deleted_count if result else 0

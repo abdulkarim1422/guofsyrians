@@ -5,31 +5,25 @@ import { MailInputComponent } from '@/components/form-components/MailInputCompon
 
 export const ResumeForm = () => {
   const [formData, setFormData] = useState({
-    // Profile data
+    // Profile data - using backend field names
     name: '',
-    occupation: '',
-    location: '',
+    professional_title: '', // was occupation
+    city: '', // was location
     email: '',
-    telephone: '',
+    phone: '', // was telephone
     image: '',
     imageFile: null,
     relocateToSyria: '',
     
     // About Me
-    aboutLabel: '',
-    aboutDescription: '',
+    aboutLabel: '', // Initialize aboutLabel field
+    bio: '', // was aboutDescription
     
     // Skills
     skills: [],
     
-    // Social Media
-    socialLabel: '',
-    socialAccounts: [
-      {
-        platform: '',
-        url: ''
-      }
-    ],
+    // Social Media - using social_media object structure
+    social_media: {},
     
     // Work Experience
     works: [
@@ -64,7 +58,9 @@ export const ResumeForm = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [submitMessage, setSubmitMessage] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
+  const [socialMediaList, setSocialMediaList] = useState([{ platform: '', url: '' }]);
 
   const turkishCities = [
     'Adana', 'Adıyaman', 'Afyonkarahisar', 'Ağrı', 'Amasya', 'Ankara', 'Antalya', 'Artvin',
@@ -440,49 +436,34 @@ export const ResumeForm = () => {
     }
   };
 
-  const handleSocialAccountChange = (index, field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      socialAccounts: prev.socialAccounts.map((account, i) => 
-        i === index ? { ...account, [field]: value } : account
-      )
-    }));
+  const addSocialMedia = () => {
+    setSocialMediaList([...socialMediaList, { platform: '', url: '' }]);
   };
 
-  const addSocialAccount = () => {
-    setFormData(prev => ({
-      ...prev,
-      socialAccounts: [...prev.socialAccounts, { platform: '', url: '' }]
-    }));
+  const removeSocialMedia = (index) => {
+    const newList = socialMediaList.filter((_, i) => i !== index);
+    setSocialMediaList(newList);
+    updateSocialMediaData(newList);
   };
 
-  const removeSocialAccount = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      socialAccounts: prev.socialAccounts.filter((_, i) => i !== index)
-    }));
+  const handleSocialMediaChange = (index, field, value) => {
+    const newList = [...socialMediaList];
+    newList[index][field] = value;
+    setSocialMediaList(newList);
+    updateSocialMediaData(newList);
   };
 
-  const getPlatformIcon = (platform) => {
-    const iconMap = {
-      linkedin: 'bxl-linkedin-square',
-      github: 'bxl-github',
-      twitter: 'bxl-twitter',
-      instagram: 'bxl-instagram',
-      facebook: 'bxl-facebook',
-      youtube: 'bxl-youtube',
-      tiktok: 'bxl-tiktok',
-      discord: 'bxl-discord',
-      telegram: 'bxl-telegram',
-      whatsapp: 'bxl-whatsapp',
-      medium: 'bxl-medium',
-      behance: 'bxl-behance',
-      dribbble: 'bxl-dribbble',
-      portfolio: 'bx-globe',
-      website: 'bx-world',
-      other: 'bx-link'
-    };
-    return iconMap[platform] || 'bx-link';
+  const updateSocialMediaData = (list) => {
+    const socialMediaObj = {};
+    list.forEach(item => {
+      if (item.platform && item.url) {
+        socialMediaObj[item.platform.toLowerCase()] = item.url;
+      }
+    });
+    setFormData(prev => ({
+      ...prev,
+      social_media: socialMediaObj
+    }));
   };
 
   const handleProjectChange = (index, field, value) => {
@@ -555,48 +536,55 @@ export const ResumeForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission with the complete data structure
     try {
-      const updatedData = {
-        profile: {
-          name: formData.name,
-          ocupation: formData.occupation,
-          location: formData.location,
-          email: formData.email,
-          telephone: formData.telephone,
-          image: formData.image,
-          imageFile: formData.imageFile,
-          relocateToSyria: formData.relocateToSyria
-        },
-        aboutMe: {
-          label: formData.aboutLabel,
-          description: formData.aboutDescription
-        },
+      // Prepare the data in the format expected by the backend
+      const resumeData = {
+        name: formData.name,
+        professional_title: formData.professional_title,
+        city: formData.city,
+        email: formData.email,
+        phone: formData.phone,
+        image: formData.image,
+        relocateToSyria: formData.relocateToSyria,
+        bio: formData.bio,
         skills: formData.skills,
-        socialMedia: {
-          label: formData.socialLabel,
-          social: formData.socialAccounts.filter(account => account.platform && account.url).map(account => ({
-            label: `Visit ${account.platform} profile`,
-            name: account.platform,
-            url: account.url,
-            className: getPlatformIcon(account.platform)
-          }))
-        },
-        experience: {
-          works: formData.works,
-          academic: formData.academic,
-          proyects: formData.projects
-        }
+        social_media: formData.social_media,
+        works: formData.works.filter(work => work.title || work.company),
+        academic: formData.academic.filter(edu => edu.degreeLevel || edu.institution),
+        projects: formData.projects.filter(proj => proj.name || proj.company)
       };
 
-      console.log('Updated Data:', updatedData);
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      console.log('Sending resume data:', resumeData);
+
+      // Send to backend
+      const response = await fetch('http://localhost:8000/api/resume/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resumeData)
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Failed to submit resume');
+      }
+
+      const result = await response.json();
+      console.log('Resume submitted successfully:', result);
+      
       setSubmitStatus('success');
+      setSubmitMessage(result.message || 'Resume submitted successfully!');
     } catch (error) {
+      console.error('Error submitting resume:', error);
       setSubmitStatus('error');
+      setSubmitMessage(error.message || 'Failed to submit resume. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
-      setTimeout(() => setSubmitStatus(null), 5000);
+      setTimeout(() => {
+        setSubmitStatus(null);
+        setSubmitMessage('');
+      }, 5000);
     }
   };
 
@@ -650,14 +638,14 @@ export const ResumeForm = () => {
                             </div>
 
                             <div>
-                              <label htmlFor="occupation" className="block text-sm font-medium text-gray-300 mb-2 arabic-text-medium" dir="rtl">
+                              <label htmlFor="professional_title" className="block text-sm font-medium text-gray-300 mb-2 arabic-text-medium" dir="rtl">
                                 المسمى الوظيفي *
                               </label>
                               <input
                                 type="text"
-                                id="occupation"
-                                name="occupation"
-                                value={formData.occupation}
+                                id="professional_title"
+                                name="professional_title"
+                                value={formData.professional_title}
                                 onChange={handleInputChange}
                                 required
                                 className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all arabic-text"
@@ -669,16 +657,16 @@ export const ResumeForm = () => {
                             {MailInputComponent(formData, setFormData)}
 
                             <div>
-                              <label htmlFor="telephone" className="block text-sm font-medium text-gray-300 mb-2 arabic-text-medium" dir="rtl">
+                              <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-2 arabic-text-medium" dir="rtl">
                                 رقم الهاتف *
                               </label>
                               <div className="relative">
                                 <Phone className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                                 <input
                                   type="tel"
-                                  id="telephone"
-                                  name="telephone"
-                                  value={formData.telephone}
+                                  id="phone"
+                                  name="phone"
+                                  value={formData.phone}
                                   onChange={handleInputChange}
                                   required
                                   className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
@@ -689,15 +677,15 @@ export const ResumeForm = () => {
                             </div>
 
                             <div>
-                              <label htmlFor="location" className="block text-sm font-medium text-gray-300 mb-2 arabic-text-medium" dir="rtl">
+                              <label htmlFor="city" className="block text-sm font-medium text-gray-300 mb-2 arabic-text-medium" dir="rtl">
                                 المدينة (داخل تركيا) *
                               </label>
                               <div className="relative">
                                 <MapPin className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                                 <select
-                                  id="location"
-                                  name="location"
-                                  value={formData.location}
+                                  id="city"
+                                  name="city"
+                                  value={formData.city}
                                   onChange={handleInputChange}
                                   required
                                   className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all arabic-text"
@@ -945,13 +933,13 @@ export const ResumeForm = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="aboutDescription" className="block text-sm font-medium text-gray-300 mb-2">
+                  <label htmlFor="bio" className="block text-sm font-medium text-gray-300 mb-2">
                     Description *
                   </label>
                   <textarea
-                    id="aboutDescription"
-                    name="aboutDescription"
-                    value={formData.aboutDescription}
+                    id="bio"
+                    name="bio"
+                    value={formData.bio}
                     onChange={handleInputChange}
                     required
                     rows={4}
@@ -1030,96 +1018,64 @@ export const ResumeForm = () => {
             {/* Social Media Section */}
             <div className="bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-700">
               <div className="mb-6">
-                <h2 className="text-2xl font-semibold text-white flex items-center">
-                  <Globe className="w-6 h-6 mr-2 text-orange-500" />
-                  Social Media
-                </h2>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-semibold text-white flex items-center">
+                    <Globe className="w-6 h-6 mr-2 text-orange-500" />
+                    Social Media
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={addSocialMedia}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Social Media
+                  </button>
+                </div>
               </div>
               
               <div className="space-y-4">
-                {/* Social Accounts List */}
-                {formData.socialAccounts.map((account, index) => (
-                  <div key={index} className="border border-gray-600 rounded-lg p-4 bg-gray-750">
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="text-md font-medium text-white">Social Account {index + 1}</h4>
-                      {formData.socialAccounts.length > 1 && (
+                {socialMediaList.map((social, index) => (
+                  <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-800 rounded-lg">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Platform
+                      </label>
+                      <input
+                        type="text"
+                        value={social.platform}
+                        onChange={(e) => handleSocialMediaChange(index, 'platform', e.target.value)}
+                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        placeholder="e.g., LinkedIn, GitHub, Twitter, Portfolio"
+                      />
+                    </div>
+
+                    <div className="flex items-end space-x-2">
+                      <div className="flex-1">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          URL
+                        </label>
+                        <input
+                          type="url"
+                          value={social.url}
+                          onChange={(e) => handleSocialMediaChange(index, 'url', e.target.value)}
+                          className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                          placeholder="https://..."
+                        />
+                      </div>
+                      
+                      {socialMediaList.length > 1 && (
                         <button
                           type="button"
-                          onClick={() => removeSocialAccount(index)}
-                          className="text-red-400 hover:text-red-300 transition-colors"
-                          title="Remove this social account"
+                          onClick={() => removeSocialMedia(index)}
+                          className="bg-red-600 hover:bg-red-700 text-white p-3 rounded-lg transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
                       )}
                     </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                          Platform *
-                        </label>
-                        <select
-                          value={account.platform}
-                          onChange={(e) => handleSocialAccountChange(index, 'platform', e.target.value)}
-                          className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                          required
-                        >
-                          <option value="">Select platform</option>
-                          <option value="linkedin">📈 LinkedIn</option>
-                          <option value="github">🐙 GitHub</option>
-                          <option value="twitter">🐦 Twitter</option>
-                          <option value="instagram">📷 Instagram</option>
-                          <option value="facebook">📘 Facebook</option>
-                          <option value="youtube">📺 YouTube</option>
-                          <option value="tiktok">🎵 TikTok</option>
-                          <option value="discord">💬 Discord</option>
-                          <option value="telegram">✈️ Telegram</option>
-                          <option value="whatsapp">📱 WhatsApp</option>
-                          <option value="medium">📝 Medium</option>
-                          <option value="behance">🎨 Behance</option>
-                          <option value="dribbble">🏀 Dribbble</option>
-                          <option value="portfolio">🌐 Portfolio</option>
-                          <option value="website">💻 Website</option>
-                          <option value="other">🔗 Other</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                          Profile URL *
-                        </label>
-                        <input
-                          type="url"
-                          value={account.url}
-                          onChange={(e) => handleSocialAccountChange(index, 'url', e.target.value)}
-                          className="w-full px-4 py-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                          placeholder="https://platform.com/username"
-                          required
-                        />
-                      </div>
-                    </div>
                   </div>
                 ))}
-                
-                {formData.socialAccounts.length === 0 && (
-                  <div className="text-center py-8 text-gray-400">
-                    <Globe className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                    <p>No social accounts added yet. Click &quot;Add Account&quot; to get started.</p>
-                  </div>
-                )}
-                
-                {/* Add Account Button */}
-                <div className="flex justify-end mt-6">
-                  <button
-                    type="button"
-                    onClick={addSocialAccount}
-                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Add Account</span>
-                  </button>
-                </div>
               </div>
             </div>
 
@@ -1407,13 +1363,13 @@ export const ResumeForm = () => {
               {/* Success/Error Messages */}
               {submitStatus === 'success' && (
                 <div className="bg-green-800 border border-green-600 text-green-200 px-4 py-3 rounded-lg mt-4">
-                  Resume data saved successfully! All changes have been updated.
+                  {submitMessage}
                 </div>
               )}
 
               {submitStatus === 'error' && (
                 <div className="bg-red-800 border border-red-600 text-red-200 px-4 py-3 rounded-lg mt-4">
-                  There was an error saving the data. Please try again.
+                  {submitMessage}
                 </div>
               )}
             </div>
