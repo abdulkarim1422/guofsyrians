@@ -1,4 +1,5 @@
 import asyncio
+import os
 from datetime import datetime, timezone
 from models.member_model import Member, MemberEducation
 from config.database import init_beanie
@@ -6,7 +7,9 @@ import motor.motor_asyncio
 
 async def populate_dummy_members():
     # Initialize database connection
-    client = motor.motor_asyncio.AsyncIOMotorClient("mongodb://localhost:27017")
+    # Use environment variable or fallback to docker service name
+    mongodb_uri = os.getenv("MONGODB_URI", "mongodb://db:27017")
+    client = motor.motor_asyncio.AsyncIOMotorClient(mongodb_uri)
     await init_beanie(database=client.guofsyrians_db, document_models=[Member, MemberEducation])
     
     # Clear existing members (optional)
