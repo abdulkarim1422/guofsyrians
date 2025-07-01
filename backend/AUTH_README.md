@@ -170,7 +170,7 @@ uvicorn main:app --reload
 
 ### 1. Register a New User
 ```bash
-curl -X POST "http://localhost:8000/api/auth/register" \
+curl -X POST "http://localhost:8222/api/auth/register" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "john@example.com",
@@ -182,7 +182,7 @@ curl -X POST "http://localhost:8000/api/auth/register" \
 
 ### 2. Login and Get Token
 ```bash
-curl -X POST "http://localhost:8000/api/auth/login-json" \
+curl -X POST "http://localhost:8222/api/auth/login-json" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "john@example.com",
@@ -192,7 +192,7 @@ curl -X POST "http://localhost:8000/api/auth/login-json" \
 
 ### 3. Access Protected Endpoint
 ```bash
-curl -X GET "http://localhost:8000/api/auth/me" \
+curl -X GET "http://localhost:8222/api/auth/me" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
@@ -262,7 +262,7 @@ async def delete_team(
 
 ## API Documentation
 
-Visit `http://localhost:8000/docs` to see the interactive API documentation with all authentication endpoints.
+Visit `http://localhost:8222/docs` to see the interactive API documentation with all authentication endpoints.
 
 ## Files Created/Modified
 

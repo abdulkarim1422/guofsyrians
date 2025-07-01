@@ -11,7 +11,7 @@
 export const getMemberImageUrl = (imagePath, gender) => {
   if (imagePath && imagePath.trim()) {
     // If there's an image from backend, construct the full URL
-    const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8222';
     
     // Handle both relative paths (e.g., "filename.jpg") and absolute paths (e.g., "/uploads/filename.jpg")
     if (imagePath.startsWith('http')) {

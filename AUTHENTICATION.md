@@ -69,7 +69,7 @@ This document describes the authentication system implemented for the GuofSyrian
 1. **Start the Backend Server**:
    ```bash
    cd backend
-   python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   python -m uvicorn main:app --reload --host 0.0.0.0 --port 8222
    ```
 
 2. **Create Admin User** (if not exists):
@@ -189,7 +189,7 @@ frontend/src/
 
 ### Frontend (.env)
 ```env
-VITE_API_BASE_URL=http://localhost:8000
+VITE_API_BASE_URL=http://localhost:8222
 ```
 
 ### Backend (.env)
@@ -216,7 +216,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
    - Check ProtectedRoute implementation
 
 4. **Backend Connection Issues**:
-   - Verify backend server is running on port 8000
+   - Verify backend server is running on port 8222
    - Check database connection
 
 ### Debug Tools
