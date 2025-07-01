@@ -743,7 +743,7 @@ export const ResumeForm = () => {
                                   className="w-full pl-10 pr-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text"
                                   dir="rtl"
                                 >
-                                  <option value="">اختر مدينة تركية</option>
+                                  <option value="" disabled>اختر مدينة تركية</option>
                                   {turkishCities.map(city => (
                                     <option key={city} value={city}>{city}</option>
                                   ))}
@@ -764,7 +764,7 @@ export const ResumeForm = () => {
                                 className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text"
                                 dir="rtl"
                               >
-                                <option value="">اختر إجابتك</option>
+                                <option value="" disabled>اختر إجابتك</option>
                                 <option value="Yes">نعم</option>
                                 <option value="No">لا</option>
                                 <option value="Maybe">ربما</option>
