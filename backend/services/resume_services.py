@@ -1,8 +1,10 @@
-from crud import member_crud
-from models import member_model
+from crud import member_crud, user_crud
+from models import member_model, user_model
 from bson import ObjectId
 from typing import Dict, Any, Optional
 from fastapi import HTTPException
+import random
+from services import mail_service
 
 async def member_resume_form(user_id: str, form_data: Dict[str, Any]) -> member_model.Member:
     """
@@ -56,3 +58,44 @@ async def member_resume_form(user_id: str, form_data: Dict[str, Any]) -> member_
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing resume form: {str(e)}")
+
+# function to create a new member user with resume form data
+async def create_user_with_resume_form_and_send_welcome_email(mail: str, name: str) -> user_model.User:
+    """
+    Create a new user with the provided email and resume form data.
+    """
+    user_to_insert = user_model.User(
+        email=mail,
+        password="".join(random.choices("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", k=8)),
+        name=name,
+        role="member"  # Default role for new users
+    )
+
+    user = await user_crud.create_user(user_to_insert)
+    # Send welcome email to the new user
+    if user:
+        await send_welcome_email(user)
+    else:
+        raise HTTPException(status_code=500, detail="Failed to create user")
+    return user
+
+# function to send the new user's password to their email
+async def send_welcome_email(user: user_model.User) -> None:
+    """
+    Send a welcome email to the new user with their password.
+    """
+    subject = "Welcome to GuofSyrians"
+    body = f"""
+    Hello {user.name},\n\n
+
+    Your account has been created successfully.\n
+    Your password is: {user.password}\n\n
+
+    please login to your account from the following link:\n
+    https://app.guofsyrians.com/login\n\n
+
+    Best regards,\n
+    The GuofSyrians Team
+    """
+
+    await mail_service.send_email(user.email, subject, body)

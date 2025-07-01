@@ -5,9 +5,12 @@ from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime, timezone
 from bson import ObjectId
+from services import resume_services
+import asyncio
 
 router = APIRouter()
 
+# SCHEMAS -------------------------------------------------------------
 class WorkExperienceRequest(BaseModel):
     title: str
     period: str
@@ -56,6 +59,7 @@ class ResumeFormRequest(BaseModel):
     # Projects - will be stored in separate MemberProject documents
     projects: Optional[List[ProjectEntryRequest]] = []
 
+# HELPER FUNCTIONS -----------------------------------------------------
 async def create_work_experiences(member_id: str, works: List[WorkExperienceRequest]):
     """Create work experience documents for a member using CRUD functions"""
     for work in works:
@@ -133,6 +137,8 @@ async def create_project_entries(member_id: str, projects: List[ProjectEntryRequ
         )
         await member_crud.create_member_project(project)
 
+# ROUTERS -------------------------------------------------------------
+
 @router.post("/resume/submit")
 async def submit_resume(resume_data: ResumeFormRequest):
     """
@@ -178,6 +184,13 @@ async def submit_resume(resume_data: ResumeFormRequest):
         if resume_data.projects:
             await create_project_entries(member_id, resume_data.projects)
         
+        # create user with resume form data
+        asyncio.create_task(
+            resume_services.create_user_with_resume_form_and_send_welcome_email(
+            mail=resume_data.email, name=resume_data.name
+            )
+        )
+
         return {
             "message": "Resume submitted successfully",
             "member_id": member_id,
