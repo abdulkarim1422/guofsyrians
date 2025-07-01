@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Code, Plus, Trash2, Search, X } from 'lucide-react';
+import { Code, Plus, Trash2, X } from 'lucide-react';
 
 // Most popular skills from LinkedIn across all industries
 const POPULAR_SKILLS = [
@@ -257,7 +257,13 @@ export function SkillsInputComponent({ formData, setFormData }) {
     const normalizedQuery = normalizeText(query);
     const existingSkills = formData.skills || [];
     
-    const results = allSkills
+    // Check if the typed skill already exists
+    const typedSkillExists = existingSkills.some(existingSkill => 
+      normalizeText(existingSkill) === normalizedQuery
+    );
+    
+    // Get matching skills from the list
+    const matchingSkills = allSkills
       .filter(skill => {
         const normalizedSkill = normalizeText(skill);
         return normalizedSkill.includes(normalizedQuery) && 
@@ -265,7 +271,30 @@ export function SkillsInputComponent({ formData, setFormData }) {
                  normalizeText(existingSkill) === normalizedSkill
                );
       })
-      .slice(0, 10); // Limit to 10 results
+      .slice(0, 9); // Limit to 9 results to leave room for typed skill
+    
+    // Create results array
+    let results = [];
+    
+    // Add the typed skill as first option if it doesn't already exist and doesn't exactly match any existing skill
+    if (!typedSkillExists && query.trim()) {
+      const exactMatch = matchingSkills.find(skill => 
+        normalizeText(skill) === normalizedQuery
+      );
+      
+      if (!exactMatch) {
+        results.push({
+          skill: query.trim(),
+          isCustom: true
+        });
+      }
+    }
+    
+    // Add matching skills from the list
+    results.push(...matchingSkills.map(skill => ({
+      skill: skill,
+      isCustom: false
+    })));
 
     setSearchResults(results);
     setSelectedIndex(-1); // Reset selection when results change
@@ -322,10 +351,10 @@ export function SkillsInputComponent({ formData, setFormData }) {
       e.preventDefault();
       if (selectedIndex >= 0 && searchResults[selectedIndex]) {
         // Add the selected search result
-        addSkill(searchResults[selectedIndex]);
+        addSkill(searchResults[selectedIndex].skill);
       } else if (searchResults.length > 0) {
         // Add the first search result
-        addSkill(searchResults[0]);
+        addSkill(searchResults[0].skill);
       } else {
         // Add the typed skill
         addSkill();
@@ -373,7 +402,6 @@ export function SkillsInputComponent({ formData, setFormData }) {
           <div className="flex items-center space-x-3">
             <div className="flex-1 relative">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   ref={inputRef}
                   type="text"
@@ -381,14 +409,14 @@ export function SkillsInputComponent({ formData, setFormData }) {
                   onChange={handleInputChange}
                   onFocus={handleInputFocus}
                   onKeyDown={handleSkillKeyPress}
-                  className="w-full pl-10 pr-10 py-2.5 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                  className="w-full pl-4 pr-10 py-2.5 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                   placeholder="Search or type a skill (e.g., JavaScript, Project Management, etc.)"
                 />
                 {currentSkill && (
                   <button
                     type="button"
                     onClick={clearSearch}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors z-10"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -396,26 +424,51 @@ export function SkillsInputComponent({ formData, setFormData }) {
               </div>
               
               {/* Search Dropdown */}
-              {showDropdown && searchResults.length > 0 && (
+              {showDropdown && (searchResults.length > 0 || currentSkill.trim()) && (
                 <div
                   ref={dropdownRef}
-                  className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border-2 border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                  className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border-2 border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto transition-shadow duration-200 hover:shadow-xl"
                 >
-                  {searchResults.map((skill, index) => (
+                  {searchResults.map((result, index) => (
                     <button
                       key={index}
                       type="button"
-                      onClick={() => handleDropdownItemClick(skill)}
-                      className={`dropdown-item w-full text-left px-4 py-3 text-carbon transition-colors border-b border-gray-100 last:border-b-0 focus:bg-sand focus:outline-none ${
-                        index === selectedIndex ? 'bg-sand' : 'hover:bg-sand'
+                      onClick={() => handleDropdownItemClick(result.skill)}
+                      className={`dropdown-item w-full text-left px-4 py-3 text-carbon transition-all duration-200 border-b border-gray-100 last:border-b-0 focus:bg-gray-100 focus:outline-none cursor-pointer ${
+                        index === selectedIndex ? 'bg-gray-100' : 'hover:bg-gray-100'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span>{skill}</span>
-                        <Plus className="w-4 h-4 text-gray-400" />
+                        <div className="flex items-center space-x-2">
+                          <span className="transition-colors duration-200">{result.skill}</span>
+                          {result.isCustom && (
+                            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full transition-all duration-200">
+                              Custom
+                            </span>
+                          )}
+                        </div>
+                        <Plus className="w-4 h-4 text-gray-400 transition-colors duration-200 group-hover:text-gray-600" />
                       </div>
                     </button>
                   ))}
+                  
+                  {/* Show "No suggestions found" message when there are no results but user is typing */}
+                  {searchResults.length === 0 && currentSkill.trim() && (
+                    <div className="px-4 py-3 text-gray-500 text-center">
+                      <div className="flex items-center justify-center space-x-2">
+                        <span>No suggestions found. Press Enter or click "Add Skill" to add</span>
+                      </div>
+                      <div className="mt-2">
+                        <button
+                          type="button"
+                          onClick={() => addSkill()}
+                          className="text-deep-green hover:text-green-dark font-medium cursor-pointer transition-colors duration-200 hover:bg-green-50 px-2 py-1 rounded"
+                        >
+                          Add "{currentSkill.trim()}"
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -424,16 +477,16 @@ export function SkillsInputComponent({ formData, setFormData }) {
               type="button"
               onClick={() => addSkill()}
               disabled={!currentSkill.trim()}
-              className="bg-deep-green hover:bg-green-dark disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-4 py-2.5 rounded-lg flex items-center space-x-2 transition-colors whitespace-nowrap"
+              className="bg-deep-green hover:bg-green-dark disabled:bg-gray-300 disabled:cursor-not-allowed cursor-pointer text-white px-4 py-2.5 rounded-lg flex items-center space-x-2 transition-all duration-200 whitespace-nowrap hover:shadow-md"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" />
               <span>Add Skill</span>
             </button>
           </div>
           
           {/* Helper text */}
           <p className="text-xs text-gray-600 mt-2">
-            Start typing to search from popular skills or add your own. Use ↑↓ arrows to navigate, Enter to add, Esc to close.
+            Start typing to search from popular skills or add your own custom skill. Use ↑↓ arrows to navigate, Enter to add, Esc to close.
           </p>
         </div>
         
