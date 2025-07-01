@@ -234,13 +234,6 @@ function StudentsList({ onSidebarHide }) {
                   </div>
                 )}
               </div>
-              <div className="flex items-center">
-                <Icon
-                  path="res-react-dash-date-indicator"
-                  className="w-3 h-3 text-deep-green"
-                />
-                <div className="ml-2 text-carbon">Manage all students</div>
-              </div>
             </div>
             <IconButton
               icon="res-react-dash-sidebar-open"
@@ -253,7 +246,7 @@ function StudentsList({ onSidebarHide }) {
             <div className="relative">
               <Icon
                 path="res-react-dash-search"
-                className="w-5 h-5 search-icon left-3 absolute text-deep-green"
+                className="w-5 h-5 search-icon right-3 absolute text-deep-green"
               />
               <input
                 type="text"
