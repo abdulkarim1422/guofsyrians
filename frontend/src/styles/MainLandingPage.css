@@ -148,12 +148,106 @@
   color: var(--brand-carbon);
   border: 2px solid rgba(220, 181, 87, 0.4);
   backdrop-filter: blur(10px);
+  width: 250px; /* Increased width for Arabic text */
 }
 
 .hero__button--toggle:hover {
   background: rgba(220, 181, 87, 0.3);
   border-color: rgba(220, 181, 87, 0.6);
   color: var(--brand-carbon);
+}
+
+/* Social Media Container */
+.social-media-container {
+  position: fixed;
+  bottom: -120px; /* Start hidden below the screen */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  transition: bottom 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.social-media-container.show {
+  bottom: 30px; /* Show above the bottom */
+}
+
+.social-media-icons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 15px 25px;
+  border-radius: 50px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-icon svg {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.social-icon:hover svg {
+  transform: scale(1.1);
+}
+
+/* Individual social media colors */
+.social-icon.instagram {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: white;
+}
+
+.social-icon.facebook {
+  background: #1877f2;
+  color: white;
+}
+
+.social-icon.telegram {
+  background: #0088cc;
+  color: white;
+}
+
+.social-icon.youtube {
+  background: #ff0000;
+  color: white;
+}
+
+/* Hover effects for social icons */
+.social-icon.instagram:hover {
+  background: linear-gradient(45deg, #e08424 0%, #d55830 25%, #cd1e34 50%, #bd1457 75%, #ad0979 100%);
+}
+
+.social-icon.facebook:hover {
+  background: #166fe5;
+}
+
+.social-icon.telegram:hover {
+  background: #007bb5;
+}
+
+.social-icon.youtube:hover {
+  background: #e60000;
 }
 
 .content {
