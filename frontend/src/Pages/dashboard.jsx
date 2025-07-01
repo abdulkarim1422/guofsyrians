@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import '@/styles/dashboard.css';
 import DashboardContent from '@/components/dashboard-components/dashboard.jsx';
 import StudentsList from '@/components/dashboard-components/StudentsList.jsx';
-import { ResumeForm } from '@/pages/ResumeForm.jsx';
 import Settings from '@/components/settings/Settings.jsx';
 import ProfileSettings from '@/components/settings/ProfileSettings.jsx';
 import Announcements from '@/components/announcements/Announcements.jsx';
@@ -13,15 +12,11 @@ import { useAuth } from '@/contexts/AuthContext.tsx';
 const sidebarItems = [
   [
     { id: '0', title: 'Dashboard', notifications: false },
-    { id: '1', title: 'Form', notifications: false },
-    // { id: '2', title: 'Chat', notifications: 6 },
-    { id: '3', title: 'Students list', notifications: false },
+    { id: '1', title: 'Students list', notifications: false },
   ],
   [
-    // { id: '4', title: 'Tasks', notifications: false },
-    // { id: '5', title: 'Reports', notifications: false },
-    { id: '6', title: 'Settings', notifications: false },
-    { id: '7', title: 'Announcements', notifications: false },
+    { id: '2', title: 'Settings', notifications: false },
+    { id: '3', title: 'Announcements', notifications: false },
   ],
 ];
 
@@ -62,20 +57,12 @@ const DashboardApp = () => {
       case '/':
       case '/dashboard':
         return '0';
-      case '/form':
-        return '1';
-      case '/chat':
-        return '2';
       case '/students-list':
-        return '3';
-      case '/tasks':
-        return '4';
-      case '/reports':
-        return '5';
+        return '1';
       case '/settings':
-        return '6';
+        return '2';
       case '/announcements':
-        return '7';
+        return '3';
       case '/profile':
         return 'profile';
       default:
@@ -96,24 +83,12 @@ const DashboardApp = () => {
         navigate('/dashboard');
         break;
       case '1':
-        navigate('/form');
-        break;
-      case '2':
-        navigate('/chat');
-        break;
-      case '3':
         navigate('/students-list');
         break;
-      case '4':
-        navigate('/tasks');
-        break;
-      case '5':
-        navigate('/reports');
-        break;
-      case '6':
+      case '2':
         navigate('/settings');
         break;
-      case '7':
+      case '3':
         navigate('/announcements');
         break;
       default:
@@ -128,8 +103,6 @@ const DashboardApp = () => {
         case '/':
         case '/dashboard':
           return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
-        case '/form':
-          return <ResumeForm onSidebarHide={() => onSetShowSidebar(true)} />;
         case '/students-list':
           return <StudentsList onSidebarHide={() => onSetShowSidebar(true)} />;
         case '/settings':
