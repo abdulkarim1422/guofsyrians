@@ -1,11 +1,22 @@
 /* index.css  */
+:root {
+  --brand-carbon: #1f1f1f;
+  --brand-rich-gold: #dcb557;
+  --brand-deep-green: #214937;
+  --brand-sand: #efe8d7;
+  --brand-gold-light: #e6c66b;
+  --brand-gold-dark: #c9a249;
+  --brand-green-light: #2d5c44;
+  --brand-green-dark: #1a3c2e;
+}
+
 .fullpage-container {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #000023;
+  background-color: var(--brand-sand);
   height: 100vh !important;
   overflow: hidden !important;
   display: flex;
@@ -33,7 +44,7 @@
 }
 
 .hero__waves {
-  background-color: rgba(42, 123, 210, 0.5);
+  background-color: rgba(220, 181, 87, 0.3); /* Rich Gold with transparency */
   border-radius: 38% 42%;
   filter: blur(30px);
   margin-top: 0;
@@ -49,13 +60,13 @@
 }
 .hero__waves::after {
   animation-duration: 24s;
-  background-color: rgba(160, 57, 147, 0.5);
+  background-color: rgba(33, 73, 55, 0.3); /* Deep Green with transparency */
   border-radius: 48% 42%;
   content: "";
 }
 .hero__waves::before {
   animation-duration: 26s;
-  background-color: rgba(100, 200, 250, 0.5);
+  background-color: rgba(31, 31, 31, 0.2); /* Carbon with transparency */
   border-radius: 40% 38%;
   content: "";
 }
@@ -70,7 +81,7 @@
 }
 
 .hero__title {
-  color: #214937;
+  color: var(--brand-carbon);
   font-size: 50px;
   font-weight: 800;
   margin-bottom: 40px;
@@ -109,39 +120,46 @@
 }
 
 .hero__button--primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--brand-rich-gold);
+  color: var(--brand-carbon);
+  border: 2px solid var(--brand-rich-gold);
 }
 
 .hero__button--primary:hover {
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  background: var(--brand-gold-dark);
+  border-color: var(--brand-gold-dark);
+  color: var(--brand-carbon);
 }
 
 .hero__button--secondary {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: var(--brand-deep-green);
   color: white;
+  border: 2px solid var(--brand-deep-green);
 }
 
 .hero__button--secondary:hover {
-  background: linear-gradient(135deg, #e081e9 0%, #e3455a 100%);
+  background: var(--brand-green-dark);
+  border-color: var(--brand-green-dark);
+  color: white;
 }
 
 .hero__button--toggle {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(220, 181, 87, 0.2); /* Rich Gold with transparency */
+  color: var(--brand-carbon);
+  border: 2px solid rgba(220, 181, 87, 0.4);
   backdrop-filter: blur(10px);
 }
 
 .hero__button--toggle:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(220, 181, 87, 0.3);
+  border-color: rgba(220, 181, 87, 0.6);
+  color: var(--brand-carbon);
 }
 
 .content {
   align-items: center;
-  background-color: #fff;
-  color: #111;
+  background-color: white;
+  color: var(--brand-carbon);
   display: flex;
   flex-direction: column;
   font-family: sans-serif;
