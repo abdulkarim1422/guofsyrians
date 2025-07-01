@@ -30,6 +30,7 @@ class ResumeFormRequest(BaseModel):
     # Profile data - using backend field names
     name: str
     professional_title: Optional[str] = None
+    birthdate: Optional[str] = None
     sex: str  # Required field: "male" or "female"
     city: Optional[str] = None
     email: Optional[str] = None
@@ -98,10 +99,19 @@ async def submit_resume(resume_data: ResumeFormRequest):
     Creates a Member document and related Work Experience, Education, and Project documents
     """
     try:
+        # Convert birthdate string to datetime if provided
+        birthdate_obj = None
+        if resume_data.birthdate:
+            try:
+                birthdate_obj = datetime.strptime(resume_data.birthdate, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid birthdate format. Use YYYY-MM-DD")
+        
         # Create member object (only with fields that belong to Member)
         member = member_model.Member(
             name=resume_data.name,
             professional_title=resume_data.professional_title,
+            birthdate=birthdate_obj,
             sex=resume_data.sex,
             city=resume_data.city,
             email=resume_data.email,

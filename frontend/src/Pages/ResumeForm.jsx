@@ -10,6 +10,7 @@ export const ResumeForm = () => {
     // Profile data - using backend field names
     name: '',
     professional_title: '', // was occupation
+    birthdate: '',
     sex: '', // Required field for gender
     city: '', // was location
     email: '',
@@ -581,6 +582,7 @@ export const ResumeForm = () => {
       const resumeData = {
         name: formData.name.trim(),
         professional_title: formData.professional_title.trim(),
+        birthdate: formData.birthdate || null,
         sex: formData.sex, // Required: "male" or "female"
         city: formData.city || null,
         email: formData.email || null,
@@ -596,7 +598,7 @@ export const ResumeForm = () => {
       };
 
       console.log('Sending resume data:', resumeData);
-      console.log('Form validation - sex:', formData.sex, 'name:', formData.name, 'professional_title:', formData.professional_title);
+      console.log('Form validation - sex:', formData.sex, 'name:', formData.name, 'professional_title:', formData.professional_title, 'birthdate:', formData.birthdate);
 
       // Get API base URL from environment or use default
       const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -767,6 +769,22 @@ export const ResumeForm = () => {
                                 <option value="No">لا</option>
                                 <option value="Maybe">ربما</option>
                               </select>
+                            </div>
+
+                            <div>
+                              <label htmlFor="birthdate" className="block text-sm font-medium text-carbon mb-2 arabic-text-medium" dir="rtl">
+                                تاريخ الميلاد *
+                              </label>
+                              <input
+                                type="date"
+                                id="birthdate"
+                                name="birthdate"
+                                value={formData.birthdate}
+                                onChange={handleInputChange}
+                                required
+                                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                                dir="rtl"
+                              />
                             </div>
 
                             <div>
