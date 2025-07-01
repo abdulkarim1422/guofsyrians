@@ -92,12 +92,44 @@ async def create_education_entries(member_id: str, academic: List[AcademicEntryR
 async def create_project_entries(member_id: str, projects: List[ProjectEntryRequest]):
     """Create project documents for a member using CRUD functions"""
     for proj in projects:
+        # Parse period string to extract start and end dates if available
+        start_date = None
+        end_date = None
+        
+        if proj.period:
+            try:
+                # Handle different period formats
+                if " - " in proj.period:
+                    parts = proj.period.split(" - ")
+                    if len(parts) == 2:
+                        start_str, end_str = parts
+                        
+                        # Parse start date
+                        try:
+                            start_date = datetime.strptime(start_str, "%b %Y").replace(tzinfo=timezone.utc)
+                        except ValueError:
+                            # Try other formats if needed
+                            pass
+                        
+                        # Parse end date (handle "Present" and "Ongoing")
+                        if end_str.lower() not in ["present", "ongoing"]:
+                            try:
+                                end_date = datetime.strptime(end_str, "%b %Y").replace(tzinfo=timezone.utc)
+                            except ValueError:
+                                # Try other formats if needed
+                                pass
+                        # If end_str is "Present" or "Ongoing", end_date remains None
+            except Exception:
+                # If parsing fails, continue without dates
+                pass
+        
         project = member_model.MemberProject(
             member_id=member_id,
             project_name=proj.name,
             description="; ".join(proj.description),  # Join descriptions into a single string
             role=proj.company,  # Using company field as role for now
-            # Note: period parsing could be enhanced to extract start_date/end_date
+            start_date=start_date,
+            end_date=end_date
         )
         await member_crud.create_member_project(project)
 

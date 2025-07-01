@@ -6,6 +6,7 @@ import { PhoneInputComponent } from '@/components/form-components/PhoneInputComp
 import { SkillsInputComponent } from '@/components/form-components/SkillsInputComponent';
 import { SocialInputComponent } from '@/components/form-components/SocialInputComponent';
 import { WorkExperienceComponent } from '@/components/form-components/WorkExperienceComponent';
+import { ProjectsComponent } from '@/components/form-components/ProjectsComponent';
 import { getMemberImageUrl, getDefaultAvatarPath } from '@/utils/imageUtils';
 
 export const ResumeForm = () => {
@@ -59,8 +60,10 @@ export const ResumeForm = () => {
     projects: [
       {
         name: '',
+        start_date: '',
+        end_date: '',
+        is_ongoing: false,
         company: '',
-        period: '',
         description: ['']
       }
     ]
@@ -444,6 +447,31 @@ export const ResumeForm = () => {
     }
   };
 
+  // Helper function to format project period for backend compatibility
+  const formatProjectPeriod = (startDate, endDate, isOngoing) => {
+    if (!startDate) return '';
+    
+    const formatDate = (dateStr) => {
+      if (!dateStr) return '';
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short' 
+      });
+    };
+    
+    const formattedStart = formatDate(startDate);
+    
+    if (isOngoing) {
+      return `${formattedStart} - Ongoing`;
+    } else if (endDate) {
+      const formattedEnd = formatDate(endDate);
+      return `${formattedStart} - ${formattedEnd}`;
+    } else {
+      return formattedStart;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -508,7 +536,14 @@ export const ResumeForm = () => {
             period: formatWorkPeriod(work.start_date, work.end_date, work.currently_working)
           })),
         academic: formData.academic.filter(edu => edu.degreeLevel && edu.institution),
-        projects: formData.projects.filter(proj => proj.name && proj.company)
+        projects: formData.projects
+          .filter(proj => proj.name && proj.start_date)
+          .map(proj => ({
+            name: proj.name,
+            company: proj.company,
+            description: proj.description.filter(desc => desc.trim() !== ''),
+            period: formatProjectPeriod(proj.start_date, proj.end_date, proj.is_ongoing)
+          }))
       };
 
       console.log('Sending resume data:', resumeData);
@@ -959,133 +994,7 @@ export const ResumeForm = () => {
 
 
             {/* Projects Section */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-              <div className="mb-6">
-                <h2 className="text-2xl font-semibold text-carbon flex items-center">
-                  <Award className="w-6 h-6 mr-2 text-rich-gold" />
-                  Projects
-                </h2>
-              </div>
-              
-              {formData.projects.map((project, index) => (
-                <div key={index} className="border border-gray-200 rounded-lg p-6 mb-6 bg-sand">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-carbon">Project {index + 1}</h3>
-                    {formData.projects.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeProjectEntry(index)}
-                        className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-colors"
-                        title="Remove this project"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                      <label className="block text-sm font-medium text-carbon mb-2">
-                        Project Name *
-                      </label>
-                      <input
-                        type="text"
-                        value={project.name}
-                        onChange={(e) => handleProjectChange(index, 'name', e.target.value)}
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                        placeholder="E-commerce Platform, Mobile App, etc."
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-carbon mb-2">
-                        Company/Client
-                      </label>
-                      <input
-                        type="text"
-                        value={project.company}
-                        onChange={(e) => handleProjectChange(index, 'company', e.target.value)}
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                        placeholder="Client Name, Personal Project, etc."
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-carbon mb-2">
-                        Period *
-                      </label>
-                      <input
-                        type="text"
-                        value={project.period}
-                        onChange={(e) => handleProjectChange(index, 'period', e.target.value)}
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                        placeholder="Nov. 2019 - Jan. 2020, 6 months, etc."
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="block text-sm font-medium text-carbon">
-                        Project Description *
-                      </label>
-                      <button
-                        type="button"
-                        onClick={() => addProjectDescription(index)}
-                        className="text-deep-green hover:text-green-dark text-sm flex items-center space-x-1 transition-colors"
-                      >
-                        <Plus className="w-3 h-3" />
-                        <span>Add Description</span>
-                      </button>
-                    </div>
-                    {project.description.map((desc, descIndex) => (
-                      <div key={descIndex} className="mb-2 relative">
-                        <textarea
-                          value={desc}
-                          onChange={(e) => handleProjectDescriptionChange(index, descIndex, e.target.value)}
-                          rows={2}
-                          className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none"
-                          placeholder={`• Project feature or achievement ${descIndex + 1}`}
-                          required={descIndex === 0}
-                        />
-                        {project.description.length > 1 && (
-                          <button
-                            type="button"
-                            onClick={() => removeProjectDescription(index, descIndex)}
-                            className="absolute top-2 right-2 text-red-400 hover:text-red-600 transition-colors"
-                            title="Remove this description"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                    <p className="text-xs text-gray-600 mt-1">
-                      Highlight key features, technologies used, and project outcomes
-                    </p>
-                  </div>
-                </div>
-              ))}
-              
-              {formData.projects.length === 0 && (
-                <div className="text-center py-8 text-gray-600">
-                  <Award className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>No project entries yet. Click &quot;Add Project&quot; to get started.</p>
-                </div>
-              )}
-              
-              {/* Add Project Button */}
-              <div className="flex justify-end mt-6">
-                <button
-                  type="button"
-                  onClick={addProjectEntry}
-                  className="bg-deep-green hover:bg-green-dark text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>Add Project</span>
-                </button>
-              </div>
-            </div>
+            <ProjectsComponent formData={formData} setFormData={setFormData} />
 
             {/* Submit Button */}
             <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
