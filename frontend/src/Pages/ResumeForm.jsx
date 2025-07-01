@@ -4,6 +4,7 @@ import { SEO } from '@/components/common/SEO';
 import { MailInputComponent } from '@/components/form-components/MailInputComponent';
 import { PhoneInputComponent } from '@/components/form-components/PhoneInputComponent';
 import { SkillsInputComponent } from '@/components/form-components/SkillsInputComponent';
+import { SocialInputComponent } from '@/components/form-components/SocialInputComponent';
 import { getMemberImageUrl, getDefaultAvatarPath } from '@/utils/imageUtils';
 
 export const ResumeForm = () => {
@@ -66,7 +67,6 @@ export const ResumeForm = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [submitMessage, setSubmitMessage] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
-  const [socialMediaList, setSocialMediaList] = useState([{ platform: '', url: '' }]);
 
   const turkishCities = [
     'Adana', 'Adıyaman', 'Afyonkarahisar', 'Ağrı', 'Amasya', 'Ankara', 'Antalya', 'Artvin',
@@ -413,36 +413,6 @@ export const ResumeForm = () => {
     setFormData(prev => ({
       ...prev,
       academic: prev.academic.filter((_, i) => i !== index)
-    }));
-  };
-
-  const addSocialMedia = () => {
-    setSocialMediaList([...socialMediaList, { platform: '', url: '' }]);
-  };
-
-  const removeSocialMedia = (index) => {
-    const newList = socialMediaList.filter((_, i) => i !== index);
-    setSocialMediaList(newList);
-    updateSocialMediaData(newList);
-  };
-
-  const handleSocialMediaChange = (index, field, value) => {
-    const newList = [...socialMediaList];
-    newList[index][field] = value;
-    setSocialMediaList(newList);
-    updateSocialMediaData(newList);
-  };
-
-  const updateSocialMediaData = (list) => {
-    const socialMediaObj = {};
-    list.forEach(item => {
-      if (item.platform && item.url) {
-        socialMediaObj[item.platform.toLowerCase()] = item.url;
-      }
-    });
-    setFormData(prev => ({
-      ...prev,
-      social_media: socialMediaObj
     }));
   };
 
@@ -1012,68 +982,7 @@ export const ResumeForm = () => {
             <SkillsInputComponent formData={formData} setFormData={setFormData} />
 
             {/* Social Media Section */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-              <div className="mb-6">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-semibold text-carbon flex items-center">
-                    <Globe className="w-6 h-6 mr-2 text-rich-gold" />
-                    Social Media
-                  </h2>
-                  <button
-                    type="button"
-                    onClick={addSocialMedia}
-                    className="bg-rich-gold hover:bg-gold-dark text-deep-green px-4 py-2 rounded-lg flex items-center transition-colors font-medium"
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Social Media
-                  </button>
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                {socialMediaList.map((social, index) => (
-                  <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-sand rounded-lg">
-                    <div>
-                      <label className="block text-sm font-medium text-carbon mb-2">
-                        Platform
-                      </label>
-                      <input
-                        type="text"
-                        value={social.platform}
-                        onChange={(e) => handleSocialMediaChange(index, 'platform', e.target.value)}
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                        placeholder="e.g., LinkedIn, GitHub, Twitter, Portfolio"
-                      />
-                    </div>
-
-                    <div className="flex items-end space-x-2">
-                      <div className="flex-1">
-                        <label className="block text-sm font-medium text-carbon mb-2">
-                          URL
-                        </label>
-                        <input
-                          type="url"
-                          value={social.url}
-                          onChange={(e) => handleSocialMediaChange(index, 'url', e.target.value)}
-                          className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                          placeholder="https://..."
-                        />
-                      </div>
-                      
-                      {socialMediaList.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => removeSocialMedia(index)}
-                          className="bg-red-600 hover:bg-red-700 text-white p-3 rounded-lg transition-colors"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <SocialInputComponent formData={formData} setFormData={setFormData} />
 
             {/* Work Experience Section */}
             <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
