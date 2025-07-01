@@ -28,9 +28,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/cv/:memberId" element={<Resume />} />
                         <Route path="/form" element={
-                            <ProtectedRoute>
-                                <Dashboard />
-                            </ProtectedRoute>
+                                <ResumeForm />
                         } />
                         <Route path="/dashboard" element={
                             <ProtectedRoute>
@@ -72,7 +70,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                                 <Dashboard />
                             </ProtectedRoute>
                         } />
-                        <Route path="/contact-form" element={<ResumeForm />} />
                     </Routes>
                 </BrowserRouter>
             </AuthProvider>
