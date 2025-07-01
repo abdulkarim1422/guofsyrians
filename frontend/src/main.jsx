@@ -1,15 +1,15 @@
 import React from "react";
 
 import ReactDOM from "react-dom/client";
-import { Resume } from "@/pages/Resume";
+import { Resume } from "@/pages/Resume.jsx";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async';
-import { ResumeForm } from "@/pages/ResumeForm";
-import Dashboard from "@/pages/dashboard";
-import LoginPage from "@/pages/LoginPage";
-import { AuthProvider } from "@/contexts/AuthContext";
-import ProtectedRoute from "@/components/auth-components/ProtectedRoute";
-import {Wave} from "@/pages/MainLandingPage";
+import { ResumeForm } from "@/pages/ResumeForm.jsx";
+import Dashboard from "@/pages/dashboard.jsx";
+import LoginPage from "@/pages/LoginPage.tsx";
+import { AuthProvider } from "@/contexts/AuthContext.tsx";
+import ProtectedRoute from "@/components/auth-components/ProtectedRoute.tsx";
+import {Wave} from "@/pages/MainLandingPage.jsx";
 
 import "./App.css";
 
