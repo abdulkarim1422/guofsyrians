@@ -36,7 +36,9 @@ export const ResumeForm = () => {
     works: [
       {
         title: '',
-        period: '',
+        start_date: '',
+        end_date: '',
+        currently_working: false,
         company: '',
         description: ['']
       }
@@ -119,13 +121,47 @@ export const ResumeForm = () => {
     if (fileInput) fileInput.value = '';
   };
 
+  // Validation helper for work experience dates
+  const validateWorkDates = (startDate, endDate, currentlyWorking) => {
+    if (!startDate) return true; // Start date is required, but handled by HTML validation
+    
+    if (!currentlyWorking && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      return end >= start;
+    }
+    
+    return true;
+  };
+
+  // Enhanced handleWorkChange to include date validation
   const handleWorkChange = (index, field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      works: prev.works.map((work, i) => 
-        i === index ? { ...work, [field]: value } : work
-      )
-    }));
+    setFormData(prev => {
+      const updatedWorks = prev.works.map((work, i) => {
+        if (i === index) {
+          const updatedWork = { ...work, [field]: value };
+          
+          // If changing start_date or end_date, validate dates
+          if ((field === 'start_date' || field === 'end_date') && 
+              !validateWorkDates(
+                field === 'start_date' ? value : work.start_date,
+                field === 'end_date' ? value : work.end_date,
+                work.currently_working
+              )) {
+            // You could add an error state here if needed
+            console.warn('End date must be after start date');
+          }
+          
+          return updatedWork;
+        }
+        return work;
+      });
+      
+      return {
+        ...prev,
+        works: updatedWorks
+      };
+    });
   };
 
   const handleWorkDescriptionChange = (workIndex, descIndex, value) => {
@@ -147,7 +183,9 @@ export const ResumeForm = () => {
       ...prev,
       works: [...prev.works, {
         title: '',
-        period: '',
+        start_date: '',
+        end_date: '',
+        currently_working: false,
         company: '',
         description: ['']
       }]
@@ -482,6 +520,31 @@ export const ResumeForm = () => {
     }));
   };
 
+  // Helper function to format work period for backend compatibility
+  const formatWorkPeriod = (startDate, endDate, currentlyWorking) => {
+    if (!startDate) return '';
+    
+    const formatDate = (dateStr) => {
+      if (!dateStr) return '';
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short' 
+      });
+    };
+    
+    const formattedStart = formatDate(startDate);
+    
+    if (currentlyWorking) {
+      return `${formattedStart} - Present`;
+    } else if (endDate) {
+      const formattedEnd = formatDate(endDate);
+      return `${formattedStart} - ${formattedEnd}`;
+    } else {
+      return formattedStart;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -537,7 +600,14 @@ export const ResumeForm = () => {
         bio: formData.bio || null,
         skills: formData.skills && formData.skills.length > 0 ? formData.skills : [],
         social_media: formData.social_media || {},
-        works: formData.works.filter(work => work.title && work.company),
+        works: formData.works
+          .filter(work => work.title && work.company && work.start_date)
+          .map(work => ({
+            title: work.title,
+            company: work.company,
+            description: work.description.filter(desc => desc.trim() !== ''),
+            period: formatWorkPeriod(work.start_date, work.end_date, work.currently_working)
+          })),
         academic: formData.academic.filter(edu => edu.degreeLevel && edu.institution),
         projects: formData.projects.filter(proj => proj.name && proj.company)
       };
@@ -600,6 +670,20 @@ export const ResumeForm = () => {
         setSubmitMessage('');
       }, 5000);
     }
+  };
+
+  const handleWorkCurrentlyWorkingChange = (index, value) => {
+    setFormData(prev => ({
+      ...prev,
+      works: prev.works.map((work, i) => 
+        i === index ? { 
+          ...work, 
+          currently_working: value,
+          // Clear end_date if currently working
+          end_date: value ? '' : work.end_date
+        } : work
+      )
+    }));
   };
 
   return (
@@ -1023,19 +1107,6 @@ export const ResumeForm = () => {
                         required
                       />
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-carbon mb-2">
-                        Period *
-                      </label>
-                      <input
-                        type="text"
-                        value={work.period}
-                        onChange={(e) => handleWorkChange(index, 'period', e.target.value)}
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                        placeholder="Oct. 2021 - Present, Jan 2020 - Dec 2021"
-                        required
-                      />
-                    </div>
                     <div className="md:col-span-2">
                       <label className="block text-sm font-medium text-carbon mb-2">
                         Company *
@@ -1048,6 +1119,48 @@ export const ResumeForm = () => {
                         placeholder="Company Name, Organization, etc."
                         required
                       />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-carbon mb-2">
+                        Start Date *
+                      </label>
+                      <input
+                        type="date"
+                        value={work.start_date}
+                        onChange={(e) => handleWorkChange(index, 'start_date', e.target.value)}
+                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-carbon mb-2">
+                        End Date {work.currently_working ? '(Currently Working)' : '*'}
+                      </label>
+                      <input
+                        type="date"
+                        value={work.end_date}
+                        onChange={(e) => handleWorkChange(index, 'end_date', e.target.value)}
+                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
+                        disabled={work.currently_working}
+                        required={!work.currently_working}
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id={`currently-working-${index}`}
+                          checked={work.currently_working}
+                          onChange={(e) => handleWorkCurrentlyWorkingChange(index, e.target.checked)}
+                          className="w-4 h-4 text-rich-gold bg-white border-2 border-gray-200 rounded focus:ring-rich-gold focus:ring-2"
+                        />
+                        <label htmlFor={`currently-working-${index}`} className="text-sm font-medium text-carbon">
+                          I currently work here
+                        </label>
+                      </div>
+                      <p className="text-xs text-gray-600 mt-1">
+                        Check this box if you're still employed at this position
+                      </p>
                     </div>
                   </div>
                   
@@ -1090,6 +1203,19 @@ export const ResumeForm = () => {
                     <p className="text-xs text-gray-600 mt-1">
                       Add multiple bullet points to highlight key achievements and responsibilities
                     </p>
+                  </div>
+
+                  <div className="flex items-center mb-4">
+                    <input
+                      type="checkbox"
+                      id={`currently_working_${index}`}
+                      checked={work.currently_working}
+                      onChange={(e) => handleWorkCurrentlyWorkingChange(index, e.target.checked)}
+                      className="w-4 h-4 text-rich-gold border-gray-300 rounded focus:ring-2 focus:ring-rich-gold"
+                    />
+                    <label htmlFor={`currently_working_${index}`} className="ml-3 text-sm font-medium text-carbon">
+                      Currently working here
+                    </label>
                   </div>
                 </div>
               ))}
