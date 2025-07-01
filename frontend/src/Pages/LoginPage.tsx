@@ -112,22 +112,22 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-brand-sand flex items-center justify-center p-4" style={{ backgroundColor: '#efe8d7' }}>
       <animated.div style={formAnimation} className="w-full max-w-md">
-        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/20">
+        <div className="bg-white rounded-2xl p-8 shadow-2xl border border-gray-200">
           {/* Logo and Title */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#dcb557' }}>
               <span className="text-white text-2xl font-bold">G</span>
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-            <p className="text-gray-300">Sign in to your Guofyrians account</p>
+            <h1 className="text-3xl font-bold mb-2" style={{ color: '#1f1f1f' }}>Welcome Back</h1>
+            <p style={{ color: '#214937' }}>Sign in to your Guofyrians account</p>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 mb-6">
-              <p className="text-red-400 text-sm text-center">{error}</p>
+            <div className="border rounded-lg p-3 mb-6" style={{ backgroundColor: '#fef2f2', borderColor: '#fecaca' }}>
+              <p className="text-sm text-center" style={{ color: '#dc2626' }}>{error}</p>
             </div>
           )}
 
@@ -135,7 +135,7 @@ const LoginPage: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: '#1f1f1f' }}>
                 Email Address
               </label>
               <div className="relative">
@@ -145,12 +145,17 @@ const LoginPage: React.FC = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 border rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-opacity-50"
+                  style={{ 
+                    backgroundColor: '#ffffff',
+                    borderColor: '#d1d5db',
+                    color: '#1f1f1f'
+                  }}
                   placeholder="Enter your email"
                   required
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5" style={{ color: '#214937' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                   </svg>
                 </div>
@@ -159,7 +164,7 @@ const LoginPage: React.FC = () => {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium mb-2" style={{ color: '#1f1f1f' }}>
                 Password
               </label>
               <div className="relative">
@@ -169,14 +174,20 @@ const LoginPage: React.FC = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 border rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-opacity-50"
+                  style={{ 
+                    backgroundColor: '#ffffff',
+                    borderColor: '#d1d5db',
+                    color: '#1f1f1f'
+                  }}
                   placeholder="Enter your password"
                   required
                 />
                 <button
                   type="button"
                   onClick={togglePasswordVisibility}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center transition-colors"
+                  style={{ color: '#214937' }}
                 >
                   {showPassword ? (
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -196,11 +207,15 @@ const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full py-3 px-4 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+              style={{ 
+                backgroundColor: '#dcb557',
+                color: '#214937'
+              }}
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+                  <div className="w-5 h-5 border-2 border-t-current rounded-full animate-spin mr-2" style={{ borderColor: '#214937', borderTopColor: '#214937' }}></div>
                   Signing In...
                 </div>
               ) : (
@@ -211,11 +226,12 @@ const LoginPage: React.FC = () => {
 
           {/* Footer */}
           <div className="mt-8 text-center">
-            <p className="text-gray-400 text-sm">
+            <p className="text-sm" style={{ color: '#214937' }}>
               Don't have an account?{' '}
               <button
                 onClick={() => {/* Handle registration navigation */}}
-                className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                className="font-medium transition-colors hover:opacity-80"
+                style={{ color: '#dcb557' }}
               >
                 Contact Admin
               </button>
