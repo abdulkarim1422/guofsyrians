@@ -236,6 +236,17 @@ const LoginPage: React.FC = () => {
                 Contact Admin
               </button>
             </p>
+            <p className="text-sm mt-2" style={{ color: '#214937' }}>
+              or fill the{' '}
+              <button
+                onClick={() => navigate('/form')}
+                className="font-medium transition-colors hover:opacity-80 cursor-pointer"
+                style={{ color: '#dcb557' }}
+              >
+                form
+              </button>
+              {' '}if you are a student
+            </p>
           </div>
         </div>
       </animated.div>
