@@ -145,6 +145,7 @@ async def submit_resume(resume_data: ResumeFormRequest):
     Submit a resume form - no authentication required
     Creates a Member document and related Work Experience, Education, and Project documents
     """
+    print("backend -- Received resume data:", resume_data)
     try:
         # create user with resume form data
         user = await resume_services.create_user_with_resume_form_and_send_welcome_email(
@@ -190,7 +191,8 @@ async def submit_resume(resume_data: ResumeFormRequest):
         if resume_data.projects:
             await create_project_entries(member_id, resume_data.projects)
         
-
+        print("backend -- Resume submitted successfully for member:", resume_data.name)
+        
         return {
             "message": "Resume submitted successfully",
             "member_id": member_id,
