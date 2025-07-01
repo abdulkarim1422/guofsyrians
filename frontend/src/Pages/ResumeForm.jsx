@@ -1012,24 +1012,10 @@ export const ResumeForm = () => {
               </h2>
               
               <div className="space-y-4">
-                <div>
-                  <label htmlFor="aboutLabel" className="block text-sm font-medium text-carbon mb-2">
-                    Section Label
-                  </label>
-                  <input
-                    type="text"
-                    id="aboutLabel"
-                    name="aboutLabel"
-                    value={formData.aboutLabel}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                    placeholder="Profile / About"
-                  />
-                </div>
 
                 <div>
                   <label htmlFor="bio" className="block text-sm font-medium text-carbon mb-2">
-                    Description *
+                    Bio *
                   </label>
                   <textarea
                     id="bio"
