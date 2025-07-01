@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Phone, MapPin, Send, User, MessageSquare, Briefcase, GraduationCap, Code, Award, Globe, Plus, Trash2 } from 'lucide-react';
 import { SEO } from '@/components/common/SEO';
 import { MailInputComponent } from '@/components/form-components/MailInputComponent';
@@ -73,6 +73,17 @@ export const ResumeForm = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [submitMessage, setSubmitMessage] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
+
+  // Ensure scrolling is enabled when this component mounts
+  useEffect(() => {
+    // Reset any global overflow restrictions
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    
+    return () => {
+      // Don't reset on unmount as other pages might need different behavior
+    };
+  }, []);
 
   const turkishCities = [
     'Adana', 'Adıyaman', 'Afyonkarahisar', 'Ağrı', 'Amasya', 'Ankara', 'Antalya', 'Artvin',
@@ -615,8 +626,8 @@ export const ResumeForm = () => {
         description="Edit and update resume information including profile, skills, experience, and projects."
       />
       
-      <>
-        <div className="flex-1 flex flex-col items-center px-4 py-8 bg-sand min-h-screen">
+      <div className="min-h-screen bg-sand overflow-auto">
+        <div className="w-full flex flex-col items-center px-4 py-8 max-w-none">
           {/* Header Section */}
           <div className="text-center mb-12 flex flex-col items-center">
             <h1 className="text-4xl md:text-5xl font-bold text-carbon mb-4">
@@ -1032,7 +1043,7 @@ export const ResumeForm = () => {
 
           </form>
         </div>
-      </>
+      </div>
     </>
   );
 };
