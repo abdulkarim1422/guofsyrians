@@ -307,3 +307,31 @@ async def delete_resume(member_id: str):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete resume: {str(e)}")
+
+# Public endpoint for getting skills for the resume form
+@router.get("/members/skills", response_model=List[str])
+async def get_public_skills():
+    """
+    Get all unique skills from all members - public endpoint for resume form
+    No authentication required
+    """
+    try:
+        # Get all members
+        members = await member_crud.get_all_members_from_all_teams()
+        
+        # Collect all skills
+        all_skills = set()
+        for member in members:
+            if member.skills:
+                for skill in member.skills:
+                    if skill and skill.strip():  # Only add non-empty skills
+                        all_skills.add(skill.strip())
+        
+        # Return sorted list of unique skills
+        return sorted(list(all_skills))
+        
+    except Exception as e:
+        # Return empty list on error to prevent form breakage
+        import logging
+        logging.error(f"Error fetching skills: {e}")
+        return []
