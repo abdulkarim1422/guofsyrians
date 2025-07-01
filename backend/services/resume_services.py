@@ -4,7 +4,7 @@ from bson import ObjectId
 from typing import Dict, Any, Optional
 from fastapi import HTTPException
 import random
-from services import mail_service
+from services import mail_service, auth_services
 
 async def member_resume_form(user_id: str, form_data: Dict[str, Any]) -> member_model.Member:
     """
@@ -64,9 +64,12 @@ async def create_user_with_resume_form_and_send_welcome_email(mail: str, name: s
     """
     Create a new user with the provided email and resume form data.
     """
+    # Generate a random password
+    plain_password = "".join(random.choices("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", k=8))
+    
     user_to_insert = user_model.User(
         email=mail,
-        password="".join(random.choices("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", k=8)),
+        password=auth_services.get_password_hash(plain_password),  # Hash the password
         name=name,
         role="member"  # Default role for new users
     )
@@ -74,13 +77,13 @@ async def create_user_with_resume_form_and_send_welcome_email(mail: str, name: s
     user = await user_crud.create_user(user_to_insert)
     # Send welcome email to the new user
     if user:
-        await send_welcome_email(user)
+        send_welcome_email(user, plain_password)  # Pass the plain password for email
     else:
         raise HTTPException(status_code=500, detail="Failed to create user")
     return user
 
 # function to send the new user's password to their email
-async def send_welcome_email(user: user_model.User) -> None:
+def send_welcome_email(user: user_model.User, plain_password: str) -> None:
     """
     Send a welcome email to the new user with their password.
     """
@@ -89,7 +92,7 @@ async def send_welcome_email(user: user_model.User) -> None:
     Hello {user.name},\n\n
 
     Your account has been created successfully.\n
-    Your password is: {user.password}\n\n
+    Your password is: {plain_password}\n\n
 
     please login to your account from the following link:\n
     https://app.guofsyrians.com/login\n\n
@@ -98,4 +101,4 @@ async def send_welcome_email(user: user_model.User) -> None:
     The GuofSyrians Team
     """
 
-    await mail_service.send_email(user.email, subject, body)
+    mail_service.send_email(user.email, subject, body)
