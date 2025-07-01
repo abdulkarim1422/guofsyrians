@@ -212,24 +212,20 @@ export function WorkExperienceComponent({ formData, setFormData }) {
                 required
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-carbon mb-2">
-                End Date {work.currently_working ? '(Currently Working)' : '*'}
-              </label>
-              <input
-                type="date"
-                value={work.end_date}
-                onChange={(e) => handleWorkChange(index, 'end_date', e.target.value)}
-                className={`w-full px-4 py-3 border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all ${
-                  work.currently_working 
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-                    : 'bg-white'
-                }`}
-                disabled={work.currently_working}
-                required={!work.currently_working}
-                placeholder={work.currently_working ? 'Currently working here' : ''}
-              />
-            </div>
+            {!work.currently_working && (
+              <div>
+                <label className="block text-sm font-medium text-carbon mb-2">
+                  End Date *
+                </label>
+                <input
+                  type="date"
+                  value={work.end_date}
+                  onChange={(e) => handleWorkChange(index, 'end_date', e.target.value)}
+                  className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                  required
+                />
+              </div>
+            )}
             
             {/* Currently working checkbox */}
             <div className="md:col-span-2">
