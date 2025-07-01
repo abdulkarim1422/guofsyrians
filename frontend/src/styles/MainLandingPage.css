@@ -1,19 +1,28 @@
 /* index.css  */
 .fullpage-container {
-  height: 100vh;
-  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000023;
+  height: 100vh !important;
+  overflow: hidden !important;
   display: flex;
   flex-direction: column;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .hero {
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 60vh;
+  height: 100vh;
   justify-content: center;
   width: 100%;
   position: relative;
+  overflow: hidden;
 }
 
 .hero__content {
@@ -161,13 +170,6 @@
   100% {
     transform: rotate(360deg);
   }
-}
-body {
-  background-color: #000023;
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
 }
 
 * {
