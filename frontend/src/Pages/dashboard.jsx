@@ -7,7 +7,7 @@ import StudentsList from '@/components/dashboard-components/StudentsList.jsx';
 import { ResumeForm } from '@/pages/ResumeForm.jsx';
 import Settings from '@/components/settings/Settings.jsx';
 import ProfileSettings from '@/components/settings/ProfileSettings.jsx';
-// import Announcements from '@/components/announcements/Announcements.jsx';
+import Announcements from '@/components/announcements/Announcements.jsx';
 import { useAuth } from '@/contexts/AuthContext.tsx';
 
 const sidebarItems = [
