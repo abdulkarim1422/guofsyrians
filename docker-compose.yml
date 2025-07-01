@@ -14,6 +14,8 @@ services:
       - db
     environment:
       - MONGODB_URI=mongodb://db:27017/mydb
+    env_file:
+      - ./backend/.env
 
   frontend:
     build: ./frontend
