@@ -3,6 +3,7 @@ import { Phone, MapPin, Send, User, MessageSquare, Briefcase, GraduationCap, Cod
 import { SEO } from '@/components/common/SEO';
 import { MailInputComponent } from '@/components/form-components/MailInputComponent';
 import { PhoneInputComponent } from '@/components/form-components/PhoneInputComponent';
+import { SkillsInputComponent } from '@/components/form-components/SkillsInputComponent';
 import { getMemberImageUrl, getDefaultAvatarPath } from '@/utils/imageUtils';
 
 export const ResumeForm = () => {
@@ -413,32 +414,6 @@ export const ResumeForm = () => {
       ...prev,
       academic: prev.academic.filter((_, i) => i !== index)
     }));
-  };
-
-  const [currentSkill, setCurrentSkill] = useState('');
-
-  const addSkill = () => {
-    if (currentSkill.trim()) {
-      setFormData(prev => ({
-        ...prev,
-        skills: [...prev.skills, currentSkill.trim()]
-      }));
-      setCurrentSkill('');
-    }
-  };
-
-  const removeSkill = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      skills: prev.skills.filter((_, i) => i !== index)
-    }));
-  };
-
-  const handleSkillKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      addSkill();
-    }
   };
 
   const addSocialMedia = () => {
@@ -1034,69 +1009,7 @@ export const ResumeForm = () => {
             </div>
 
             {/* Skills Section */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-              <h2 className="text-2xl font-semibold text-carbon mb-6 flex items-center">
-                <Code className="w-6 h-6 mr-2 text-rich-gold" />
-                Skills
-              </h2>
-              
-              <div className="space-y-6">
-                {/* Add New Skill Input Row */}
-                <div className="flex items-center space-x-3">
-                  <div className="flex-1">
-                    <input
-                      type="text"
-                      value={currentSkill}
-                      onChange={(e) => setCurrentSkill(e.target.value)}
-                      onKeyPress={handleSkillKeyPress}
-                      className="w-full px-4 py-2.5 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                      placeholder="Enter a skill (e.g., JavaScript, Project Management, etc.)"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={addSkill}
-                    className="bg-deep-green hover:bg-green-dark text-white px-4 py-2.5 rounded-lg flex items-center space-x-2 transition-colors whitespace-nowrap"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Add Skill</span>
-                  </button>
-                </div>
-                
-                {/* Skills List */}
-                {formData.skills.length > 0 && (
-                  <div className="space-y-3">
-                    <h3 className="text-lg font-medium text-carbon">Your Skills:</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                      {formData.skills.map((skill, index) => (
-                        <div
-                          key={index}
-                          className="bg-sand border border-gray-200 rounded-lg px-4 py-3 min-h-[3rem] flex items-center justify-center group hover:bg-gray-100 transition-colors relative"
-                        >
-                          <span className="text-carbon text-sm text-center flex-1 pr-6">{skill}</span>
-                          <button
-                            type="button"
-                            onClick={() => removeSkill(index)}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-all"
-                            title="Remove skill"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {/* Empty State - Only show when no skills exist */}
-                {formData.skills.length === 0 && (
-                  <div className="text-center py-6 text-gray-600">
-                    <Code className="w-10 h-10 mx-auto mb-3 opacity-50" />
-                    <p className="text-sm">No skills added yet. Enter a skill above and click &quot;Add Skill&quot;.</p>
-                  </div>
-                )}
-              </div>
-            </div>
+            <SkillsInputComponent formData={formData} setFormData={setFormData} />
 
             {/* Social Media Section */}
             <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">

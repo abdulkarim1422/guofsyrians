@@ -61,6 +61,25 @@ async def delete_member(member_id: str):
 async def get_all_members_from_all_teams():
     return await member_crud.get_all_members_from_all_teams()
 
+@router.get("/members/skills")
+async def get_all_skills():
+    """
+    Get all unique skills from all members
+    """
+    # Get all members
+    members = await member_crud.get_all_members_from_all_teams()
+    
+    # Collect all skills
+    all_skills = set()
+    for member in members:
+        if member.skills:
+            for skill in member.skills:
+                if skill and skill.strip():  # Only add non-empty skills
+                    all_skills.add(skill.strip())
+    
+    # Return sorted list of unique skills
+    return sorted(list(all_skills))
+
 @router.get("/members/with-education", response_model=List[MemberWithEducation])
 async def get_all_members_with_education():
     """
