@@ -71,12 +71,21 @@ async def create_work_experiences(member_id: str, works: List[WorkExperienceRequ
 async def create_education_entries(member_id: str, academic: List[AcademicEntryRequest]):
     """Create education documents for a member using CRUD functions"""
     for edu in academic:
+        # Parse graduation date if provided
+        graduation_date = None
+        if edu.date:
+            try:
+                graduation_date = datetime.strptime(edu.date, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+            except ValueError:
+                # If date parsing fails, continue without the date
+                pass
+        
         education = member_model.MemberEducation(
             member_id=member_id,
             institution=edu.institution,
             degree=edu.degreeLevel,
             field_of_study=edu.major,
-            # Note: date parsing could be enhanced to extract start_date/end_date
+            end_date=graduation_date,  # Using end_date as graduation date
         )
         await member_crud.create_member_education(education)
 

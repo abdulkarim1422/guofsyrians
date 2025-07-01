@@ -958,13 +958,15 @@ export const ResumeForm = () => {
                                     Graduation Date *
                                 </label>
                                 <input
-                                    type="text"
+                                    type="date"
                                     value={edu.date}
                                     onChange={(e) => handleAcademicChange(index, 'date', e.target.value)}
                                     className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                                    placeholder="2019 or May 2019"
                                     required
                                 />
+                                <p className="text-xs text-gray-600 mt-1">
+                                    Select your graduation date or expected graduation date
+                                </p>
                             </div>
                             
                             <div>
