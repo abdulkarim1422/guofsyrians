@@ -3,18 +3,18 @@
 /*===== DASHBOARD STYLES - BRAND COLORS =====*/
 .dashboard-body {
   font-family: 'Tajawal', sans-serif;
-  color: #1f1f1f;
-  background-color: #efe8d7;
+  color: var(--brand-carbon);
+  background-color: var(--brand-sand);
 }
 
 .bg-card {
-  background-color: #ffffff;
+  background-color: var(--brand-surface);
   border: 1px solid rgba(31, 31, 31, 0.1);
   box-shadow: 0 2px 8px rgba(31, 31, 31, 0.1);
 }
 
 .bg-sidebar-card-top {
-  background-color: #214937;
+  background-color: var(--brand-deep-green);
   color: white;
 }
 
@@ -27,60 +27,60 @@
 }
 
 .text-premium-yellow {
-  color: #dcb557;
+  color: var(--brand-rich-gold);
 }
 
 .icon-background {
-  background: #efe8d7;
-  color: #1f1f1f;
+  background: var(--brand-sand);
+  color: var(--brand-carbon);
 }
 
 .tooltip-head {
-  background: #214937;
+  background: var(--brand-deep-green);
   color: white;
 }
 
 .tooltip-body {
-  background: #ffffff;
-  color: #1f1f1f;
+  background: var(--brand-surface);
+  color: var(--brand-carbon);
   border: 1px solid rgba(31, 31, 31, 0.1);
 }
 
 .search-icon {
   top: 50%;
   transform: translate(0, -50%);
-  color: #214937;
+  color: var(--brand-deep-green);
 }
 
 .card-stack-border {
-  border-bottom: 2px solid #dcb557;
+  border-bottom: 2px solid var(--brand-rich-gold);
 }
 
 .bg-details {
-  background-color: #efe8d7;
-  color: #1f1f1f;
+  background-color: var(--brand-sand);
+  color: var(--brand-carbon);
 }
 
 .add-component-head {
-  background-color: #214937;
+  background-color: var(--brand-deep-green);
   background-image: none;
   color: white;
 }
 
 .sidebar-item-selected {
-  color: #dcb557;
-  border-right: 2px solid #dcb557;
+  color: var(--brand-rich-gold);
+  border-right: 2px solid var(--brand-rich-gold);
   background-color: rgba(220, 181, 87, 0.1);
 }
 
 .sidebar-item {
   border-right: 2px solid transparent;
-  color: #1f1f1f;
+  color: var(--brand-carbon);
   transition: all 0.3s ease;
 }
 
 .sidebar-item:hover {
-  color: #214937;
+  color: var(--brand-deep-green);
   background-color: rgba(33, 73, 55, 0.05);
 }
 
@@ -103,6 +103,29 @@
 
 /* Announcement carousel styles */
 .announcement-card-gradient {
-  background: linear-gradient(135deg, #dcb557 0%, #214937 100%);
+  background: linear-gradient(135deg, var(--brand-rich-gold) 0%, var(--brand-deep-green) 100%);
   color: var(--brand-sand);
+}
+
+/* Brand-specific text colors */
+.dashboard-logo-text {
+  color: var(--brand-deep-green) !important;
+}
+
+.dashboard-welcome-text {
+  color: var(--brand-deep-green) !important;
+}
+
+.dashboard-username {
+  color: var(--brand-deep-green) !important;
+}
+
+.dashboard-user-role {
+  color: #9ca3af;
+  transition: color 0.3s ease;
+}
+
+/* When hovering over the user card container, make the role text white */
+.sidebar-separator-bottom:hover .dashboard-user-role {
+  color: white !important;
 }

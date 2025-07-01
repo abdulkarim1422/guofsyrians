@@ -166,7 +166,7 @@ function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user,
       <div className="flex-shrink-0 overflow-hidden p-2">
         <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-top">
           <IconButton icon="res-react-dash-logo" className="w-10 h-10" />
-          <div className="block sm:hidden xl:block ml-2 font-bold text-xl text-white">
+          <div className="block sm:hidden xl:block ml-2 font-bold text-xl dashboard-logo-text">
             guofyrians
           </div>
           <div className="flex-grow sm:hidden xl:block" />
@@ -182,7 +182,7 @@ function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user,
           <div className="bg-sidebar-card-top rounded-xl w-full h-full flex items-center justify-start sm:justify-center xl:justify-start px-3 sm:px-0 xl:px-3">
             <Icon path="res-react-dash-sidebar-card" className="w-9 h-9 " />
             <div className="block sm:hidden xl:block ml-3">
-              <div className="text-sm font-bold text-white">الاتّحاد العام</div>
+              <div className="text-sm font-bold dashboard-welcome-text">الاتّحاد العام</div>
               <div className="text-sm">سيتم إضافة بقيّة الاتّحادات لاحقاً</div>
             </div>
             <div className="block sm:hidden xl:block flex-grow" />
@@ -228,8 +228,8 @@ function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user,
             </span>
           </div>
           <div className="block sm:hidden xl:block ml-2">
-            <div className="font-bold text-white text-sm">{user?.name || 'User'}</div>
-            <div className="text-xs text-gray-400">{user?.role || 'member'}</div>
+            <div className="font-bold dashboard-username text-sm">{user?.name || 'User'}</div>
+            <div className="text-xs dashboard-user-role">{user?.role || 'member'}</div>
           </div>
           <div className="flex-grow block sm:hidden xl:block" />
           <div className="block sm:hidden xl:block w-6 h-6 text-gray-400 hover:text-white transition-colors">
