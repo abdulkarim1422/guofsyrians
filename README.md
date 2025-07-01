@@ -13,6 +13,11 @@ then go to http://localhost:4173
 docker compose -f docker-compose.dev.yml up
 ```
 
+#### alternative development command
+```bash
+docker compose -f docker-compose-2.dev.yml up
+```
+
 then go to http://localhost:5173
 
 ## Logging in
