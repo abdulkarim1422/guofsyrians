@@ -9,6 +9,7 @@ import Dashboard from "./pages/dashboard";
 import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/auth-components/ProtectedRoute";
+import {Wave} from "./pages/MainLandingPage";
 
 import "./App.css";
 
@@ -21,12 +22,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     v7_relativeSplatPath: true 
                 }}>
                     <Routes>
-                        <Route path="/login" element={<LoginPage />} />
                         <Route path="/" element={
-                            <ProtectedRoute>
-                                <Dashboard />
-                            </ProtectedRoute>
+                                <Wave />
                         } />
+                        <Route path="/login" element={<LoginPage />} />
                         <Route path="/cv/:memberId" element={<Resume />} />
                         <Route path="/form" element={
                             <ProtectedRoute>
