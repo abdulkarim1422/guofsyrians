@@ -26,7 +26,7 @@ services:
       - ENV=development
       - UVICORN_ARGS=--reload
     volumes:
-      - ./backend:/app
+      - ./backend/app:/app/app
     working_dir: /app
 
   frontend:
