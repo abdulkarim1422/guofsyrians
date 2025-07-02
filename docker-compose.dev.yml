@@ -11,7 +11,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - "8000:8000"
+      - "8222:8222"
     depends_on:
       - db
     environment:
@@ -21,7 +21,11 @@ services:
     volumes:
       - ./backend:/app
     working_dir: /app
+<<<<<<< HEAD
     command: sh -c "cd /app && python wait-for-mongo.py && python create_admin.py && python populate_dummy_members.py && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+=======
+    command: sh -c "cd /app && sleep 10 && python create_admin.py && python populate_dummy_members.py && uvicorn main:app --host 0.0.0.0 --port 8222 --reload"
+>>>>>>> c52033dfc3955a0177929ddc021e170c0e9b144a
     networks:
       - app-network
     env_file:

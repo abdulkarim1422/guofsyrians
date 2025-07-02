@@ -28,7 +28,7 @@ if [ $? -eq 0 ]; then
     
     # Start the main application
     echo "🌟 Starting the FastAPI application..."
-    uvicorn main:app --host 0.0.0.0 --port 8000 ${UVICORN_ARGS:-}
+    uvicorn main:app --host 0.0.0.0 --port 8222 ${UVICORN_ARGS:-}
 else
     echo "❌ Failed to connect to MongoDB. Exiting."
     exit 1

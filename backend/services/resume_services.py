@@ -102,3 +102,4 @@ def send_welcome_email(user: user_model.User, plain_password: str) -> None:
     """
 
     mail_service.send_email(user.email, subject, body)
+    print("backend -- Welcome email sent to:", user.email)

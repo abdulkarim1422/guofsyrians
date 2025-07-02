@@ -331,7 +331,7 @@ export const ResumeForm = () => {
       console.log('Form validation - sex:', formData.sex, 'name:', formData.name, 'professional_title:', formData.professional_title, 'birthdate:', formData.birthdate);
 
       // Get API base URL from environment or use default
-      const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8222';
 
       // Send to backend
       const response = await fetch(`${API_BASE_URL}/api/resume/submit`, {

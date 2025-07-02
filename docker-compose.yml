@@ -9,7 +9,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - "8000:8000"
+      - "8222:8222"
     depends_on:
       - db
     environment:
