@@ -8,6 +8,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
+    allowedHosts: ['app2.guofsyrians.org'],
     watch: {
       usePolling: true,
     },
@@ -22,8 +23,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': './src',
-      '@components': './src/components'
+      '@': '/src',
+      '@components': '/src/components'
     },
   },
 })
