@@ -4,16 +4,16 @@ import axios from 'axios';
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8222';
 const VITE_API_URL_FOR_AUTH = import.meta.env.VITE_API_URL_FOR_AUTH || API_BASE_URL;
 
-// Create axios instance with default config for general API calls
-const api = axios.create({
+// Create axios instance for public form APIs (open to public)
+const formApi = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Create separate axios instance for auth API calls
-const authApi = axios.create({
+// Create axios instance for all other APIs (auth, user, etc.)
+const api = axios.create({
   baseURL: VITE_API_URL_FOR_AUTH,
   headers: {
     'Content-Type': 'application/json',
@@ -52,76 +52,79 @@ const addResponseInterceptor = (instance) => {
   );
 };
 
-// Apply interceptors to both instances
+// Apply interceptors to all relevant instances
 addAuthInterceptor(api);
-addAuthInterceptor(authApi);
 addResponseInterceptor(api);
-addResponseInterceptor(authApi);
+// No auth interceptor for formApi (public)
+addResponseInterceptor(formApi);
 
-// Auth API calls
+// Auth API calls (use api instance)
 export const authAPI = {
   login: async (credentials) => {
-    const response = await authApi.post('/api/auth/login-json', credentials);
+    const response = await api.post('/api/auth/login-json', credentials);
     return response.data;
   },
   
   register: async (userData) => {
-    const response = await authApi.post('/api/auth/register', userData);
+    const response = await api.post('/api/auth/register', userData);
     return response.data;
   },
   
   getCurrentUser: async () => {
-    const response = await authApi.get('/api/auth/me');
+    const response = await api.get('/api/auth/me');
     return response.data;
   },
   
   updateProfile: async (userData) => {
-    const response = await authApi.put('/api/auth/me', userData);
+    const response = await api.put('/api/auth/me', userData);
     return response.data;
   },
   
   changePassword: async (passwordData) => {
-    const response = await authApi.put('/api/auth/change-password', passwordData);
+    const response = await api.put('/api/auth/change-password', passwordData);
     return response.data;
   },
 };
 
-// User management API calls (Admin only)
+// User management API calls (Admin only, use api instance)
 export const userAPI = {
   createUser: async (userData) => {
-    const response = await authApi.post('/api/auth/admin/users', userData);
+    const response = await api.post('/api/auth/admin/users', userData);
     return response.data;
   },
   
   getAllUsers: async (skip = 0, limit = 100) => {
-    const response = await authApi.get(`/api/auth/users?skip=${skip}&limit=${limit}`);
+    const response = await api.get(`/api/auth/users?skip=${skip}&limit=${limit}`);
     return response.data;
   },
   
   getUserById: async (userId) => {
-    const response = await authApi.get(`/api/auth/users/${userId}`);
+    const response = await api.get(`/api/auth/users/${userId}`);
     return response.data;
   },
   
   updateUser: async (userId, userData) => {
-    const response = await authApi.put(`/api/auth/users/${userId}`, userData);
+    const response = await api.put(`/api/auth/users/${userId}`, userData);
     return response.data;
   },
   
   deleteUser: async (userId) => {
-    const response = await authApi.delete(`/api/auth/users/${userId}`);
+    const response = await api.delete(`/api/auth/users/${userId}`);
     return response.data;
   },
   
   verifyUser: async (userId) => {
-    const response = await authApi.put(`/api/auth/users/${userId}/verify`);
+    const response = await api.put(`/api/auth/users/${userId}/verify`);
     return response.data;
   },
   
   deactivateUser: async (userId) => {
-    const response = await authApi.put(`/api/auth/users/${userId}/deactivate`);
+    const response = await api.put(`/api/auth/users/${userId}/deactivate`);
     return response.data;
   },
 };
+
+// Export formApi for public form endpoints
+export { formApi };
 
 export default api;
