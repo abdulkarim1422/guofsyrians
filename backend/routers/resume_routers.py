@@ -163,7 +163,7 @@ async def submit_resume(resume_data: ResumeFormRequest):
         # Create member object (only with fields that belong to Member)
         member = member_model.Member(
             name=resume_data.name,
-            user_id=user.id,  # Use the created user's ID
+            user_id=str(user.id),  # Convert ObjectId to string
             professional_title=resume_data.professional_title,
             birthdate=birthdate_obj,
             sex=resume_data.sex,
