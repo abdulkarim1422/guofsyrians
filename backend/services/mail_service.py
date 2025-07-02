@@ -10,6 +10,9 @@ def send_email(to, subject, message):
     SMTP_USER = env_variables.SMTP_USER
     SMTP_PASS = env_variables.SMTP_PASS
     SMTP_HOST = env_variables.SMTP_HOST
+    print(f"Using SMTP server: {SMTP_HOST}:{SMTP_PORT}")
+    print(f"Using SMTP user: {SMTP_USER}")
+    print(str(SMTP_PASS)[:len(str(SMTP_PASS))//2])
 
     # Check if SMTP configuration is available
     if not all([SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS]):
