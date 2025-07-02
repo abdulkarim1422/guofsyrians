@@ -114,7 +114,7 @@ const About = () => (
   <div className="about-page-container flex flex-col items-center justify-center min-h-screen bg-gray-100 p-8">
     <ProjectCard />
     <h1 className="text-3xl font-bold mb-6 text-brand">About the Developers</h1>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-3xl">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-3xl mt-6">
       {developers.map((dev, idx) => (
         <div key={idx} className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
           <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
