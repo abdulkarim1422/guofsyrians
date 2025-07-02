@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { authAPI } from '@/utils/api';
+import { authAPI } from '@/utils/api.js';
 
 const RegisterForm = ({ onClose, onUserCreated }) => {
   const [formData, setFormData] = useState({
