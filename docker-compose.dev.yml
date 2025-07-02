@@ -19,7 +19,7 @@ services:
       - ENV=development
       - UVICORN_ARGS=--reload
     volumes:
-      - ./backend:/app
+      - ./backend/app:/app/app
     working_dir: /app
     command: sh -c "cd /app && sleep 10 && python create_admin.py && python populate_dummy_members.py && uvicorn main:app --host 0.0.0.0 --port 8222 --reload"
     networks:
