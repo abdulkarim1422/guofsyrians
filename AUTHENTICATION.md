@@ -69,7 +69,7 @@ This document describes the authentication system implemented for the GuofSyrian
 1. **Start the Backend Server**:
    ```bash
    cd backend
-   python -m uvicorn main:app --reload --host 0.0.0.0 --port 8222
+   python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8222
    ```
 
 2. **Create Admin User** (if not exists):

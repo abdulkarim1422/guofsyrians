@@ -163,7 +163,7 @@ This creates an admin user:
 
 ### 4. Start the Server
 ```bash
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 
 ## Usage Examples
