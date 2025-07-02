@@ -9,6 +9,7 @@ import ProfileSettings from '@/components/settings/ProfileSettings.jsx';
 import Announcements from '@/components/announcements/Announcements.jsx';
 import { useAuth } from '@/contexts/AuthContext.tsx';
 import { AttributionComponent } from '@/components/dashboard-components/attribution.jsx';
+import About from '@/pages/about.jsx';
 
 const sidebarItems = [
   [
@@ -18,6 +19,7 @@ const sidebarItems = [
   [
     { id: '2', title: 'Settings', notifications: false },
     { id: '3', title: 'Announcements', notifications: false },
+    { id: '4', title: 'About', notifications: false },
   ],
 ];
 
@@ -64,6 +66,8 @@ const DashboardApp = () => {
         return '2';
       case '/announcements':
         return '3';
+      case '/about':
+        return '4';
       case '/profile':
         return 'profile';
       default:
@@ -92,6 +96,9 @@ const DashboardApp = () => {
       case '3':
         navigate('/announcements');
         break;
+      case '4':
+        navigate('/about');
+        break;
       default:
         navigate('/dashboard');
     }
@@ -110,6 +117,8 @@ const DashboardApp = () => {
           return <Settings onSidebarHide={() => onSetShowSidebar(true)} />;
         case '/announcements':
           return <Announcements onSidebarHide={() => onSetShowSidebar(true)} />;
+        case '/about':
+          return <About onSidebarHide={() => onSetShowSidebar(true)} />;
         case '/profile':
           return <ProfileSettings onSidebarHide={() => onSetShowSidebar(true)} />;
         case '/chat':
@@ -121,8 +130,8 @@ const DashboardApp = () => {
       }
     })();
 
-    // Only apply margin for settings pages
-    const isSettingsPage = currentPath === '/settings' || currentPath === '/profile' || currentPath === '/announcements';
+    // Only apply margin for settings pages and about page
+    const isSettingsPage = currentPath === '/settings' || currentPath === '/profile' || currentPath === '/announcements' || currentPath === '/about';
     
     if (isSettingsPage) {
       return (

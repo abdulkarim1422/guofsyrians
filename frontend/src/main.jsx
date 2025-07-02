@@ -70,6 +70,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                                 <Dashboard />
                             </ProtectedRoute>
                         } />
+                        <Route path="/about" element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        } />
                     </Routes>
                 </BrowserRouter>
             </AuthProvider>
