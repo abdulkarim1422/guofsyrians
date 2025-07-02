@@ -6,11 +6,11 @@ from typing import List, Dict, Optional
 
 class Member(Document):
     name: str
-    user_id: Optional[str] = None  # Made optional for standalone resumes
+    user_id: Optional[str] = None  # Made optional for standalone resumes # TODO: make it required
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     ar_name: Optional[str] = None
-    team_id: Optional[str] = None  # Made optional for standalone resumes
+    team_id: Optional[str] = None  # Made optional for standalone resumes # TODO: add teams
     membership_number: Optional[str] = None
     email: Optional[str] = None
     phone: Optional[str] = None
