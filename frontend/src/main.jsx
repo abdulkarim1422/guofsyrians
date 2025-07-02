@@ -10,6 +10,7 @@ import LoginPage from "@/pages/LoginPage.tsx";
 import { AuthProvider } from "@/contexts/AuthContext.tsx";
 import ProtectedRoute from "@/components/auth-components/ProtectedRoute.tsx";
 import {Wave} from "@/pages/MainLandingPage.jsx";
+import DoorUI from "@/components/empty-page/404.jsx";
 
 import "./App.css";
 
@@ -68,6 +69,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="/profile" element={
                             <ProtectedRoute>
                                 <Dashboard />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/404" element={
+                            <ProtectedRoute>
+                                <DoorUI />
                             </ProtectedRoute>
                         } />
                     </Routes>
