@@ -36,7 +36,7 @@ services:
     environment:
       - VITE_BACKEND_URL=http://backend:8222
     volumes:
-      - ./frontend:/app
+      - ./frontend/src:/app/src
 
 networks:
   app-network:
