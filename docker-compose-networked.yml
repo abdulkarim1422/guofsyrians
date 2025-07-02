@@ -20,6 +20,8 @@ services:
       - ./backend/.env
     networks:
       - app-network
+    volumes:
+      - ./backend:/app
 
   frontend:
     build: ./frontend
@@ -33,6 +35,8 @@ services:
       - app-network
     environment:
       - VITE_BACKEND_URL=http://backend:8222
+    volumes:
+      - ./frontend:/app
 
 networks:
   app-network:
