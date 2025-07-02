@@ -76,9 +76,8 @@ function ProjectCard() {
   function formatDateTime(dt) {
     if (!dt) return '';
     const d = new Date(dt);
-    // Istanbul is UTC+3
     const options = { timeZone: 'Europe/Istanbul', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-    return d.toLocaleDateString('en-GB', options) + ' ' + d.toLocaleTimeString('en-GB', options) + ' (Istanbul)';
+    return d.toLocaleDateString('en-GB', options);
   }
 
   return (
