@@ -333,69 +333,58 @@ export const ResumeForm = () => {
       // Get API base URL from environment or use default
       const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8222';
 
-      // Show immediate success message to user
-      setSubmitStatus('success');
-      setSubmitMessage('Resume submitted successfully! We are processing your application and will send you an email shortly.');
-      setIsSubmitting(false);
-
-      // Fire and forget - don't await the submission
-      fetch(`${API_BASE_URL}/api/resume/submit`, {
+      // Send to backend
+      const response = await fetch(`${API_BASE_URL}/api/resume/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(resumeData)
-      }).then(async (response) => {
-        if (!response.ok) {
-          let errorMessage = 'Failed to submit resume';
-          try {
-            const error = await response.json();
-            console.error('Backend error response:', error);
-            errorMessage = error.detail || error.message || errorMessage;
-            
-            // Handle validation errors specifically
-            if (response.status === 422) {
-              if (typeof error.detail === 'string') {
-                errorMessage = `Validation Error: ${error.detail}`;
-              } else if (Array.isArray(error.detail)) {
-                // Handle Pydantic validation errors
-                const validationErrors = error.detail.map(err => 
-                  `${err.loc?.join(' → ') || 'Field'}: ${err.msg}`
-                ).join(', ');
-                errorMessage = `Validation Errors: ${validationErrors}`;
-              }
-            }
-          } catch (e) {
-            // If response is not JSON, use status text
-            console.error('Error parsing error response:', e);
-            errorMessage = `HTTP ${response.status}: ${response.statusText}`;
-          }
-          throw new Error(errorMessage);
-        }
-
-        const result = await response.json();
-        console.log('Resume submitted successfully:', result);
-        
-        // Update success message if needed
-        console.log('Backend processing completed:', result.message || 'Resume processed successfully');
-      }).catch((error) => {
-        console.error('Error submitting resume:', error);
-        // Could optionally show a delayed error message or handle silently
-        console.error('Background submission failed:', error.message);
       });
 
-    } catch (error) {
-      console.error('Error during form submission:', error);
-      setSubmitStatus('error');
-      setSubmitMessage(error.message || 'Failed to validate resume data. Please check your information and try again.');
-      setIsSubmitting(false);
-    }
+      if (!response.ok) {
+        let errorMessage = 'Failed to submit resume';
+        try {
+          const error = await response.json();
+          console.error('Backend error response:', error);
+          errorMessage = error.detail || error.message || errorMessage;
+          
+          // Handle validation errors specifically
+          if (response.status === 422) {
+            if (typeof error.detail === 'string') {
+              errorMessage = `Validation Error: ${error.detail}`;
+            } else if (Array.isArray(error.detail)) {
+              // Handle Pydantic validation errors
+              const validationErrors = error.detail.map(err => 
+                `${err.loc?.join(' → ') || 'Field'}: ${err.msg}`
+              ).join(', ');
+              errorMessage = `Validation Errors: ${validationErrors}`;
+            }
+          }
+        } catch (e) {
+          // If response is not JSON, use status text
+          console.error('Error parsing error response:', e);
+          errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+        }
+        throw new Error(errorMessage);
+      }
 
-    // Auto-clear the success message after some time
-    setTimeout(() => {
-      setSubmitStatus(null);
-      setSubmitMessage('');
-    }, 8000);
+      const result = await response.json();
+      console.log('Resume submitted successfully:', result);
+      
+      setSubmitStatus('success');
+      setSubmitMessage(result.message || 'Resume submitted successfully!');
+    } catch (error) {
+      console.error('Error submitting resume:', error);
+      setSubmitStatus('error');
+      setSubmitMessage(error.message || 'Failed to submit resume. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => {
+        setSubmitStatus(null);
+        setSubmitMessage('');
+      }, 5000);
+    }
   };
 
   return (
