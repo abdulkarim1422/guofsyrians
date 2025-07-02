@@ -24,22 +24,62 @@ function ProjectCard() {
   const [repo, setRepo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [contributors, setContributors] = useState(null);
+  const [commits, setCommits] = useState(null);
+  const [files, setFiles] = useState(null);
 
   useEffect(() => {
-    fetch('https://api.github.com/repos/abdulkarim1422/guofsyrians')
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch repo');
-        return res.json();
-      })
-      .then((data) => {
-        setRepo(data);
+    async function fetchData() {
+      try {
+        const repoRes = await fetch('https://api.github.com/repos/abdulkarim1422/guofsyrians');
+        if (!repoRes.ok) throw new Error('Failed to fetch repo');
+        const repoData = await repoRes.json();
+        setRepo(repoData);
+
+        // Contributors
+        const contribRes = await fetch('https://api.github.com/repos/abdulkarim1422/guofsyrians/contributors?per_page=100');
+        if (contribRes.ok) {
+          const contribData = await contribRes.json();
+          setContributors(contribData.length);
+        }
+
+        // Commits
+        const commitsRes = await fetch('https://api.github.com/repos/abdulkarim1422/guofsyrians/commits?per_page=1');
+        if (commitsRes.ok) {
+          const commitsCount = repoData.commits_url.includes('{/sha}')
+            ? null // fallback if not available
+            : null;
+          // GitHub API doesn't provide total count directly, but it's in the link header
+          const link = commitsRes.headers.get('Link');
+          if (link) {
+            const match = link.match(/&page=(\d+)>; rel="last"/);
+            if (match) setCommits(Number(match[1]));
+          }
+        }
+
+        // Files (via repo tree)
+        const treeRes = await fetch('https://api.github.com/repos/abdulkarim1422/guofsyrians/git/trees/main?recursive=1');
+        if (treeRes.ok) {
+          const treeData = await treeRes.json();
+          setFiles(treeData.tree ? treeData.tree.filter(f => f.type === 'blob').length : null);
+        }
+
         setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         setError(err.message);
         setLoading(false);
-      });
+      }
+    }
+    fetchData();
   }, []);
+
+  function formatDateTime(dt) {
+    if (!dt) return '';
+    const d = new Date(dt);
+    // Istanbul is UTC+3
+    const options = { timeZone: 'Europe/Istanbul', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    return d.toLocaleDateString('en-GB', options) + ' ' + d.toLocaleTimeString('en-GB', options) + ' (Istanbul)';
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center mb-8 w-full max-w-2xl">
@@ -56,11 +96,14 @@ function ProjectCard() {
       {repo && (
         <>
           <div className="text-gray-700 text-center mb-2">{repo.description}</div>
-          <div className="flex space-x-4 text-sm text-gray-600">
+          <div className="flex flex-wrap gap-4 text-sm text-gray-600 justify-center">
             <div>⭐ {repo.stargazers_count} stars</div>
             <div>🍴 {repo.forks_count} forks</div>
             <div>📝 {repo.open_issues_count} issues</div>
-            <div>🔄 Last push: {new Date(repo.pushed_at).toLocaleDateString()}</div>
+            <div>👥 {contributors !== null ? contributors : '...'} contributors</div>
+            <div>📦 {commits !== null ? commits : '...'} commits</div>
+            <div>📁 {files !== null ? files : '...'} files</div>
+            <div>🔄 Last push: {formatDateTime(repo.pushed_at)}</div>
           </div>
         </>
       )}
