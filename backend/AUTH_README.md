@@ -241,8 +241,8 @@ The authentication system has been integrated with your existing application:
 To protect your existing team and member routes, add authentication:
 
 ```python
-from services.auth_services import get_current_active_user, get_admin_user
-from models.user_model import User
+from app.services.auth_services import get_current_active_user, get_admin_user
+from app.models.user_model import User
 
 # Require authentication
 @router.get("/teams")

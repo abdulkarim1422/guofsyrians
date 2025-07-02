@@ -3,7 +3,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import requests
-from config import env_variables
+from app.config import env_variables
 
 def send_email(to, subject, message):
     SMTP_PORT = env_variables.SMTP_PORT

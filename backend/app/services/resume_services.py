@@ -1,10 +1,10 @@
-from crud import member_crud, user_crud
-from models import member_model, user_model
+from app.crud import member_crud, user_crud
+from app.models import member_model, user_model
 from bson import ObjectId
 from typing import Dict, Any, Optional
 from fastapi import HTTPException
 import random
-from services import mail_service, auth_services
+from app.services import mail_service, auth_services
 
 async def member_resume_form(user_id: str, form_data: Dict[str, Any]) -> member_model.Member:
     """

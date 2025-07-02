@@ -1,8 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from bson import ObjectId
-from config.database import init_db
-from routers import all_routers
+from app.config.database import init_db
+from app.routers import all_routers
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv

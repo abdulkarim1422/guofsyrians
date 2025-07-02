@@ -3,16 +3,16 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import List
 
-from schemas.auth_schemas import (
+from app.schemas.auth_schemas import (
     UserCreate, UserLogin, UserResponse, Token, 
     PasswordUpdate, UserUpdate
 )
-from crud.user_crud import UserCRUD
-from services.auth_services import (
+from app.crud.user_crud import UserCRUD
+from app.services.auth_services import (
     authenticate_user, create_access_token, get_current_active_user,
     get_admin_user, verify_password, ACCESS_TOKEN_EXPIRE_MINUTES
 )
-from models.user_model import User
+from app.models.user_model import User
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 

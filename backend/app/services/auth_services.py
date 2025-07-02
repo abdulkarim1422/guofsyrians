@@ -5,8 +5,8 @@ from passlib.context import CryptContext
 from fastapi import HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import os
-from models.user_model import User
-from schemas.auth_schemas import TokenData
+from app.models.user_model import User
+from app.schemas.auth_schemas import TokenData
 
 # Security settings
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")

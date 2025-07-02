@@ -1,7 +1,7 @@
-from crud import member_crud
+from app.crud import member_crud
 from fastapi import APIRouter, HTTPException, File, UploadFile
-from models import member_model
-from services import resume_services
+from app.models import member_model
+from app.services import resume_services
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime

@@ -1,8 +1,8 @@
 import asyncio
 import os
 from datetime import datetime, timezone
-from models.member_model import Member, MemberEducation
-from config.database import init_beanie
+from app.models.member_model import Member, MemberEducation
+from app.config.database import init_beanie
 import motor.motor_asyncio
 
 async def populate_dummy_members():

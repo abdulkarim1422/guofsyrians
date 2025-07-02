@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from services.mail_service import send_email
+from app.services.mail_service import send_email
 
 router = APIRouter()
 

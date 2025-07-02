@@ -1,8 +1,8 @@
 from typing import Optional, List
 from bson import ObjectId
-from models.user_model import User
-from schemas.auth_schemas import UserCreate, UserUpdate
-from services.auth_services import get_password_hash
+from app.models.user_model import User
+from app.schemas.auth_schemas import UserCreate, UserUpdate
+from app.services.auth_services import get_password_hash
 from fastapi import HTTPException, status
 from datetime import datetime, timezone
 

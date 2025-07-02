@@ -1,6 +1,6 @@
-from crud import team_crud
+from app.crud import team_crud
 from fastapi import APIRouter, HTTPException
-from models import team_model
+from app.models import team_model
 
 router = APIRouter()
 

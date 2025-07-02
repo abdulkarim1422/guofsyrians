@@ -1,11 +1,11 @@
-from crud import member_crud
+from app.crud import member_crud
 from fastapi import APIRouter, HTTPException, UploadFile, File
-from models import member_model
+from app.models import member_model
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime, timezone
 from bson import ObjectId
-from services import resume_services
+from app.services import resume_services
 import asyncio
 
 router = APIRouter()

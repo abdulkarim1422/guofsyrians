@@ -1,5 +1,5 @@
-from models import member_model, team_model, user_model
-from crud import member_crud, team_crud, user_crud
+from app.models import member_model, team_model, user_model
+from app.crud import member_crud, team_crud, user_crud
 from passlib.hash import bcrypt
 
 async def signup_user(username: str, email: str, password: str, member_id: str) -> user_model.User:

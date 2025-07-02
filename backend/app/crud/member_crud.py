@@ -1,4 +1,4 @@
-from models import member_model
+from app.models import member_model
 from bson import ObjectId
 
 # Member CRUD operations

@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from routers import team_routers, member_routers, auth_routers, resume_routers, mail_router
+from app.routers import team_routers, member_routers, auth_routers, resume_routers, mail_router
 
 router = APIRouter()
 

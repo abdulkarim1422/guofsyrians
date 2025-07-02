@@ -8,7 +8,7 @@ client = AsyncIOMotorClient(mongodb_uri)
 db = client.guofsyrians_db
 
 # Function to initialize the database connection and bind models
-from models import team_model, member_model, user_model, voting_model
+from app.models import team_model, member_model, user_model, voting_model
 
 async def init_db():
     await init_beanie(database=db, document_models=[

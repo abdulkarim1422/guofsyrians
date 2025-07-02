@@ -1,4 +1,4 @@
-from models import team_model
+from app.models import team_model
 from bson import ObjectId
 
 async def create_team(team) -> team_model.Team:

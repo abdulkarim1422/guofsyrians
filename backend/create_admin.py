@@ -7,8 +7,8 @@ import asyncio
 import os
 from motor.motor_asyncio import AsyncIOMotorClient
 from beanie import init_beanie
-from models.user_model import User
-from services.auth_services import get_password_hash
+from app.models.user_model import User
+from app.services.auth_services import get_password_hash
 
 async def create_admin_user():
     try:
