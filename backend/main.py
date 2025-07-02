@@ -5,6 +5,7 @@ from config.database import init_db
 from routers import all_routers
 from fastapi.middleware.cors import CORSMiddleware
 import os
+from dotenv import load_dotenv
 
 app = FastAPI(
     title="GuofSyrians backend",
@@ -12,14 +13,19 @@ app = FastAPI(
     version="1.0.0",
 )
 
+load_dotenv()
+
 # CORS
+origins = os.getenv("CORS_ALLOW_ORIGINS", "*").split(",")
+origins = [origin.strip() for origin in origins if origin.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-) 
+)
 
 # Mount static files for member images
 uploads_dir = "uploads"
