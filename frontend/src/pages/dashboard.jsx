@@ -8,6 +8,7 @@ import Settings from '@/components/settings/Settings.jsx';
 import ProfileSettings from '@/components/settings/ProfileSettings.jsx';
 import Announcements from '@/components/announcements/Announcements.jsx';
 import { useAuth } from '@/contexts/AuthContext.tsx';
+import { AttributionComponent } from '@/components/dashboard-components/attribution.jsx';
 
 const sidebarItems = [
   [
@@ -135,7 +136,7 @@ const DashboardApp = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-brand-background">
       <Sidebar
         onSidebarHide={() => {
           onSetShowSidebar(false);
@@ -149,7 +150,11 @@ const DashboardApp = () => {
         setShowUserMenu={setShowUserMenu}
         navigate={navigate}
       />
-      {renderCurrentPage()}
+      <div className="flex flex-col flex-1 min-h-screen">
+        <div className="flex-1 flex flex-col">
+          {renderCurrentPage()}
+        </div>
+      </div>
     </div>
   );
 }
@@ -213,6 +218,8 @@ function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user,
         ))}
         <div className="flex-grow" />
       </div>
+
+      <AttributionComponent />
 
       <div className="flex-shrink-0 p-2 relative user-menu-container">
         <div 
