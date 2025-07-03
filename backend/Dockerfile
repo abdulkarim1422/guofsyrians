@@ -35,4 +35,4 @@ EXPOSE 9443
 ENV PATH="/app/venv/bin:$PATH"
 
 # Command to run the application
-CMD ["uvicorn", "app.src.main:app", "--host", "0.0.0.0", "--port", "8222", "--timeout-keep-alive", "7200", "--no-access-log"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8222", "--timeout-keep-alive", "7200", "--no-access-log"]
