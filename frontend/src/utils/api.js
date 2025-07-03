@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { logNetworkError, getDeviceInfo } from './debugUtils.js';
 
 // Base API configuration
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8222';
@@ -7,6 +8,7 @@ const VITE_API_URL_FOR_AUTH = import.meta.env.VITE_API_URL_FOR_AUTH || API_BASE_
 // Create axios instance for public form APIs (open to public)
 const formApi = axios.create({
   baseURL: API_BASE_URL,
+  timeout: 30000, // 30 seconds timeout for mobile networks
   headers: {
     'Content-Type': 'application/json',
   },
@@ -15,6 +17,7 @@ const formApi = axios.create({
 // Create axios instance for all other APIs (auth, user, etc.)
 const api = axios.create({
   baseURL: VITE_API_URL_FOR_AUTH,
+  timeout: 30000, // 30 seconds timeout for mobile networks
   headers: {
     'Content-Type': 'application/json',
   },
@@ -41,6 +44,21 @@ const addResponseInterceptor = (instance) => {
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
+      console.error('API Error:', {
+        url: error.config?.url,
+        method: error.config?.method,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        message: error.message,
+        data: error.response?.data,
+        deviceInfo: getDeviceInfo()
+      });
+      
+      // Log network errors for mobile debugging
+      if (!error.response) {
+        logNetworkError(error);
+      }
+      
       if (error.response?.status === 401) {
         // Token expired or invalid
         localStorage.removeItem('authToken');
