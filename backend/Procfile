@@ -1,2 +1,16 @@
 web: gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:$PORT
-# heroku run python create_admin.py
+
+# run script
+## heroku run python create_admin.py
+
+# define environment variables
+## heroku config:set SMTP_HOST="smtp.gmail.com"
+## heroku config:set SMTP_PORT="587"
+## heroku config:set SMTP_USER="your_email@gmail.com"
+## heroku config:set SMTP_PASS="your_email_password"
+
+# check environment variables
+## heroku config
+
+# delete environment variable
+## heroku config:unset SMTP_USER
