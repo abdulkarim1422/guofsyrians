@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
-    //allowedHosts: ['app2.guofsyrians.org', 'app.guofsyrians.org', 'localhost', '127.0.0.1'],
+    allowedHosts: ['app2.guofsyrians.org', 'app.guofsyrians.org', 'localhost', '127.0.0.1', 'guofsyrians.ctf.web.tr', 'guofsyrians-api.ctf.web.tr'],
     watch: {
       usePolling: true,
     },
