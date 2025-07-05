@@ -178,10 +178,13 @@ function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user,
       style={{ overflow: 'visible' }}
     >
       <div className="flex-shrink-0 overflow-hidden p-2">
-        <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-top">
-          <IconButton icon="res-react-dash-logo" className="w-10 h-10" />
-          <div className="block sm:hidden xl:block ml-2 font-bold text-xl dashboard-logo-text">
-            guofyrians
+        <div
+          className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-top"
+          onClick={() => navigate('/dashboard')}
+          style={{ cursor: 'pointer' }}
+        >
+          <div className="w-full flex justify-center items-center">
+            <img src="/favicon.png" alt="Logo" style={{ width: 100, height: 100, marginBottom: -10, marginTop: -10 }} />
           </div>
           <div className="flex-grow sm:hidden xl:block" />
           <IconButton
