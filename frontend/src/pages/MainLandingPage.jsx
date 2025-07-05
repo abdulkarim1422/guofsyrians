@@ -26,7 +26,9 @@ const Wave = () => {
       <section className="hero">
         <div className={`hero__waves ${isWavesCentered ? 'is-centered' : ''}`} />
         <div className="hero__content">
-          <h1 className="hero__title">الاتّحاد العام لطلبة سوريا</h1>
+          {/* Add favicon image */}
+          <img src="/favicon.png" alt="Logo" className="hero__favicon" style={{ width: 300, height: 300, marginBottom: 16 }} />
+          {/* <h1 className="hero__title">الاتّحاد العام لطلبة سوريا</h1> */}
           <div className="hero__buttons">
             <button className="hero__button hero__button--primary" onClick={handleLoginClick}>
               تسجيل الدخول
