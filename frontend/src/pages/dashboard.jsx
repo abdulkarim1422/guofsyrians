@@ -197,9 +197,12 @@ function Sidebar({ onSidebarHide, showSidebar, selectedPage, onPageSelect, user,
       <div className="flex-grow overflow-x-hidden overflow-y-auto flex flex-col">
         <div className="w-full p-3 h-24 sm:h-20 xl:h-24 hidden sm:block flex-shrink-0">
           <div className="bg-sidebar-card-top rounded-xl w-full h-full flex items-center justify-start sm:justify-center xl:justify-start px-3 sm:px-0 xl:px-3">
-            <Icon path="res-react-dash-sidebar-card" className="w-9 h-9 " />
+            {/* <Icon path="res-react-dash-sidebar-card" className="w-9 h-9 " /> */}
+            <div className="bg-white rounded-2xl">
+              <img src="/favicon.png" alt="Logo" style={{ width:75, height: 50}} />
+            </div>
             <div className="block sm:hidden xl:block ml-3">
-              <div className="text-sm font-bold dashboard-welcome-text">الاتّحاد العام</div>
+              <div className="text-sm font-bold white">الاتّحاد العام</div>
               <div className="text-sm">سيتم إضافة بقيّة الاتّحادات لاحقاً</div>
             </div>
             <div className="block sm:hidden xl:block flex-grow" />
