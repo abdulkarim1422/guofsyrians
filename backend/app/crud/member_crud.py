@@ -8,9 +8,6 @@ async def create_member(member) -> member_model.Member:
 
 # TODO - remove this function after integrating with loggedin users
 async def create_resume_member(member) -> member_model.Member:
-    """Create a member from resume form without requiring user_id or team_id"""
-    member.user_id = None
-    member.team_id = None
     await member.insert()
     return member
 
