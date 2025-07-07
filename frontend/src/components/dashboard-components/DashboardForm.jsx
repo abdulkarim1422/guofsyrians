@@ -9,8 +9,8 @@ function DashboardForm({ onSidebarHide }) {
     location: '',
     telephone: '',
     aboutDescription: '',
-    technicalSkills: '',
-    softSkills: '',
+    storedSkills: '',
+    storedInterests: '',
     linkedinUrl: '',
     githubUrl: '',
   });
@@ -148,8 +148,8 @@ function DashboardForm({ onSidebarHide }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     label="Technical Skills"
-                    name="technicalSkills"
-                    value={formData.technicalSkills}
+                    name="storedSkills"
+                    value={formData.storedSkills}
                     onChange={handleInputChange}
                     placeholder="React, JavaScript, Python, etc. (comma separated)"
                     multiline
@@ -157,8 +157,8 @@ function DashboardForm({ onSidebarHide }) {
                   />
                   <FormField
                     label="Soft Skills"
-                    name="softSkills"
-                    value={formData.softSkills}
+                    name="storedInterests"
+                    value={formData.storedInterests}
                     onChange={handleInputChange}
                     placeholder="Leadership, Communication, Problem Solving, etc."
                     multiline
@@ -218,7 +218,7 @@ function DashboardForm({ onSidebarHide }) {
                     type="button"
                     onClick={() => setFormData({
                       name: '', email: '', occupation: '', location: '', telephone: '',
-                      aboutDescription: '', technicalSkills: '', softSkills: '',
+                      aboutDescription: '', storedSkills: '', storedInterests: '',
                       linkedinUrl: '', githubUrl: ''
                     })}
                     className="px-6 py-3 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-800 hover:border-gray-500 transition-all"

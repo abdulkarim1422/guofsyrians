@@ -13,9 +13,9 @@ export const Data = {
       "Analista Programador, capacitado para desarrollar aplicaciones informáticas en diversas tecnologías y múltiples lenguajes de programación, aplicando metodologías ágiles de desarrollo, incluyendo identificación de necesidades y diseños de sistemas basados en modelos de desarrollo.",
   },
   skills: {
-    technicalLabel: "Tecnologías",
-    softLabel: "Skills",
-    technicalSkills: [
+    skillsLabel: "Tecnologías",
+    interestsLabel: "Skills",
+    storedSkills: [
       "Angular",
       "React",
       "Java",
@@ -26,7 +26,7 @@ export const Data = {
       "SQL",
       "Git",
     ],
-    softSkills: [
+    storedInterests: [
       "Capacidad de análisis",
       "Resolución de Problemas",
       "Pensamiento Crítico",

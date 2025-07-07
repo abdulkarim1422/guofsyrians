@@ -78,10 +78,10 @@ export const Resume = () => {
         description: member.bio || "Professional with diverse experience and skills.",
       },
       skills: {
-        technicalLabel: "Technical Skills",
-        softLabel: "Skills",
-        technicalSkills: member.skills || [],
-        softSkills: member.interests || [],
+        skillsLabel: "Skills",
+        interestsLabel: "Interests",
+        storedSkills: member.skills || [],
+        storedInterests: member.interests || [],
       },
       socialMedia: {
         label: "SOCIAL",

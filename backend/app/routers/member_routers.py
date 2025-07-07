@@ -136,8 +136,8 @@ class ResumeFormData(BaseModel):
     location: Optional[str] = None
     telephone: Optional[str] = None
     aboutDescription: Optional[str] = None
-    technicalSkills: Optional[str] = None
-    softSkills: Optional[str] = None
+    storedSkills: Optional[str] = None
+    storedInterests: Optional[str] = None
     linkedinUrl: Optional[str] = None
     githubUrl: Optional[str] = None
 

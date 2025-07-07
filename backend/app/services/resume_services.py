@@ -26,8 +26,8 @@ async def member_resume_form(user_id: str, form_data: Dict[str, Any]) -> member_
         existing_member.bio = form_data.get("aboutDescription", existing_member.bio)
         
         # Process skills
-        technical_skills = form_data.get("technicalSkills", "")
-        soft_skills = form_data.get("softSkills", "")
+        technical_skills = form_data.get("storedSkills", "")
+        soft_skills = form_data.get("storedInterests", "")
         
         all_skills = []
         if technical_skills:
