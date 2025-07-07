@@ -75,7 +75,7 @@ const AdminSettings = ({ onSidebarHide }) => {
       setLoading(false);
     }
   };
-
+// TODO: make the delete function delete the member data as well
   const handleDeleteUser = async (userId) => {
     if (!confirm('Are you sure you want to delete this user?')) return;
 
