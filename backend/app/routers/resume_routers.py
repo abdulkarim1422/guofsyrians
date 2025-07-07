@@ -152,6 +152,9 @@ async def submit_resume(resume_data: ResumeFormRequest):
             mail=resume_data.email, name=resume_data.name
         )
 
+        user_id = str(getattr(user, "id", None)) if getattr(user, "id", None) is not None else None
+        print("backend -- User created with ID:", user_id)
+        
         # Convert birthdate string to datetime if provided
         birthdate_obj = None
         if resume_data.birthdate:
@@ -163,7 +166,7 @@ async def submit_resume(resume_data: ResumeFormRequest):
         # Create member object (only with fields that belong to Member)
         member = member_model.Member(
             name=resume_data.name,
-            user_id=str(user.id),  # Convert ObjectId to string
+            user_id=user_id,
             professional_title=resume_data.professional_title,
             birthdate=birthdate_obj,
             sex=resume_data.sex,
@@ -244,6 +247,38 @@ async def get_resume(member_id: str):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to retrieve resume: {str(e)}")
+
+@router.get("/resume/by-user-id/{user_id}")
+async def get_resume(user_id: str):
+    """
+    Get a complete resume by user ID
+    Returns member data along with work experience, education, and projects
+    """
+    try:
+        # Get member data
+        member = await member_crud.get_member_by_user_id(user_id)
+        if not member:
+            raise HTTPException(status_code=404, detail="Resume not found")
+        
+        # Get related documents using CRUD functions
+        member_id = str(member.id)  # Convert ObjectId to string for consistency
+        work_experiences = await member_crud.get_all_work_experiences_by_member_id(ObjectId(member_id))
+        education = await member_crud.get_all_educations_by_member_id(ObjectId(member_id))
+        projects = await member_crud.get_all_projects_by_member_id(ObjectId(member_id))
+
+        # Format the response
+        resume_data = {
+            "member": member,
+            "work_experiences": work_experiences,
+            "education": education,
+            "projects": projects
+        }
+        
+        return resume_data
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve resume: {str(e)}")
+
 
 @router.put("/resume/{member_id}")
 async def update_resume(member_id: str, resume_data: ResumeFormRequest):
