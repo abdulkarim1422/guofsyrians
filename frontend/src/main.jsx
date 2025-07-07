@@ -75,6 +75,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                                 <Dashboard />
                             </ProtectedRoute>
                         } />
+                        <Route path="/edit-resume" element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        } />
                     </Routes>
                 </BrowserRouter>
             </AuthProvider>

@@ -9,8 +9,15 @@ import { WorkExperienceComponent } from '@/components/form-components/WorkExperi
 import { ProjectsComponent } from '@/components/form-components/ProjectsComponent';
 import { AcademicInputComponent } from '@/components/form-components/AcademicInputComponent';
 import { getMemberImageUrl, getDefaultAvatarPath } from '@/utils/imageUtils';
+import { useAuth } from '@/contexts/AuthContext';
+import api from '@/utils/api';
 
 export const ResumeForm = () => {
+  const { user, isAuthenticated } = useAuth();
+  const [isLoadingExistingData, setIsLoadingExistingData] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [memberId, setMemberId] = useState(null); // Store member ID for updates
+  
   const [formData, setFormData] = useState({
     // Profile data - using backend field names
     name: '',
@@ -85,6 +92,114 @@ export const ResumeForm = () => {
       // Don't reset on unmount as other pages might need different behavior
     };
   }, []);
+
+  // Load existing resume data if user is authenticated
+  useEffect(() => {
+    const loadExistingResumeData = async () => {
+      if (!isAuthenticated || !user?.id) {
+        console.log('User not authenticated or user ID not available');
+        return;
+      }
+
+      setIsLoadingExistingData(true);
+      
+      try {
+        // Get resume data directly by user_id
+        console.log('Fetching resume data for user:', user.id);
+        const resumeResponse = await api.get(`/api/resume/by-user-id/${user.id}`);
+        const resumeData = resumeResponse.data;
+        console.log('Resume data loaded:', resumeData);
+        
+        // Extract member data and related data from the response
+        const memberData = resumeData.member || {};
+        const workExperiences = resumeData.work_experiences || [];
+        const education = resumeData.education || [];
+        const projects = resumeData.projects || [];
+
+        // Store member ID for future updates
+        if (memberData._id) {
+          setMemberId(memberData._id);
+        }
+
+        setIsEditMode(true);
+
+        // Populate form with existing data
+        setFormData(prevData => ({
+          ...prevData,
+          // Profile data from member
+          name: memberData.name || '',
+          professional_title: memberData.professional_title || '',
+          birthdate: memberData.birthdate ? memberData.birthdate.split('T')[0] : '',
+          sex: memberData.sex || '',
+          city: memberData.city || '',
+          email: memberData.email || '',
+          phone: memberData.phone || '+90 ',
+          image: memberData.image || '',
+          relocateToSyria: memberData.relocateToSyria || '',
+          bio: memberData.bio || '',
+          skills: memberData.skills || [],
+          social_media: memberData.social_media || {},
+          
+          // Transform work experiences from backend format
+          works: workExperiences.length > 0 ? workExperiences.map(work => ({
+            title: work.job_title || '',
+            start_date: work.start_date ? work.start_date.split('T')[0] : '',
+            end_date: work.end_date ? work.end_date.split('T')[0] : '',
+            currently_working: !work.end_date,
+            company: work.company || '',
+            description: work.description ? [work.description] : ['']
+          })) : [{
+            title: '',
+            start_date: '',
+            end_date: '',
+            currently_working: false,
+            company: '',
+            description: ['']
+          }],
+
+          // Transform education from backend format
+          academic: education.length > 0 ? education.map(edu => ({
+            degreeLevel: edu.degree || '',
+            major: edu.field_of_study || '',
+            date: edu.end_date ? edu.end_date.split('T')[0] : '',
+            institution: edu.institution || ''
+          })) : [{
+            degreeLevel: '',
+            major: '',
+            date: '',
+            institution: ''
+          }],
+
+          // Transform projects from backend format
+          projects: projects.length > 0 ? projects.map(project => ({
+            name: project.project_name || '',
+            start_date: project.start_date ? project.start_date.split('T')[0] : '',
+            end_date: project.end_date ? project.end_date.split('T')[0] : '',
+            is_ongoing: !project.end_date,
+            company: project.role || '',
+            description: project.description ? [project.description] : ['']
+          })) : [{
+            name: '',
+            start_date: '',
+            end_date: '',
+            is_ongoing: false,
+            company: '',
+            description: ['']
+          }]
+        }));
+      } catch (error) {
+        console.error('Error loading existing resume data:', error);
+        if (error.response?.status === 404) {
+          console.log('No resume found for this user - will create new one');
+        }
+        // If error, just continue with empty form
+      } finally {
+        setIsLoadingExistingData(false);
+      }
+    };
+
+    loadExistingResumeData();
+  }, [isAuthenticated, user?.id]);
 
   const turkishCities = [
     'Adana', 'Adıyaman', 'Afyonkarahisar', 'Ağrı', 'Amasya', 'Ankara', 'Antalya', 'Artvin',
@@ -333,47 +448,59 @@ export const ResumeForm = () => {
       // Get API base URL from environment or use default
       const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8222';
 
-      // Send to backend
-      const response = await fetch(`${API_BASE_URL}/api/resume/submit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(resumeData)
-      });
+      let response;
+      
+      if (isEditMode && memberId) {
+        // Update existing resume using member ID
+        response = await api.put(`/api/resume/${memberId}`, resumeData);
+      } else {
+        // Create new resume (public endpoint)
+        response = await fetch(`${API_BASE_URL}/api/resume/submit`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(resumeData)
+        });
 
-      if (!response.ok) {
-        let errorMessage = 'Failed to submit resume';
-        try {
-          const error = await response.json();
-          console.error('Backend error response:', error);
-          errorMessage = error.detail || error.message || errorMessage;
-          
-          // Handle validation errors specifically
-          if (response.status === 422) {
-            if (typeof error.detail === 'string') {
-              errorMessage = `Validation Error: ${error.detail}`;
-            } else if (Array.isArray(error.detail)) {
-              // Handle Pydantic validation errors
-              const validationErrors = error.detail.map(err => 
-                `${err.loc?.join(' → ') || 'Field'}: ${err.msg}`
-              ).join(', ');
-              errorMessage = `Validation Errors: ${validationErrors}`;
+        if (!response.ok) {
+          let errorMessage = 'Failed to submit resume';
+          try {
+            const error = await response.json();
+            console.error('Backend error response:', error);
+            errorMessage = error.detail || error.message || errorMessage;
+            
+            // Handle validation errors specifically
+            if (response.status === 422) {
+              if (typeof error.detail === 'string') {
+                errorMessage = `Validation Error: ${error.detail}`;
+              } else if (Array.isArray(error.detail)) {
+                // Handle Pydantic validation errors
+                const validationErrors = error.detail.map(err => 
+                  `${err.loc?.join(' → ') || 'Field'}: ${err.msg}`
+                ).join(', ');
+                errorMessage = `Validation Errors: ${validationErrors}`;
+              }
             }
+          } catch (e) {
+            // If response is not JSON, use status text
+            console.error('Error parsing error response:', e);
+            errorMessage = `HTTP ${response.status}: ${response.statusText}`;
           }
-        } catch (e) {
-          // If response is not JSON, use status text
-          console.error('Error parsing error response:', e);
-          errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+          throw new Error(errorMessage);
         }
-        throw new Error(errorMessage);
-      }
 
-      const result = await response.json();
+        response = { data: await response.json() };
+      }
+      
+      const result = response.data;
       console.log('Resume submitted successfully:', result);
       
       setSubmitStatus('success');
-      setSubmitMessage(result.message || 'Resume submitted successfully!');
+      const successMessage = isEditMode ? 
+        'Resume updated successfully!' : 
+        result.message || 'Resume submitted successfully!';
+      setSubmitMessage(successMessage);
     } catch (error) {
       console.error('Error submitting resume:', error);
       setSubmitStatus('error');
@@ -398,18 +525,35 @@ export const ResumeForm = () => {
       
       <div className="min-h-screen bg-sand overflow-auto">
         <div className="w-full flex flex-col items-center px-4 py-8 max-w-none">
-          {/* Header Section */}
-          <div className="text-center mb-12 flex flex-col items-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-carbon mb-4">
-              Resume Form
-            </h1>
-            <p className="text-lg text-gray-700 max-w-2xl">
-              Update your professional information, skills, experience, and projects. 
-              All changes will be saved to the database.
-            </p>
-          </div>
+          {/* Loading State */}
+          {isLoadingExistingData && (
+            <div className="text-center mb-12 flex flex-col items-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rich-gold mb-4"></div>
+              <p className="text-lg text-gray-700">Loading your existing resume data...</p>
+            </div>
+          )}
 
-          <form onSubmit={handleSubmit} className="w-full max-w-4xl space-y-8">
+          {!isLoadingExistingData && (
+            <>
+              {/* Header Section */}
+              <div className="text-center mb-12 flex flex-col items-center">
+                <h1 className="text-4xl md:text-5xl font-bold text-carbon mb-4">
+                  {isEditMode ? 'Edit Resume' : 'Resume Form'}
+                </h1>
+                <p className="text-lg text-gray-700 max-w-2xl">
+                  {isEditMode 
+                    ? 'Update your professional information, skills, experience, and projects.'
+                    : 'Create your professional resume by filling out the information below.'
+                  }
+                </p>
+                {isEditMode && (
+                  <p className="text-sm text-rich-gold mt-2">
+                    You are editing your existing resume as {user?.name}
+                  </p>
+                )}
+              </div>
+
+              <form onSubmit={handleSubmit} className="w-full max-w-4xl space-y-8">
             
             {/* Profile Information */}
                         <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
@@ -656,12 +800,12 @@ export const ResumeForm = () => {
                 {isSubmitting ? (
                   <>
                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-deep-green"></div>
-                    <span>Saving Changes...</span>
+                    <span>{isEditMode ? 'Updating Resume...' : 'Saving Resume...'}</span>
                   </>
                 ) : (
                   <>
                     <Send className="w-6 h-6" />
-                    <span>Save Resume Data</span>
+                    <span>{isEditMode ? 'Update Resume' : 'Save Resume Data'}</span>
                   </>
                 )}
               </button>
@@ -681,6 +825,8 @@ export const ResumeForm = () => {
             </div>
 
           </form>
+            </>
+          )}
         </div>
       </div>
     </>

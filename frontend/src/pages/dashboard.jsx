@@ -10,11 +10,13 @@ import Announcements from '@/components/announcements/Announcements.jsx';
 import { useAuth } from '@/contexts/AuthContext.tsx';
 import { AttributionComponent } from '@/components/dashboard-components/attribution.jsx';
 import About from '@/pages/about.jsx';
+import { ResumeForm } from '@/pages/ResumeForm.jsx';
 
 const sidebarItems = [
   [
     { id: '0', title: 'Dashboard', notifications: false },
     { id: '1', title: 'Students list', notifications: false },
+    { id: '5', title: 'Edit Resume', notifications: false },
   ],
   [
     { id: '2', title: 'Settings', notifications: false },
@@ -68,6 +70,8 @@ const DashboardApp = () => {
         return '3';
       case '/about':
         return '4';
+      case '/edit-resume':
+        return '5';
       case '/profile':
         return 'profile';
       default:
@@ -99,6 +103,9 @@ const DashboardApp = () => {
       case '4':
         navigate('/about');
         break;
+      case '5':
+        navigate('/edit-resume');
+        break;
       default:
         navigate('/dashboard');
     }
@@ -119,6 +126,8 @@ const DashboardApp = () => {
           return <Announcements onSidebarHide={() => onSetShowSidebar(true)} />;
         case '/about':
           return <About onSidebarHide={() => onSetShowSidebar(true)} />;
+        case '/edit-resume':
+          return <ResumeForm onSidebarHide={() => onSetShowSidebar(true)} />;
         case '/profile':
           return <ProfileSettings onSidebarHide={() => onSetShowSidebar(true)} />;
         case '/chat':
@@ -130,8 +139,8 @@ const DashboardApp = () => {
       }
     })();
 
-    // Only apply margin for settings pages and about page
-    const isSettingsPage = currentPath === '/settings' || currentPath === '/profile' || currentPath === '/announcements' || currentPath === '/about';
+    // Only apply margin for settings pages, about page, and edit-resume page
+    const isSettingsPage = currentPath === '/settings' || currentPath === '/profile' || currentPath === '/announcements' || currentPath === '/about' || currentPath === '/edit-resume';
     
     if (isSettingsPage) {
       return (
@@ -388,6 +397,13 @@ function SidebarIcons({ id }) {
     4: (
       <>
         <path d="M19 22H5C3.89543 22 3 21.1046 3 20V6C3 4.89543 3.89543 4 5 4H7V2H9V4H15V2H17V4H19C20.1046 4 21 4.89543 21 6V20C21 21.1046 20.1046 22 19 22ZM5 10V20H19V10H5ZM5 6V8H19V6H5ZM17 14H7V12H17V14Z" />
+      </>
+    ),
+    5: (
+      <>
+        <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2ZM18 20H6V4H13V9H18V20Z" />
+        <path d="M8 12H16V14H8V12Z" />
+        <path d="M8 16H13V18H8V16Z" />
       </>
     ),
     5: (
