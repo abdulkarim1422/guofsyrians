@@ -60,18 +60,6 @@ class ResumeFormRequest(BaseModel):
     projects: Optional[List[ProjectEntryRequest]] = []
 
 # HELPER FUNCTIONS -----------------------------------------------------
-async def create_work_experiences(member_id: str, works: List[WorkExperienceRequest]):
-    """Create work experience documents for a member using CRUD functions"""
-    for work in works:
-        work_experience = member_model.MemberWorkExperience(
-            member_id=member_id,
-            job_title=work.title,
-            company=work.company,
-            description="; ".join(work.description),  # Join descriptions into a single string
-            # Note: period parsing could be enhanced to extract start_date/end_date
-        )
-        await member_crud.create_member_work_experience(work_experience)
-
 async def create_education_entries(member_id: str, academic: List[AcademicEntryRequest]):
     """Create education documents for a member using CRUD functions"""
     for edu in academic:
@@ -92,6 +80,50 @@ async def create_education_entries(member_id: str, academic: List[AcademicEntryR
             end_date=graduation_date,  # Using end_date as graduation date
         )
         await member_crud.create_member_education(education)
+
+async def create_work_experiences(member_id: str, works: List[WorkExperienceRequest]):
+    """Create work experience documents for a member using CRUD functions"""
+    for work in works:
+        # Parse period string to extract start and end dates if available
+        start_date = None
+        end_date = None
+
+        if work.period: # TODO correct the frontend to provide xx.xx.xxxx format instead of "Jan 2020 - Present"
+            try:
+                # Handle different period formats
+                if " - " in work.period:
+                    parts = work.period.split(" - ")
+                    if len(parts) == 2:
+                        start_str, end_str = parts
+                        
+                        # Parse start date
+                        try:
+                            start_date = datetime.strptime(start_str, "%b %Y").replace(tzinfo=timezone.utc)
+                        except ValueError:
+                            # Try other formats if needed
+                            pass
+                        
+                        # Parse end date (handle "Present" and "Ongoing")
+                        if end_str.lower() not in ["present", "ongoing"]:
+                            try:
+                                end_date = datetime.strptime(end_str, "%b %Y").replace(tzinfo=timezone.utc)
+                            except ValueError:
+                                # Try other formats if needed
+                                pass
+                        # If end_str is "Present" or "Ongoing", end_date remains None
+            except Exception:
+                # If parsing fails, continue without dates
+                pass
+
+        work_experience = member_model.MemberWorkExperience(
+            member_id=member_id,
+            job_title=work.title,
+            company=work.company,
+            description="; ".join(work.description),  # Join descriptions into a single string
+            start_date=start_date,
+            end_date=end_date,
+        )
+        await member_crud.create_member_work_experience(work_experience)
 
 async def create_project_entries(member_id: str, projects: List[ProjectEntryRequest]):
     """Create project documents for a member using CRUD functions"""
@@ -154,7 +186,7 @@ async def submit_resume(resume_data: ResumeFormRequest):
 
         user_id = str(getattr(user, "id", None)) if getattr(user, "id", None) is not None else None
         print("backend -- User created with ID:", user_id)
-        
+
         # Convert birthdate string to datetime if provided
         birthdate_obj = None
         if resume_data.birthdate:
