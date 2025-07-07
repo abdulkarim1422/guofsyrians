@@ -4,6 +4,7 @@ import { SEO } from '@/components/common/SEO';
 import { MailInputComponent } from '@/components/form-components/MailInputComponent';
 import { PhoneInputComponent } from '@/components/form-components/PhoneInputComponent';
 import { SkillsInputComponent } from '@/components/form-components/SkillsInputComponent';
+import { InterestsInputComponent } from '@/components/form-components/InterestsInputComponent';
 import { SocialInputComponent } from '@/components/form-components/SocialInputComponent';
 import { WorkExperienceComponent } from '@/components/form-components/WorkExperienceComponent';
 import { ProjectsComponent } from '@/components/form-components/ProjectsComponent';
@@ -38,6 +39,9 @@ export const ResumeForm = () => {
     
     // Skills
     skills: [],
+    
+    // Interests
+    interests: [],
     
     // Social Media - using social_media object structure
     social_media: {},
@@ -138,6 +142,7 @@ export const ResumeForm = () => {
           relocateToSyria: memberData.relocateToSyria || '',
           bio: memberData.bio || '',
           skills: memberData.skills || [],
+          interests: memberData.interests || [],
           social_media: memberData.social_media || {},
           
           // Transform work experiences from backend format
@@ -422,6 +427,7 @@ export const ResumeForm = () => {
         relocateToSyria: formData.relocateToSyria || null,
         bio: formData.bio || null,
         skills: formData.skills && formData.skills.length > 0 ? formData.skills : [],
+        interests: formData.interests && formData.interests.length > 0 ? formData.interests : [],
         social_media: formData.social_media || {},
         works: formData.works
           .filter(work => work.title && work.company && work.start_date)
@@ -778,6 +784,9 @@ export const ResumeForm = () => {
 
             {/* Skills Section */}
             <SkillsInputComponent formData={formData} setFormData={setFormData} />
+
+            {/* Interests Section */}
+            <InterestsInputComponent formData={formData} setFormData={setFormData} />
 
             {/* Social Media Section */}
             <SocialInputComponent formData={formData} setFormData={setFormData} />

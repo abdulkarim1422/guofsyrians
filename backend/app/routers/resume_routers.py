@@ -47,6 +47,9 @@ class ResumeFormRequest(BaseModel):
     # Skills
     skills: Optional[List[str]] = []
     
+    # Interests
+    interests: Optional[List[str]] = []
+    
     # Social Media - using dict structure
     social_media: Optional[dict] = {}
     
@@ -209,6 +212,7 @@ async def submit_resume(resume_data: ResumeFormRequest):
             relocateToSyria=resume_data.relocateToSyria,
             bio=resume_data.bio,
             skills=resume_data.skills or [],
+            interests=resume_data.interests or [],
             social_media=resume_data.social_media or {}
         )
         
@@ -324,9 +328,18 @@ async def update_resume(member_id: str, resume_data: ResumeFormRequest):
         if not existing_member:
             raise HTTPException(status_code=404, detail="Resume not found")
         
+        # Convert birthdate string to datetime if provided
+        birthdate_obj = None
+        if resume_data.birthdate:
+            try:
+                birthdate_obj = datetime.strptime(resume_data.birthdate, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid birthdate format. Use YYYY-MM-DD")
+        
         # Update member fields
         existing_member.name = resume_data.name
         existing_member.professional_title = resume_data.professional_title
+        existing_member.birthdate = birthdate_obj
         existing_member.sex = resume_data.sex
         existing_member.city = resume_data.city
         existing_member.email = resume_data.email
@@ -335,6 +348,7 @@ async def update_resume(member_id: str, resume_data: ResumeFormRequest):
         existing_member.relocateToSyria = resume_data.relocateToSyria
         existing_member.bio = resume_data.bio
         existing_member.skills = resume_data.skills or []
+        existing_member.interests = resume_data.interests or []
         existing_member.social_media = resume_data.social_media or {}
         existing_member.updated_at = datetime.now(timezone.utc)
         
@@ -416,4 +430,32 @@ async def get_public_skills():
         # Return empty list on error to prevent form breakage
         import logging
         logging.error(f"Error fetching skills: {e}")
+        return []
+
+# Public endpoint for getting interests for the resume form
+@router.get("/members/interests", response_model=List[str])
+async def get_public_interests():
+    """
+    Get all unique interests from all members - public endpoint for resume form
+    No authentication required
+    """
+    try:
+        # Get all members
+        members = await member_crud.get_all_members_from_all_teams()
+        
+        # Collect all interests
+        all_interests = set()
+        for member in members:
+            if member.interests:
+                for interest in member.interests:
+                    if interest and interest.strip():  # Only add non-empty interests
+                        all_interests.add(interest.strip())
+        
+        # Return sorted list of unique interests
+        return sorted(list(all_interests))
+        
+    except Exception as e:
+        # Return empty list on error to prevent form breakage
+        import logging
+        logging.error(f"Error fetching interests: {e}")
         return []
