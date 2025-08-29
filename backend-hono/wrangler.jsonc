@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "backend-hono",
+  "name": "guofsyrians-backend-hono",
   "main": "src/index.ts",
   "compatibility_date": "2025-08-29"
   // "compatibility_flags": [
