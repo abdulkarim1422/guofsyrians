@@ -1,15 +1,15 @@
-# nginx/conf.d/default.conf
+upstream backend {
+    server backend:8222;
+}
 
 server {
     listen 80;
     server_name guofsyrians-api.ctf.web.tr;
 
-
-
     client_max_body_size 300m;
 
     location / {
-        proxy_pass http://backend:8222;
+        proxy_pass http://backend;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
