@@ -4,35 +4,31 @@ FROM python:3.11-slim-buster
 # Set the working directory in the container
 WORKDIR /app
 
+# Add a non-root user and group
+RUN groupadd --gid 1001 appgroup
+RUN useradd --uid 1001 --gid appgroup appuser
 
-# Copy the application code to the container
-COPY . /app
-COPY requirements.txt /app
+# Copy requirements first to leverage Docker cache
+COPY requirements.txt ./
 
-# Create a virtual environment and install dependencies
-RUN python -m venv /app/venv \
-    && . /app/venv/bin/activate \
-    && pip install -r /app/requirements.txt
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-# RUN pip install -r /app/requirements.txt
+# Copy the rest of the application code and startup script
+COPY . .
+COPY startup.sh .
 
-# Add a non-root user and group and set permissions
-RUN groupadd --gid 1001 appgroup \
-    && useradd --uid 1001 --gid appgroup --no-create-home --shell /sbin/nologin appuser
-
-# Ensure the application folder is owned by the non-root user
-RUN chown -R 1001:1001 /usr/local 
-RUN chown -R 1001:1001 /tmp 
-RUN chown -R 1001:1001 /app
-
-# Switch to the non-root user
-USER 1001
+# Set permissions
+RUN chown -R appuser:appgroup /app && \
+    chown -R appuser:appgroup /usr/local && \
+    chown -R appuser:appgroup /tmp && \
+    chmod +x startup.sh
 
 # Expose the application port
-EXPOSE 9443
+EXPOSE 8222
 
-# Set environment variables
-ENV PATH="/app/venv/bin:$PATH"
+# Switch to non-root user
+USER appuser
 
 # Command to run the application
-CMD ["python ./create_admin.py && uvicorn app.main:app --host 0.0.0.0 --port 8222 --timeout-keep-alive 7200 --no-access-log"]
+CMD ["./startup.sh"]
