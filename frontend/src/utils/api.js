@@ -1,48 +1,47 @@
-import axios from 'axios';
-import { logNetworkError, getDeviceInfo } from './debugUtils.js';
+// C:\Users\abodi\OneDrive\Desktop\guofsyrians-main\frontend\src\utils\api.js
+import axios from 'axios'
+import { logNetworkError, getDeviceInfo } from './debugUtils.js'
 
-// Base API configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8222';
-const VITE_API_URL_FOR_AUTH = import.meta.env.VITE_API_URL_FOR_AUTH || API_BASE_URL;
+// ===== Base URLs =====
+// في التطوير: نستخدم بروكسي Vite -> baseURL = '/api' (يتجنب CORS)
+// في الإنتاج: نعتمد على VITE_API_URL / VITE_API_URL_FOR_AUTH + '/api'
+const RAW_BASE = (import.meta.env.VITE_API_URL ?? '').trim().replace(/\/+$/, '')
+const RAW_AUTH = (import.meta.env.VITE_API_URL_FOR_AUTH ?? RAW_BASE).trim().replace(/\/+$/, '')
 
-// Create axios instance for public form APIs (open to public)
-const formApi = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 30000, // 30 seconds timeout for mobile networks
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+const BASE_API = import.meta.env.DEV
+  ? '/api'
+  : `${(RAW_AUTH || RAW_BASE)}/api`
 
-// Create axios instance for all other APIs (auth, user, etc.)
+// ===== Axios instances =====
+const commonHeaders = { 'Content-Type': 'application/json' }
+
 const api = axios.create({
-  baseURL: VITE_API_URL_FOR_AUTH,
-  timeout: 30000, // 30 seconds timeout for mobile networks
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+  baseURL: BASE_API, // مثال DEV: '/api' — مثال PROD: 'https://domain.tld/api'
+  timeout: 30000,
+  headers: commonHeaders,
+})
 
-// Request interceptor to add auth token
+const formApi = axios.create({
+  baseURL: BASE_API,
+  timeout: 30000,
+  headers: commonHeaders,
+})
+
+// ===== Interceptors =====
 const addAuthInterceptor = (instance) => {
   instance.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem('authToken');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
+      const token = localStorage.getItem('authToken')
+      if (token) config.headers.Authorization = `Bearer ${token}`
+      return config
     },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
-};
+    (error) => Promise.reject(error),
+  )
+}
 
-// Response interceptor to handle errors
 const addResponseInterceptor = (instance) => {
   instance.interceptors.response.use(
-    (response) => response,
+    (r) => r,
     (error) => {
       console.error('API Error:', {
         url: error.config?.url,
@@ -51,98 +50,193 @@ const addResponseInterceptor = (instance) => {
         statusText: error.response?.statusText,
         message: error.message,
         data: error.response?.data,
-        deviceInfo: getDeviceInfo()
-      });
-      
-      // Log network errors for mobile debugging
-      if (!error.response) {
-        logNetworkError(error);
-      }
-      
+        deviceInfo: getDeviceInfo(),
+      })
+      if (!error.response) logNetworkError(error)
       if (error.response?.status === 401) {
-        // Token expired or invalid
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('user');
-        window.location.href = '/login';
+        localStorage.removeItem('authToken')
+        localStorage.removeItem('user')
+        window.location.href = '/login'
       }
-      return Promise.reject(error);
-    }
-  );
-};
+      return Promise.reject(error)
+    },
+  )
+}
 
-// Apply interceptors to all relevant instances
-addAuthInterceptor(api);
-addResponseInterceptor(api);
-// No auth interceptor for formApi (public)
-addResponseInterceptor(formApi);
+addAuthInterceptor(api)
+addResponseInterceptor(api)
+addResponseInterceptor(formApi)
 
-// Auth API calls (use api instance)
+// ===== Helpers =====
+const withSlash = (p) => (p.endsWith('/') ? p : `${p}/`)
+const toStr = (v) => (v == null ? '' : String(v))
+const toBool = (v) => !!v
+
+// تحويل textarea multi-line إلى Array<string>
+const linesToList = (v) => {
+  if (v == null) return []
+  if (Array.isArray(v)) return v.map((x) => String(x).trim()).filter(Boolean)
+  return String(v)
+    .split('\n')
+    .map((s) => s.trim())
+    .filter(Boolean)
+}
+
+// عكسها: Array<string> إلى نص لعرضه في textarea
+const listToLines = (arr) => {
+  if (!Array.isArray(arr)) return toStr(arr)
+  return arr.map((x) => String(x).trim()).filter(Boolean).join('\n')
+}
+
+// لو عندك select قديم يرجّع snake_case، خلّينا نطبّع
+const normalizeEmployment = (v) =>
+  ({
+    full_time: 'full_time',
+    part_time: 'part_time',
+    contract: 'contract',
+    internship: 'internship',
+    temporary: 'temporary',
+    freelance: 'freelance',
+    other: 'other',
+    'full-time': 'full_time',
+    'part-time': 'part_time',
+  }[v] || 'full_time')
+
+const normalizeWorkplace = (v) =>
+  ({
+    onsite: 'onsite',
+    remote: 'remote',
+    hybrid: 'hybrid',
+  }[v] || 'onsite')
+
+// ===== Payload mappers =====
+const toJobCreatePayload = (form) => ({
+  title: toStr(form?.title).trim(),
+  company: toStr(form?.company).trim() || null,
+  location: toStr(form?.location).trim() || null,
+
+  employment_type: normalizeEmployment(form?.employment_type),
+  workplace_type: normalizeWorkplace(form?.workplace_type),
+
+  description: toStr(form?.description),
+
+  // Backend يحوّل Array إلى نص للحفظ ويعيد List في الاستجابة
+  responsibilities: linesToList(form?.responsibilities),
+  requirements: linesToList(form?.requirements),
+  benefits: linesToList(form?.benefits),
+
+  application_url: toStr(form?.application_url).trim() || null,
+  max_applicants: Number.isFinite(+form?.max_applicants) ? +form.max_applicants : 0,
+
+  is_active: toBool(form?.is_active),
+})
+
+const toJobUpdatePayload = (form) => {
+  const out = {}
+  if (form?.title != null) out.title = toStr(form.title).trim()
+  if (form?.company != null) out.company = toStr(form.company).trim() || null
+  if (form?.location != null) out.location = toStr(form.location).trim() || null
+
+  if (form?.employment_type != null) out.employment_type = normalizeEmployment(form.employment_type)
+  if (form?.workplace_type != null) out.workplace_type = normalizeWorkplace(form.workplace_type)
+
+  if (form?.description != null) out.description = toStr(form.description)
+
+  if (form?.responsibilities != null) out.responsibilities = linesToList(form.responsibilities)
+  if (form?.requirements != null) out.requirements = linesToList(form.requirements)
+  if (form?.benefits != null) out.benefits = linesToList(form.benefits)
+
+  if (form?.application_url != null) out.application_url = toStr(form.application_url).trim() || null
+  if (form?.max_applicants != null)
+    out.max_applicants = Number.isFinite(+form.max_applicants) ? +form.max_applicants : 0
+
+  if (form?.is_active != null) out.is_active = toBool(form.is_active)
+
+  return out
+}
+
+// توحيد ناتج السيرفر كي نعرضه بسهولة في الواجهة (textarea)
+const normalizeJob = (j) => {
+  if (!j) return null
+  return {
+    id: j.id ?? j._id ?? null,
+    title: j.title || '',
+    company: j.company || '',
+    location: j.location || '',
+
+    employment_type: j.employment_type || 'full_time',
+    workplace_type: j.workplace_type || 'onsite',
+
+    description: j.description || '',
+
+    responsibilities: listToLines(j.responsibilities || []),
+    requirements: listToLines(j.requirements || []),
+    benefits: listToLines(j.benefits || []),
+
+    application_url: j.application_url || '',
+    max_applicants: typeof j.max_applicants === 'number' ? j.max_applicants : 0,
+
+    is_active: j.is_active ?? true,
+    created_at: j.created_at ?? j.createdAt ?? null,
+    owner_id: j.owner_id ?? '',
+  }
+}
+
+// ===== Auth =====
+// لاحظ: لا نضيف /api في بداية المسارات؛ baseURL يتكفّل بها
 export const authAPI = {
-  login: async (credentials) => {
-    const response = await api.post('/api/auth/login-json', credentials);
-    return response.data;
-  },
-  
-  register: async (userData) => {
-    const response = await api.post('/api/auth/register', userData);
-    return response.data;
-  },
-  
-  getCurrentUser: async () => {
-    const response = await api.get('/api/auth/me');
-    return response.data;
-  },
-  
-  updateProfile: async (userData) => {
-    const response = await api.put('/api/auth/me', userData);
-    return response.data;
-  },
-  
-  changePassword: async (passwordData) => {
-    const response = await api.put('/api/auth/change-password', passwordData);
-    return response.data;
-  },
-};
+  login: async (credentials) => (await api.post('/auth/login-json', credentials)).data,
+  register: async (userData) => (await api.post('/auth/register', userData)).data,
+  getCurrentUser: async () => (await api.get('/auth/me')).data,
+  updateProfile: async (userData) => (await api.put('/auth/me', userData)).data,
+  changePassword: async (passwordData) => (await api.put('/auth/change-password', passwordData)).data,
+}
 
-// User management API calls (Admin only, use api instance)
+// ===== Users (Admin) =====
 export const userAPI = {
-  createUser: async (userData) => {
-    const response = await api.post('/api/auth/admin/users', userData);
-    return response.data;
+  createUser: async (userData) => (await api.post('/auth/admin/users', userData)).data,
+  getAllUsers: async (skip = 0, limit = 100) =>
+    (await api.get(`/auth/users?skip=${skip}&limit=${limit}`)).data,
+  getUserById: async (userId) => (await api.get(`/auth/users/${userId}`)).data,
+  updateUser: async (userId, userData) => (await api.put(`/auth/users/${userId}`, userData)).data,
+  deleteUser: async (userId) => (await api.delete(`/auth/users/${userId}`)).data,
+  verifyUser: async (userId) => (await api.put(`/auth/users/${userId}/verify`)).data,
+  deactivateUser: async (userId) => (await api.put(`/auth/users/${userId}/deactivate`)).data,
+}
+
+// ===== Jobs =====
+const jobsCollection = '/jobs';                 // collection: has trailing slash server-side
+const jobItem = (id) => `/jobs/${id}`;         // item: NO trailing slash
+
+export const jobsAPI = {
+  list: async (params = {}) => {
+    const res = await api.get(jobsCollection, { params });   // GET /jobs/
+    const data = Array.isArray(res.data) ? res.data : (res.data?.items ?? []);
+    return data.map(normalizeJob);
   },
-  
-  getAllUsers: async (skip = 0, limit = 100) => {
-    const response = await api.get(`/api/auth/users?skip=${skip}&limit=${limit}`);
-    return response.data;
+
+  get: async (id) => {
+    const res = await api.get(jobItem(id));                  // GET /jobs/{id}
+    return normalizeJob(res.data);
   },
-  
-  getUserById: async (userId) => {
-    const response = await api.get(`/api/auth/users/${userId}`);
-    return response.data;
+
+  create: async (formLike) => {
+    const payload = toJobCreatePayload(formLike);
+    const res = await api.post(jobsCollection, payload);     // POST /jobs/
+    return normalizeJob(res.data);
   },
-  
-  updateUser: async (userId, userData) => {
-    const response = await api.put(`/api/auth/users/${userId}`, userData);
-    return response.data;
+
+  update: async (id, formLike) => {
+    const payload = toJobUpdatePayload(formLike);
+    const res = await api.patch(jobItem(id), payload);       // PATCH /jobs/{id}
+    return normalizeJob(res.data);
   },
-  
-  deleteUser: async (userId) => {
-    const response = await api.delete(`/api/auth/users/${userId}`);
-    return response.data;
-  },
-  
-  verifyUser: async (userId) => {
-    const response = await api.put(`/api/auth/users/${userId}/verify`);
-    return response.data;
-  },
-  
-  deactivateUser: async (userId) => {
-    const response = await api.put(`/api/auth/users/${userId}/deactivate`);
-    return response.data;
+
+  remove: async (id) => {
+    return (await api.delete(jobItem(id))).data;             // DELETE /jobs/{id}
   },
 };
 
-// Export formApi for public form endpoints
-export { formApi };
 
-export default api;
+export { formApi }
+export default api
