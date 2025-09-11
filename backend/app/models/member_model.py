@@ -36,15 +36,23 @@ class MemberWorkExperience(Document):
     location: Optional[str] = None
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
+    responsibilities: Optional[str] = None  # Mandatory responsibilities field
+    achievements: Optional[str] = None      # Optional achievements field
+    # Kept description for backward compatibility, will be migrated to responsibilities
     description: Optional[str] = None
 
 class MemberProject(Document):
     member_id: str
     project_name: str
-    description: Optional[str] = None
+    project_type: Optional[str] = None      # Personal, Professional, Academic, Open Source, etc.
+    tools: Optional[List[str]] = Field(default_factory=list)  # Technologies/tools used
+    role: Optional[str] = None              # Role in the project
+    responsibilities: Optional[str] = None   # What the member did
+    outcomes: Optional[str] = None          # Results/achievements
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
-    role: Optional[str] = None
+    # Kept description for backward compatibility, will be migrated to responsibilities/outcomes
+    description: Optional[str] = None
 
 class MemberEducation(Document):
     member_id: str
@@ -54,4 +62,6 @@ class MemberEducation(Document):
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
     grade: Optional[str] = None
+    gpa: Optional[float] = None             # GPA on 4.0 scale
+    rank: Optional[str] = None              # Academic honors/rank
     academic_standing: Optional[str] = None # e.g., 1, 2, graduate

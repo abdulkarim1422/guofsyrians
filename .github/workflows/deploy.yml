@@ -1,0 +1,178 @@
+name: Auto Deploy to DigitalOcean
+
+on:
+  push:
+    branches: [ main, dev1 ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  REGISTRY: registry.digitalocean.com
+  IMAGE_NAME: training-employment
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test Application
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Set up Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.17.0'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+        
+    - name: Cache Python dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('backend/requirements.txt') }}
+        
+    - name: Cache Node dependencies
+      uses: actions/cache@v3
+      with:
+        path: frontend/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
+        
+    - name: Install Python dependencies
+      run: |
+        cd backend
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Install Node dependencies
+      run: |
+        cd frontend
+        npm ci
+        
+    - name: Run Python tests
+      run: |
+        cd backend
+        python -m pytest tests/ -v --tb=short
+        
+    - name: Build frontend
+      run: |
+        cd frontend
+        npm run build
+        
+    - name: Test Docker build
+      run: |
+        docker build -f backend/Dockerfile.production backend/ -t test-backend
+        docker build frontend/ -t test-frontend
+
+  deploy-app-platform:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev1'
+    name: Deploy to DigitalOcean App Platform
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+        
+    - name: Update App Platform deployment
+      run: |
+        echo "⚠️ App Platform deployment managed by .do/app.yaml"
+        echo "✅ App Platform will auto-deploy from dev1 branch"
+        echo "🔗 Check deployment status at: https://cloud.digitalocean.com/apps"
+
+  deploy-droplet:
+    needs: test
+    runs-on: ubuntu-latest
+    if: false  # Disabled for now - focus on App Platform
+    name: Deploy to DigitalOcean Droplet
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.17.0'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+        
+    - name: Build frontend
+      run: |
+        cd frontend
+        npm ci
+        npm run build
+        
+    - name: Deploy to Droplet via SSH
+      uses: appleboy/ssh-action@v1.0.0
+      if: ${{ secrets.DROPLET_HOST != '' }}
+      with:
+        host: ${{ secrets.DROPLET_HOST }}
+        username: ${{ secrets.DROPLET_USER }}
+        key: ${{ secrets.DROPLET_SSH_KEY }}
+        port: 22
+        script: |
+          cd /var/www/training-employment
+          
+          # Pull latest changes
+          git fetch origin
+          git reset --hard origin/main
+          
+          # Update environment if changed
+          if [ -f .env.new ]; then
+            mv .env.new .env
+          fi
+          
+          # Rebuild and restart services
+          docker-compose -f docker-compose.production.yml down
+          docker-compose -f docker-compose.production.yml build --no-cache
+          docker-compose -f docker-compose.production.yml up -d
+          
+          # Wait for services to be ready
+          sleep 30
+          
+          # Health check
+          curl -f http://localhost:8222/health || exit 1
+          
+          echo "✅ Deployment completed successfully"
+          
+    - name: Upload frontend build to Droplet
+      uses: appleboy/scp-action@v0.1.4
+      if: ${{ secrets.DROPLET_HOST != '' }}
+      with:
+        host: ${{ secrets.DROPLET_HOST }}
+        username: ${{ secrets.DROPLET_USER }}
+        key: ${{ secrets.DROPLET_SSH_KEY }}
+        port: 22
+        source: "frontend/dist/*"
+        target: "/var/www/training-employment/"
+        strip_components: 1
+
+  notify:
+    needs: [deploy-app-platform, deploy-droplet]
+    runs-on: ubuntu-latest
+    if: always()
+    name: Notify Deployment Status
+    
+    steps:
+    - name: Deployment Success Notification
+      if: ${{ needs.deploy-app-platform.result == 'success' || needs.deploy-droplet.result == 'success' }}
+      run: |
+        echo "🎉 Deployment completed successfully!"
+        echo "✅ Application is now live"
+        
+    - name: Deployment Failure Notification
+      if: ${{ needs.deploy-app-platform.result == 'failure' || needs.deploy-droplet.result == 'failure' }}
+      run: |
+        echo "❌ Deployment failed!"
+        echo "Please check the logs and try again"

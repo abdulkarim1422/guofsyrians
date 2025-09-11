@@ -1,7 +1,14 @@
+// C:\Users\abodi\OneDrive\Desktop\guofsyrians-main\frontend\src\components\dashboard-components\DashboardForm.jsx
+
 import React, { useState } from 'react';
 import clsx from 'clsx';
+import { Link } from "react-router-dom";
+import { FiBriefcase, FiPlus } from "react-icons/fi";
+import { useAuth } from "@/contexts/AuthContext.tsx";
 
 function DashboardForm({ onSidebarHide }) {
+  const { user } = useAuth();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -45,35 +52,38 @@ function DashboardForm({ onSidebarHide }) {
 
   return (
     <div className="flex w-full">
-      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
-        .
-      </div>
+      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">.</div>
+
       <div className="h-screen flex-grow overflow-x-hidden overflow-auto flex flex-col p-2">
+        {/* Header */}
         <div className="w-full sm:flex p-2 items-end">
-          <div className="sm:flex-grow flex justify-between">
-            <div className="">
+          <div className="sm:flex-grow flex justify-between items-start gap-3">
+            {/* Left: title/info */}
+            <div>
               <div className="flex items-center">
                 <div className="text-3xl font-bold text-white">Resume Builder Form</div>
                 <div className="flex items-center p-2 bg-card ml-2 rounded-xl">
                   <Icon path="res-react-dash-premium-star" />
-                  <div className="ml-2 font-bold text-premium-yellow">
-                    CREATE
-                  </div>
+                  <div className="ml-2 font-bold text-premium-yellow">CREATE</div>
                 </div>
               </div>
               <div className="flex items-center">
-                <Icon
-                  path="res-react-dash-date-indicator"
-                  className="w-3 h-3"
-                />
+                <Icon path="res-react-dash-date-indicator" className="w-3 h-3" />
                 <div className="ml-2">Build your professional resume</div>
               </div>
             </div>
-            <IconButton
-              icon="res-react-dash-sidebar-open"
-              className="block sm:hidden"
-              onClick={onSidebarHide}
-            />
+
+            {/* Right: admin action + sidebar toggle */}
+            <div className="flex items-center gap-2">
+              {/* يظهر فقط للأدمن */}
+
+
+              <IconButton
+                icon="res-react-dash-sidebar-open"
+                className="block sm:hidden"
+                onClick={onSidebarHide}
+              />
+            </div>
           </div>
         </div>
 
@@ -84,7 +94,7 @@ function DashboardForm({ onSidebarHide }) {
               <h3 className="text-lg font-semibold text-white">Personal Information</h3>
               <p className="text-gray-400 text-sm">Fill in your details to generate your resume</p>
             </div>
-            
+
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
               {/* Personal Info Section */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -213,7 +223,7 @@ function DashboardForm({ onSidebarHide }) {
                       </>
                     )}
                   </button>
-                  
+
                   <button
                     type="button"
                     onClick={() => setFormData({
@@ -282,19 +292,19 @@ function DashboardForm({ onSidebarHide }) {
   );
 }
 
-function FormField({ 
-  label, 
-  name, 
-  type = 'text', 
-  value, 
-  onChange, 
-  placeholder, 
-  required = false, 
-  multiline = false, 
-  rows = 3 
+function FormField({
+  label,
+  name,
+  type = 'text',
+  value,
+  onChange,
+  placeholder,
+  required = false,
+  multiline = false,
+  rows = 3
 }) {
   const inputClasses = "w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 hover:border-gray-500";
-  
+
   return (
     <div className="space-y-2">
       <label className="block text-sm font-medium text-gray-300">

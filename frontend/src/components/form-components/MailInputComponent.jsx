@@ -1,6 +1,6 @@
 import { Mail } from 'lucide-react';
 
-export function MailInputComponent(formData, setFormData) {
+export function MailInputComponent({ formData, setFormData }) {
     return <div>
         <label htmlFor="email" className="block text-sm font-medium text-carbon mb-2 arabic-text-medium" dir="rtl">
             البريد الإلكتروني (Gmail فقط) *
@@ -12,7 +12,7 @@ export function MailInputComponent(formData, setFormData) {
                     type="text"
                     id="email"
                     name="email"
-                    value={formData.email.replace(/@gmail\.com$/, '')}
+                    value={(formData?.email || '').replace(/@gmail\.com$/, '')}
                     onChange={e => {
                         // Prevent '@' character, spaces, and force gmail.com
                         let value = e.target.value.replace(/@/g, '').replace(/\s/g, '');

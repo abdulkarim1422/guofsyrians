@@ -669,7 +669,9 @@ export function AcademicInputComponent({ formData, setFormData }) {
         degreeLevel: '',
         major: '',
         date: '',
-        institution: ''
+        institution: '',
+        gpa: '',
+        rank: ''
       }]
     }));
   };
@@ -792,6 +794,58 @@ export function AcademicInputComponent({ formData, setFormData }) {
               />
               <p className="text-xs text-gray-600 mt-1">
                 Search and select from Turkish universities or type your own
+              </p>
+            </div>
+            
+            {/* Optional GPA and Rank Fields */}
+            <div>
+              <label className="block text-sm font-medium text-carbon mb-2">
+                GPA (Optional)
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="4"
+                value={edu.gpa || ''}
+                onChange={(e) => handleAcademicChange(index, 'gpa', e.target.value)}
+                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                placeholder="3.75"
+              />
+              <p className="text-xs text-gray-600 mt-1">
+                Grade Point Average (0.00 - 4.00 scale)
+              </p>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-carbon mb-2">
+                Rank/Level (Optional)
+              </label>
+              <select
+                value={edu.rank || ''}
+                onChange={(e) => handleAcademicChange(index, 'rank', e.target.value)}
+                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+              >
+                <option value="">Select rank (optional)</option>
+                <option value="summa_cum_laude">Summa Cum Laude</option>
+                <option value="magna_cum_laude">Magna Cum Laude</option>
+                <option value="cum_laude">Cum Laude</option>
+                <option value="honors">With Honors</option>
+                <option value="high_honors">High Honors</option>
+                <option value="distinction">With Distinction</option>
+                <option value="first_class">First Class</option>
+                <option value="upper_second">Upper Second Class</option>
+                <option value="lower_second">Lower Second Class</option>
+                <option value="third_class">Third Class</option>
+                <option value="dean_list">Dean's List</option>
+                <option value="valedictorian">Valedictorian</option>
+                <option value="salutatorian">Salutatorian</option>
+                <option value="top_5_percent">Top 5%</option>
+                <option value="top_10_percent">Top 10%</option>
+                <option value="top_quarter">Top 25%</option>
+              </select>
+              <p className="text-xs text-gray-600 mt-1">
+                Academic honors, class ranking, or distinction level
               </p>
             </div>
           </div>

@@ -1,0 +1,74 @@
+name: training-employment
+region: nyc1
+
+services:
+- name: api
+  source_dir: backend
+  github:
+    repo: mamdouhal/training-employment
+    branch: dev1
+    deploy_on_push: true
+  build_command: pip install -r requirements.txt
+  run_command: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
+  environment_slug: python
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  http_port: 8080
+  health_check:
+    http_path: /health
+    initial_delay_seconds: 60
+    period_seconds: 10
+    timeout_seconds: 5
+    success_threshold: 1
+    failure_threshold: 3
+  envs:
+  - key: ENVIRONMENT
+    value: production
+  - key: PORT
+    value: "8080"
+  - key: MONGO_URL
+    value: ${db.CONNECTION_STRING}
+    type: SECRET
+  - key: JWT_SECRET
+    value: training-employment-super-secure-jwt-secret-2025
+    type: SECRET
+  - key: JWT_ALGORITHM
+    value: HS256
+  - key: JWT_EXPIRATION_HOURS
+    value: "24"
+  - key: FRONTEND_URL
+    value: ${frontend.PUBLIC_URL}
+  - key: CORS_ORIGINS
+    value: "https://*.ondigitalocean.app,http://localhost:5173"
+
+- name: frontend
+  source_dir: frontend
+  github:
+    repo: mamdouhal/training-employment
+    branch: dev1
+    deploy_on_push: true
+  build_command: |
+    node --version
+    npm --version
+    npm ci --prefer-offline --no-audit
+    npm run build
+  output_dir: dist
+  environment_slug: node-js
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  routes:
+  - path: /
+  envs:
+  - key: VITE_API_URL
+    value: ${api.PUBLIC_URL}
+  - key: VITE_ENVIRONMENT
+    value: production
+  - key: NODE_VERSION
+    value: "20.17.0"
+
+databases:
+- name: db
+  engine: MONGODB
+  version: "5"
+  size: basic-xs
+  num_nodes: 1

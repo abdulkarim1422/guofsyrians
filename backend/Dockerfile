@@ -1,38 +1,49 @@
-# Use an official Python runtime as a parent image
-FROM python:3.11-slim-buster
-
-# Set the working directory in the container
-WORKDIR /app
-
-
-# Copy the application code to the container
-COPY . /app
-COPY requirements.txt /app
-
-# Create a virtual environment and install dependencies
-RUN python -m venv /app/venv \
-    && . /app/venv/bin/activate \
-    && pip install -r /app/requirements.txt
-
-# RUN pip install -r /app/requirements.txt
-
-# Add a non-root user and group and set permissions
-RUN groupadd --gid 1001 appgroup \
-    && useradd --uid 1001 --gid appgroup --no-create-home --shell /sbin/nologin appuser
-
-# Ensure the application folder is owned by the non-root user
-RUN chown -R 1001:1001 /usr/local 
-RUN chown -R 1001:1001 /tmp 
-RUN chown -R 1001:1001 /app
-
-# Switch to the non-root user
-USER 1001
-
-# Expose the application port
-EXPOSE 9443
+# DigitalOcean App Platform optimized Dockerfile
+FROM python:3.11-slim
 
 # Set environment variables
-ENV PATH="/app/venv/bin:$PATH"
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PORT=8080
 
-# Command to run the application
-CMD ["python ./create_admin.py && uvicorn app.main:app --host 0.0.0.0 --port 8222 --timeout-keep-alive 7200 --no-access-log"]
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first to leverage Docker cache
+COPY requirements.txt ./
+
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Create necessary directories
+RUN mkdir -p uploads logs
+
+# Create non-root user for security
+RUN groupadd --gid 1001 appgroup && \
+    useradd --uid 1001 --gid appgroup --shell /bin/bash --create-home appuser
+
+# Set proper permissions
+RUN chown -R appuser:appgroup /app
+
+# Health check for App Platform
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:${PORT}/health || exit 1
+
+# Expose port (App Platform uses PORT env var)
+EXPOSE $PORT
+
+# Switch to non-root user
+USER appuser
+
+# Start command optimized for App Platform
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "1", "--access-log", "--log-level", "info"]

@@ -7,7 +7,7 @@ services:
     depends_on:
       - db
     environment:
-      - MONGODB_URI=mongodb://db:27017/mydb
+      - MONGODB_URI=mongodb://db:27017/guofsyrians_db
     env_file:
       - ./backend/.env
 
