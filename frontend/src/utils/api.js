@@ -68,7 +68,6 @@ addResponseInterceptor(api)
 addResponseInterceptor(formApi)
 
 // ===== Helpers =====
-const withSlash = (p) => (p.endsWith('/') ? p : `${p}/`)
 const toStr = (v) => (v == null ? '' : String(v))
 const toBool = (v) => !!v
 
@@ -205,7 +204,8 @@ export const userAPI = {
 }
 
 // ===== Jobs =====
-const jobsCollection = '/jobs';                 // collection: has trailing slash server-side
+// NOTE: use trailing slash to match backend create route exactly and avoid 307 redirect that can drop Authorization header in some browsers
+const jobsCollection = '/jobs/';                 // collection path with trailing slash
 const jobItem = (id) => `/jobs/${id}`;         // item: NO trailing slash
 
 export const jobsAPI = {
@@ -235,6 +235,29 @@ export const jobsAPI = {
   remove: async (id) => {
     return (await api.delete(jobItem(id))).data;             // DELETE /jobs/{id}
   },
+};
+
+// ===== Members =====
+export const membersAPI = {
+  getAllMembers: async () => {
+    const res = await api.get('/members');
+    return Array.isArray(res.data) ? res.data : (res.data?.items ?? []);
+  },
+  
+  getAllMembersWithEducation: async () => {
+    const res = await api.get('/members/with-education');
+    return Array.isArray(res.data) ? res.data : (res.data?.items ?? []);
+  },
+  
+  getMemberById: async (id) => {
+    const res = await api.get(`/member/${id}`);
+    return res.data;
+  },
+  
+  getSkills: async () => {
+    const res = await api.get('/members/skills');
+    return Array.isArray(res.data) ? res.data : [];
+  }
 };
 
 
