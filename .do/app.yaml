@@ -32,24 +32,24 @@ services:
         value: ${db.CONNECTION_STRING}
         type: SECRET
       - key: JWT_SECRET
-        value: ${JWT_SECRET}
+        value: training-employment-super-secure-jwt-secret-2025-change-in-production
         type: SECRET
       - key: JWT_ALGORITHM
         value: HS256
       - key: JWT_EXPIRATION_HOURS
         value: "24"
       - key: FRONTEND_URL
-        value: ${frontend.PUBLIC_URL}
+        value: ${_self.PUBLIC_URL}
       - key: MAIL_USERNAME
-        value: ${MAIL_USERNAME}
+        value: noreply.training.employment@gmail.com
         type: SECRET
       - key: MAIL_PASSWORD
-        value: ${MAIL_PASSWORD}
+        value: your-gmail-app-password-here
         type: SECRET
       - key: MAIL_FROM
         value: noreply@trainingemployment.com
       - key: CORS_ORIGINS
-        value: "${frontend.PUBLIC_URL},https://*.ondigitalocean.app"
+        value: "https://*.ondigitalocean.app,http://localhost:5173,http://localhost:3000"
 
   # Frontend Static Site
   - name: frontend
@@ -76,8 +76,6 @@ services:
         value: production
       - key: NODE_VERSION
         value: "20.17.0"
-      - key: NPM_VERSION  
-        value: "10.8.2"
 
 # Managed Database
 databases:
@@ -86,20 +84,6 @@ databases:
     version: "5"
     size: basic-xs
     num_nodes: 1
-
-# Static sites for documentation (optional)
-static_sites:
-  - name: docs
-    source_dir: /
-    github:
-      repo: mamdouhal/training-employment
-      branch: main
-      deploy_on_push: true
-    build_command: echo "Documentation ready"
-    output_dir: /
-    routes:
-      - path: /docs
-    environment_slug: html
 
 # Alerts
 alerts:
