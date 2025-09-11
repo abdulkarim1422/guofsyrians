@@ -16,6 +16,7 @@ import {Wave} from "@/pages/MainLandingPage.jsx";
 import JobDetails from '@/pages/JobDetails.jsx';
 import { ComponentTest } from '@/pages/ComponentTest.jsx';
 import { LoginTest } from '@/pages/LoginTest.jsx';
+import AdminApplications from '@/pages/AdminApplications.jsx';
 
 
 
@@ -98,6 +99,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="/admin/jobs/new" element={
                           <ProtectedRoute>
                             <Dashboard />
+                          </ProtectedRoute>
+                        } />
+                        {/* 👇 مسار صفحة إدارة الطلبات للأدمن */}
+                        <Route path="/admin/applications" element={
+                          <ProtectedRoute>
+                            <AdminApplications />
                           </ProtectedRoute>
                         } />
                         <Route path="/jobs/:id" element={<JobDetails />} />

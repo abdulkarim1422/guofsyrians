@@ -81,12 +81,20 @@ export default function AdminJobsManage() {
     <div className="max-w-6xl mx-auto p-4 sm:p-6">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-extrabold text-[#214937]">إدارة الوظائف</h1>
-        <Link
-          to="/admin/jobs/new"
-          className="px-4 py-2 rounded-lg bg-[#295a45] hover:bg-[#214937] text-white font-medium"
-        >
-          + وظيفة جديدة
-        </Link>
+        <div className="flex gap-3">
+          <Link
+            to="/admin/applications"
+            className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium"
+          >
+            إدارة الطلبات
+          </Link>
+          <Link
+            to="/admin/jobs/new"
+            className="px-4 py-2 rounded-lg bg-[#295a45] hover:bg-[#214937] text-white font-medium"
+          >
+            + وظيفة جديدة
+          </Link>
+        </div>
       </div>
 
       {/* فلاتر */}

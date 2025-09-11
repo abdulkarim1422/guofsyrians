@@ -220,6 +220,12 @@ const AdminSettings = ({ onSidebarHide }) => {
                 </h1>
               </div>
               <div className="flex space-x-3">
+                <a
+                  href="/admin/applications"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                >
+                  إدارة الطلبات
+                </a>
                 <button
                   onClick={() => setShowCreateModal(true)}
                   className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium"

@@ -9,6 +9,7 @@ import Settings from '@/components/settings/Settings.jsx';
 import ProfileSettings from '@/components/settings/ProfileSettings.jsx';
 import Announcements from '@/components/announcements/Announcements.jsx';
 import AdminNewJob from '@/pages/AdminNewJob.jsx';
+import AdminApplications from '@/pages/AdminApplications.jsx';
 import { useAuth } from '@/contexts/AuthContext.tsx';
 import { AttributionComponent } from '@/components/dashboard-components/attribution.jsx';
 import About from '@/pages/about.jsx';
@@ -53,6 +54,16 @@ const MENU_ITEMS = {
     path: '/admin/jobs/new', 
     component: 'AdminNewJob',
     icon: (<><path d="M10 4h4a2 2 0 012 2v1h2.5A1.5 1.5 0 0120 8.5v9A1.5 1.5 0 0118.5 19h-13A1.5 1.5 0 014 17.5v-9A1.5 1.5 0 015.5 6H8V6a2 2 0 012-2zm0 2v1h4V6h-4z" /></>),
+    notifications: false,
+    adminOnly: true,
+    group: 0
+  },
+  7: { 
+    id: '7', 
+    title: 'إدارة الطلبات', 
+    path: '/admin/applications', 
+    component: 'AdminApplications',
+    icon: (<><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></>),
     notifications: false,
     adminOnly: true,
     group: 0
@@ -183,6 +194,8 @@ const DashboardApp = () => {
           return <ResumeForm onSidebarHide={onSidebarHide} />;
         case 'AdminNewJob':
           return <AdminNewJob onSidebarHide={onSidebarHide} />;
+        case 'AdminApplications':
+          return <AdminApplications />;
         case 'ProfileSettings':
           return <ProfileSettings onSidebarHide={onSidebarHide} />;
         default:
