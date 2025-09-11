@@ -100,7 +100,7 @@ ALLOW_CREDENTIALS = os.getenv("CORS_ALLOW_CREDENTIALS", "true").lower() == "true
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,               # origins محددة (ليست *)
+    allow_origins=["*"],               # origins محددة (ليست *)
     allow_credentials=ALLOW_CREDENTIALS, # True لو تستخدم كوكيز جلسة. Bearer token لا يحتاجها.
     allow_methods=["*"],                 # GET, POST, PATCH, DELETE, OPTIONS...
     allow_headers=["*"],                 # يتضمن Authorization و Content-Type
