@@ -72,7 +72,7 @@ jobs:
   deploy-app-platform:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/dev1'
     name: Deploy to DigitalOcean App Platform
     
     steps:
@@ -86,20 +86,14 @@ jobs:
         
     - name: Update App Platform deployment
       run: |
-        # Get app ID (you need to set this in secrets)
-        APP_ID="${{ secrets.DO_APP_ID }}"
-        
-        if [ -n "$APP_ID" ]; then
-          echo "Triggering deployment for app: $APP_ID"
-          doctl apps create-deployment $APP_ID --wait
-        else
-          echo "⚠️ DO_APP_ID not set, skipping App Platform deployment"
-        fi
+        echo "⚠️ App Platform deployment managed by .do/app.yaml"
+        echo "✅ App Platform will auto-deploy from dev1 branch"
+        echo "🔗 Check deployment status at: https://cloud.digitalocean.com/apps"
 
   deploy-droplet:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: false  # Disabled for now - focus on App Platform
     name: Deploy to DigitalOcean Droplet
     
     steps:
@@ -121,7 +115,7 @@ jobs:
         
     - name: Deploy to Droplet via SSH
       uses: appleboy/ssh-action@v1.0.0
-      if: ${{ secrets.DROPLET_HOST }}
+      if: ${{ secrets.DROPLET_HOST != '' }}
       with:
         host: ${{ secrets.DROPLET_HOST }}
         username: ${{ secrets.DROPLET_USER }}
@@ -154,7 +148,7 @@ jobs:
           
     - name: Upload frontend build to Droplet
       uses: appleboy/scp-action@v0.1.4
-      if: ${{ secrets.DROPLET_HOST }}
+      if: ${{ secrets.DROPLET_HOST != '' }}
       with:
         host: ${{ secrets.DROPLET_HOST }}
         username: ${{ secrets.DROPLET_USER }}
