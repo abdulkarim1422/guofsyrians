@@ -1,5 +1,7 @@
 # DigitalOcean App Platform Configuration
 name: training-employment
+region: nyc1
+
 services:
   # Backend API Service
   - name: api
@@ -7,13 +9,20 @@ services:
     github:
       repo: mamdouhal/training-employment
       branch: main
-    run_command: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+      deploy_on_push: true
+    build_command: pip install -r requirements.txt
+    run_command: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
     environment_slug: python
     instance_count: 1
     instance_size_slug: basic-xxs
     http_port: 8080
     health_check:
       http_path: /health
+      initial_delay_seconds: 60
+      period_seconds: 10
+      timeout_seconds: 5
+      success_threshold: 1
+      failure_threshold: 3
     envs:
       - key: ENVIRONMENT
         value: production
@@ -25,6 +34,10 @@ services:
       - key: JWT_SECRET
         value: ${JWT_SECRET}
         type: SECRET
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: JWT_EXPIRATION_HOURS
+        value: "24"
       - key: FRONTEND_URL
         value: ${frontend.PUBLIC_URL}
       - key: MAIL_USERNAME
@@ -33,6 +46,10 @@ services:
       - key: MAIL_PASSWORD
         value: ${MAIL_PASSWORD}
         type: SECRET
+      - key: MAIL_FROM
+        value: noreply@trainingemployment.com
+      - key: CORS_ORIGINS
+        value: "${frontend.PUBLIC_URL},https://*.ondigitalocean.app"
 
   # Frontend Static Site
   - name: frontend
@@ -40,11 +57,16 @@ services:
     github:
       repo: mamdouhal/training-employment
       branch: main
-    build_command: npm ci && npm run build
+      deploy_on_push: true
+    build_command: |
+      npm ci
+      npm run build
     output_dir: /dist
     environment_slug: node-js
     instance_count: 1
     instance_size_slug: basic-xxs
+    routes:
+      - path: /
     envs:
       - key: VITE_API_URL
         value: ${api.PUBLIC_URL}
@@ -53,16 +75,42 @@ services:
       - key: NODE_VERSION
         value: "18"
 
-# Database
+# Managed Database
 databases:
   - name: db
     engine: MONGODB
     version: "5"
     size: basic-xs
+    num_nodes: 1
 
-# Domain configuration (optional)
-domains:
-  - domain: training-employment.your-domain.com
-    type: PRIMARY
-    wildcard: false
-    zone: your-domain.com
+# Static sites for documentation (optional)
+static_sites:
+  - name: docs
+    source_dir: /
+    github:
+      repo: mamdouhal/training-employment
+      branch: main
+      deploy_on_push: true
+    build_command: echo "Documentation ready"
+    output_dir: /
+    routes:
+      - path: /docs
+    environment_slug: html
+
+# Alerts
+alerts:
+  - rule: CPU_UTILIZATION
+    disabled: false
+    operators:
+      - type: GREATER_THAN
+        value: 85
+  - rule: MEM_UTILIZATION 
+    disabled: false
+    operators:
+      - type: GREATER_THAN
+        value: 85
+  - rule: RESTART_COUNT
+    disabled: false
+    operators:
+      - type: GREATER_THAN
+        value: 5
