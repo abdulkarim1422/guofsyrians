@@ -1,0 +1,9 @@
+off
+Starting
+development
+environment...
+
+Waiting for 10 seconds, press a key to continue ... 9 8 7 6 5 4 3 2 1 0
+Exposing
+to
+internet...
