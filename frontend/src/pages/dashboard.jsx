@@ -14,19 +14,27 @@ import { AttributionComponent } from '@/components/dashboard-components/attribut
 import About from '@/pages/about.jsx';
 import { ResumeForm } from '@/pages/ResumeForm.jsx';
 
-const sidebarItems = [
-  [
-    { id: '0', title: 'Dashboard', notifications: false },
-    { id: '1', title: 'Students list', notifications: false },
-    { id: '5', title: 'Edit Resume', notifications: false },
-    { id: '6', title: 'إضافة وظيفة', notifications: false },
-  ],
-  [
-    { id: '2', title: 'Settings', notifications: false },
-    { id: '3', title: 'Announcements', notifications: false },
-    { id: '4', title: 'About', notifications: false },
-  ],
-];
+const getSidebarItems = (userRole) => {
+  const baseItems = [
+    [
+      { id: '0', title: 'Dashboard', notifications: false },
+      { id: '1', title: 'Students list', notifications: false },
+      { id: '5', title: 'Edit Resume', notifications: false },
+    ],
+    [
+      { id: '2', title: 'Settings', notifications: false },
+      { id: '3', title: 'Announcements', notifications: false },
+      { id: '4', title: 'About', notifications: false },
+    ],
+  ];
+
+  // Add admin-only items
+  if (userRole === 'admin') {
+    baseItems[0].push({ id: '6', title: 'إضافة وظيفة', notifications: false });
+  }
+
+  return baseItems;
+};
 
 const DashboardApp = () => {
   const [showSidebar, onSetShowSidebar] = useState(false);
@@ -66,6 +74,7 @@ const DashboardApp = () => {
   };
 
   const selectedPage = getSelectedPageFromPath(location.pathname);
+  const sidebarItems = getSidebarItems(user?.role);
 
   const handleLogout = () => {
     logout();
@@ -145,6 +154,7 @@ const DashboardApp = () => {
         showUserMenu={showUserMenu}
         setShowUserMenu={setShowUserMenu}
         navigate={navigate}
+        sidebarItems={sidebarItems}
       />
       <div className="flex flex-col flex-1 min-h-screen">
         <div className="flex-1 flex flex-col">
@@ -157,7 +167,7 @@ const DashboardApp = () => {
 
 function Sidebar({
   onSidebarHide, showSidebar, selectedPage, onPageSelect,
-  user, onLogout, showUserMenu, setShowUserMenu, navigate
+  user, onLogout, showUserMenu, setShowUserMenu, navigate, sidebarItems
 }) {
   return (
     <div
