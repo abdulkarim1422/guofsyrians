@@ -59,7 +59,9 @@ services:
       branch: main
       deploy_on_push: true
     build_command: |
-      npm ci
+      node --version
+      npm --version
+      npm ci --prefer-offline --no-audit
       npm run build
     output_dir: /dist
     environment_slug: node-js
@@ -73,7 +75,9 @@ services:
       - key: VITE_ENVIRONMENT
         value: production
       - key: NODE_VERSION
-        value: "18"
+        value: "20.17.0"
+      - key: NPM_VERSION  
+        value: "10.8.2"
 
 # Managed Database
 databases:
