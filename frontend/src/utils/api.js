@@ -237,6 +237,24 @@ export const jobsAPI = {
   },
 };
 
+// ===== Applications =====
+export const applicationsAPI = {
+  apply: async (jobId, applicationData = {}) => {
+    const res = await api.post(`/applications/jobs/${jobId}`, applicationData);
+    return res.data;
+  },
+  
+  getApplicationsForJob: async (jobId) => {
+    const res = await api.get(`/applications/admin?job_id=${jobId}`);
+    return Array.isArray(res.data) ? res.data : (res.data?.items ?? []);
+  },
+  
+  getAllApplications: async () => {
+    const res = await api.get('/applications/admin');
+    return Array.isArray(res.data) ? res.data : (res.data?.items ?? []);
+  }
+};
+
 // ===== Members =====
 export const membersAPI = {
   getAllMembers: async () => {
