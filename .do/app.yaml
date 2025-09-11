@@ -1,0 +1,68 @@
+# DigitalOcean App Platform Configuration
+name: training-employment
+services:
+  # Backend API Service
+  - name: api
+    source_dir: /backend
+    github:
+      repo: mamdouhal/training-employment
+      branch: main
+    run_command: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    environment_slug: python
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    http_port: 8080
+    health_check:
+      http_path: /health
+    envs:
+      - key: ENVIRONMENT
+        value: production
+      - key: PORT
+        value: "8080"
+      - key: MONGO_URL
+        value: ${db.CONNECTION_STRING}
+        type: SECRET
+      - key: JWT_SECRET
+        value: ${JWT_SECRET}
+        type: SECRET
+      - key: FRONTEND_URL
+        value: ${frontend.PUBLIC_URL}
+      - key: MAIL_USERNAME
+        value: ${MAIL_USERNAME}
+        type: SECRET
+      - key: MAIL_PASSWORD
+        value: ${MAIL_PASSWORD}
+        type: SECRET
+
+  # Frontend Static Site
+  - name: frontend
+    source_dir: /frontend
+    github:
+      repo: mamdouhal/training-employment
+      branch: main
+    build_command: npm ci && npm run build
+    output_dir: /dist
+    environment_slug: node-js
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    envs:
+      - key: VITE_API_URL
+        value: ${api.PUBLIC_URL}
+      - key: VITE_ENVIRONMENT
+        value: production
+      - key: NODE_VERSION
+        value: "18"
+
+# Database
+databases:
+  - name: db
+    engine: MONGODB
+    version: "5"
+    size: basic-xs
+
+# Domain configuration (optional)
+domains:
+  - domain: training-employment.your-domain.com
+    type: PRIMARY
+    wildcard: false
+    zone: your-domain.com
