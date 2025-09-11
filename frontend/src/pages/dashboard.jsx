@@ -14,26 +14,99 @@ import { AttributionComponent } from '@/components/dashboard-components/attribut
 import About from '@/pages/about.jsx';
 import { ResumeForm } from '@/pages/ResumeForm.jsx';
 
-const getSidebarItems = (userRole) => {
-  const baseItems = [
-    [
-      { id: '0', title: 'Dashboard', notifications: false },
-      { id: '1', title: 'Students list', notifications: false },
-      { id: '5', title: 'Edit Resume', notifications: false },
-    ],
-    [
-      { id: '2', title: 'Settings', notifications: false },
-      { id: '3', title: 'Announcements', notifications: false },
-      { id: '4', title: 'About', notifications: false },
-    ],
-  ];
-
-  // Add admin-only items
-  if (userRole === 'admin') {
-    baseItems[0].push({ id: '6', title: 'إضافة وظيفة', notifications: false });
+// Centralized route and menu configuration
+const MENU_ITEMS = {
+  0: { 
+    id: '0', 
+    title: 'Dashboard', 
+    path: '/dashboard', 
+    alternativePaths: ['/'], 
+    component: 'DashboardContent',
+    notifications: false,
+    adminOnly: false,
+    group: 0
+  },
+  1: { 
+    id: '1', 
+    title: 'Students list', 
+    path: '/students-list', 
+    component: 'StudentsList',
+    notifications: false,
+    adminOnly: false,
+    group: 0
+  },
+  5: { 
+    id: '5', 
+    title: 'Edit Resume', 
+    path: '/edit-resume', 
+    component: 'ResumeForm',
+    notifications: false,
+    adminOnly: false,
+    group: 0
+  },
+  6: { 
+    id: '6', 
+    title: 'إضافة وظيفة', 
+    path: '/admin/jobs/new', 
+    component: 'AdminNewJob',
+    notifications: false,
+    adminOnly: true,
+    group: 0
+  },
+  2: { 
+    id: '2', 
+    title: 'Settings', 
+    path: '/settings', 
+    component: 'Settings',
+    notifications: false,
+    adminOnly: false,
+    group: 1
+  },
+  3: { 
+    id: '3', 
+    title: 'Announcements', 
+    path: '/announcements', 
+    component: 'Announcements',
+    notifications: false,
+    adminOnly: false,
+    group: 1
+  },
+  4: { 
+    id: '4', 
+    title: 'About', 
+    path: '/about', 
+    component: 'About',
+    notifications: false,
+    adminOnly: false,
+    group: 1
+  },
+  profile: { 
+    id: 'profile', 
+    title: 'Profile', 
+    path: '/profile', 
+    component: 'ProfileSettings',
+    notifications: false,
+    adminOnly: false,
+    group: -1 // Special group for non-sidebar items
   }
+};
 
-  return baseItems;
+const getSidebarItems = (userRole) => {
+  const items = Object.values(MENU_ITEMS)
+    .filter(item => item.group >= 0) // Only include sidebar items
+    .filter(item => !item.adminOnly || userRole === 'admin'); // Filter admin-only items
+
+  const group0 = items.filter(item => item.group === 0);
+  const group1 = items.filter(item => item.group === 1);
+  
+  return [group0, group1];
+};
+
+const getMenuItemByPath = (pathname) => {
+  return Object.values(MENU_ITEMS).find(item => 
+    item.path === pathname || 
+    (item.alternativePaths && item.alternativePaths.includes(pathname))
+  );
 };
 
 const DashboardApp = () => {
@@ -59,18 +132,8 @@ const DashboardApp = () => {
   }, [showUserMenu, setShowUserMenu]);
 
   const getSelectedPageFromPath = (pathname) => {
-    switch (pathname) {
-      case '/':
-      case '/dashboard':      return '0';
-      case '/students-list':  return '1';
-      case '/settings':       return '2';
-      case '/announcements':  return '3';
-      case '/about':          return '4';
-      case '/edit-resume':    return '5';
-      case '/admin/jobs/new': return '6';
-      case '/profile':        return 'profile';
-      default:                return '0';
-    }
+    const menuItem = getMenuItemByPath(pathname);
+    return menuItem ? menuItem.id : '0'; // Default to dashboard
   };
 
   const selectedPage = getSelectedPageFromPath(location.pathname);
@@ -82,55 +145,55 @@ const DashboardApp = () => {
   };
 
   const handlePageSelect = (pageId) => {
-    switch (pageId) {
-      case '0': navigate('/dashboard'); break;
-      case '1': navigate('/students-list'); break;
-      case '2': navigate('/settings'); break;
-      case '3': navigate('/announcements'); break;
-      case '4': navigate('/about'); break;
-      case '5': navigate('/edit-resume'); break;
-      case '6': navigate('/admin/jobs/new'); break;
-      default:  navigate('/dashboard');
+    const menuItem = MENU_ITEMS[pageId];
+    if (menuItem) {
+      navigate(menuItem.path);
+    } else {
+      navigate('/dashboard');
     }
   };
 
   const renderCurrentPage = () => {
     const currentPath = location.pathname;
-    const content = (() => {
-      switch (currentPath) {
-        case '/':
-        case '/dashboard':
-          return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
-        case '/students-list':
-          return <StudentsList onSidebarHide={() => onSetShowSidebar(true)} />;
-        case '/settings':
-          return <Settings onSidebarHide={() => onSetShowSidebar(true)} />;
-        case '/announcements':
-          return <Announcements onSidebarHide={() => onSetShowSidebar(true)} />;
-        case '/about':
-          return <About onSidebarHide={() => onSetShowSidebar(true)} />;
-        case '/edit-resume':
-          return <ResumeForm onSidebarHide={() => onSetShowSidebar(true)} />;
-        case '/admin/jobs/new':
-          return <AdminNewJob onSidebarHide={() => onSetShowSidebar(true)} />;
-        case '/profile':
-          return <ProfileSettings onSidebarHide={() => onSetShowSidebar(true)} />;
-        case '/chat':
-        case '/tasks':
-        case '/reports':
-          return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
+    const menuItem = getMenuItemByPath(currentPath);
+    
+    const getComponent = (componentName) => {
+      const onSidebarHide = () => onSetShowSidebar(true);
+      
+      switch (componentName) {
+        case 'DashboardContent':
+          return <DashboardContent onSidebarHide={onSidebarHide} />;
+        case 'StudentsList':
+          return <StudentsList onSidebarHide={onSidebarHide} />;
+        case 'Settings':
+          return <Settings onSidebarHide={onSidebarHide} />;
+        case 'Announcements':
+          return <Announcements onSidebarHide={onSidebarHide} />;
+        case 'About':
+          return <About onSidebarHide={onSidebarHide} />;
+        case 'ResumeForm':
+          return <ResumeForm onSidebarHide={onSidebarHide} />;
+        case 'AdminNewJob':
+          return <AdminNewJob onSidebarHide={onSidebarHide} />;
+        case 'ProfileSettings':
+          return <ProfileSettings onSidebarHide={onSidebarHide} />;
         default:
-          return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
+          return <DashboardContent onSidebarHide={onSidebarHide} />;
       }
-    })();
+    };
 
-    const isSettingsPage =
-      currentPath === '/settings' ||
-      currentPath === '/profile' ||
-      currentPath === '/announcements' ||
-      currentPath === '/about' ||
-      currentPath === '/edit-resume' ||
-      currentPath === '/admin/jobs/new';
+    // Handle special cases for legacy routes
+    if (['/chat', '/tasks', '/reports'].includes(currentPath)) {
+      return <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
+    }
+
+    const content = menuItem ? 
+      getComponent(menuItem.component) : 
+      <DashboardContent onSidebarHide={() => onSetShowSidebar(true)} />;
+
+    // Check if current page should use settings layout
+    const settingsPageIds = ['2', '3', '4', '5', '6', 'profile'];
+    const isSettingsPage = menuItem && settingsPageIds.includes(menuItem.id);
 
     if (isSettingsPage) {
       return (
@@ -139,6 +202,7 @@ const DashboardApp = () => {
         </div>
       );
     }
+    
     return content;
   };
 
