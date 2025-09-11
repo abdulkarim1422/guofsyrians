@@ -69,6 +69,11 @@ async def create_job(payload: JobCreate, admin=Depends(get_admin_user)):
         logger.exception("create_job failed")
         raise HTTPException(status_code=500, detail=f"create_job error: {e}")
 
+# دعم المسار بدون السلاش الأخيرة لتفادي إعادة التوجيه التي قد تُسقط الهيدر Authorization في بعض البيئات
+@router.post("", response_model=JobOut)
+async def create_job_no_trailing(payload: JobCreate, admin=Depends(get_admin_user)):
+    return await create_job(payload, admin)
+
 # عرض الوظائف (عام) — يدعم: الكل/نشطة/غير نشطة
 @router.get("/", response_model=List[JobOut])
 async def list_jobs(
@@ -88,6 +93,11 @@ async def list_jobs(
 
     jobs = await cur.to_list()
     return [dump_job(j) for j in jobs]
+
+# دعم المسار بدون السلاش الأخيرة
+@router.get("", response_model=List[JobOut])
+async def list_jobs_no_trailing(q: str = "", is_active: Optional[bool] = None, limit: Optional[int] = Query(None, ge=1, le=100)):
+    return await list_jobs(q=q, is_active=is_active, limit=limit)
 
 # جلب وظيفة واحدة (عام)
 @router.get("/{job_id}", response_model=JobOut)

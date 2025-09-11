@@ -5,7 +5,12 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const target = (env.VITE_API_URL || 'http://127.0.0.1:8000').replace(/\/$/, '')
+  const target = (env.VITE_API_URL || 'http://127.0.0.1:8222').replace(/\/$/, '')
+  
+  console.log('🔧 Vite Config Debug:')
+  console.log('   Mode:', mode)
+  console.log('   VITE_API_URL from env:', env.VITE_API_URL)
+  console.log('   Target for proxy:', target)
 
   return {
     plugins: [react(), tailwindcss()],
