@@ -29,11 +29,26 @@ async def lifespan(app_: FastAPI):
     # startup
     logger.info("🚀 Application startup initiated")
     await init_db()
+    
+    # Handle any existing index conflicts gracefully
     try:
-        await db["applications"].create_index([("job_id", 1), ("user_id", 1)], unique=True)
-        logger.info("✅ Database indexes created")
+        # Check if the unique index already exists with the correct specification
+        existing_indexes = await db["applications"].list_indexes().to_list(length=None)
+        has_unique_index = any(
+            idx.get("unique", False) and 
+            idx.get("key", {}) == {"job_id": 1, "user_id": 1}
+            for idx in existing_indexes
+        )
+        
+        if not has_unique_index:
+            # Create the unique index only if it doesn't exist
+            await db["applications"].create_index([("job_id", 1), ("user_id", 1)], unique=True)
+            logger.info("✅ Created unique application index")
+        else:
+            logger.info("✅ Unique application index already exists")
+            
     except Exception as e:
-        logger.warning(f"create_index(applications) warning: {e}")
+        logger.warning(f"Index handling: {e}")
     
     logger.info("🎉 Application startup completed")
     yield

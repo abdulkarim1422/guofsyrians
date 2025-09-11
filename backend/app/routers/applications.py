@@ -18,9 +18,19 @@ async def apply_to_job(job_id: str, payload: ApplicationCreate, user=Depends(get
     if exists:
         raise HTTPException(status_code=400, detail="Already applied")
 
-    app = Application(job_id=job_id, user_id=str(user.id), **payload.dict(exclude_unset=True))
+    app = Application(job_id=job_id, user_id=str(user.id), **payload.model_dump(exclude_unset=True))
     await app.insert()
-    return app
+    
+    # Use model_dump() to properly serialize with string IDs
+    return ApplicationOut(
+        id=str(app.id),
+        job_id=app.job_id,
+        user_id=app.user_id,
+        cover_letter=app.cover_letter,
+        resume_url=app.resume_url,
+        status=app.status,
+        created_at=app.created_at
+    )
 
 @router.get("/admin", response_model=List[ApplicationOut])
 async def list_applications_admin(
@@ -31,4 +41,17 @@ async def list_applications_admin(
     if job_id:
         query["job_id"] = job_id
     apps = await Application.find(query).sort(-Application.created_at).to_list()
-    return apps
+    
+    # Convert to ApplicationOut with proper string IDs
+    return [
+        ApplicationOut(
+            id=str(app.id),
+            job_id=app.job_id,
+            user_id=app.user_id,
+            cover_letter=app.cover_letter,
+            resume_url=app.resume_url,
+            status=app.status,
+            created_at=app.created_at
+        )
+        for app in apps
+    ]

@@ -17,6 +17,7 @@ db = client[MONGODB_DB]
 # IMPORTANT: استورد الموديلات كلها بما فيها Job
 from app.models import team_model, member_model, user_model, voting_model
 from app.models.job import Job
+from app.models.application import Application
 
 async def init_db():
     logger.info(f"Connecting to MongoDB: {MONGODB_URI}")
@@ -44,6 +45,9 @@ async def init_db():
 
             # Jobs (جديد ومهم)
             Job,
+
+            # Applications (جديد ومهم)
+            Application,
         ],
     )
-    logger.info("Beanie initialized (Job included).")
+    logger.info("Beanie initialized (Job and Application included).")
