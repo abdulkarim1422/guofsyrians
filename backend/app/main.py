@@ -27,18 +27,24 @@ from contextlib import asynccontextmanager
 @asynccontextmanager
 async def lifespan(app_: FastAPI):
     # startup
+    logger.info("🚀 Application startup initiated")
     await init_db()
     try:
         await db["applications"].create_index([("job_id", 1), ("user_id", 1)], unique=True)
+        logger.info("✅ Database indexes created")
     except Exception as e:
         logger.warning(f"create_index(applications) warning: {e}")
+    
+    logger.info("🎉 Application startup completed")
     yield
-    # shutdown (nothing custom now)
+    
+    # shutdown
+    logger.info("🛑 Application shutdown initiated")
 
 
 app = FastAPI(
     title="GuofSyrians backend",
-    description="backend for managing Guof Syrians members and teams",
+    description="backend for managing Guof Syrians members and teams", 
     version="1.0.0",
     lifespan=lifespan,
 )
