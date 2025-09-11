@@ -47,10 +47,14 @@ export default defineConfig(({ mode }) => {
       assetsDir: 'assets',
       sourcemap: false,
       minify: 'terser',
+      target: 'es2020', // Ensure compatibility with Node.js 20
       terserOptions: {
         compress: {
           drop_console: mode === 'production',
           drop_debugger: mode === 'production',
+        },
+        format: {
+          comments: false,
         },
       },
       rollupOptions: {
@@ -64,6 +68,10 @@ export default defineConfig(({ mode }) => {
         },
       },
       chunkSizeWarningLimit: 1000,
+      // Ensure Node.js compatibility
+      commonjsOptions: {
+        include: [/node_modules/],
+      },
     },
 
     // Preview server for production testing
@@ -93,6 +101,14 @@ export default defineConfig(({ mode }) => {
     // CSS configuration
     css: {
       devSourcemap: isDev,
+    },
+
+    // Optimize dependencies for Node.js compatibility
+    optimizeDeps: {
+      include: ['react', 'react-dom', 'react-router-dom', 'axios'],
+      esbuildOptions: {
+        target: 'es2020',
+      },
     },
   }
 })
