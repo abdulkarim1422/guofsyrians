@@ -67,7 +67,7 @@ services:
       node --version
       npm --version
       npm ci --prefer-offline --no-audit
-      npm run build
+      npm run build || npx vite build
     output_dir: /dist
     environment_slug: node-js
     instance_count: 1
