@@ -1,10 +1,5 @@
 # DigitalOcean App Platform Configuration
-name: train  - name: frontend
-    source_dir: /frontend
-    github:
-      repo: mamdouhal/training-employment
-      branch: dev1
-      deploy_on_push: trueployment
+name: training-employment
 region: nyc1
 
 services:
@@ -44,7 +39,7 @@ services:
       - key: JWT_EXPIRATION_HOURS
         value: "24"
       - key: FRONTEND_URL
-        value: ${_self.PUBLIC_URL}
+        value: ${frontend.PUBLIC_URL}
       - key: MAIL_USERNAME
         value: noreply.training.employment@gmail.com
         type: SECRET
@@ -61,13 +56,13 @@ services:
     source_dir: /frontend
     github:
       repo: mamdouhal/training-employment
-      branch: main
+      branch: dev1
       deploy_on_push: true
     build_command: |
       node --version
       npm --version
       npm ci --prefer-offline --no-audit
-      npm run build || npx vite build
+      npm run build
     output_dir: /dist
     environment_slug: node-js
     instance_count: 1
@@ -102,6 +97,11 @@ alerts:
     operators:
       - type: GREATER_THAN
         value: 85
+  - rule: RESTART_COUNT
+    disabled: false
+    operators:
+      - type: GREATER_THAN
+        value: 5
   - rule: RESTART_COUNT
     disabled: false
     operators:
