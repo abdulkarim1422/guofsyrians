@@ -205,22 +205,6 @@ function Sidebar({
           <MenuItem key={i.id} item={i} onClick={onPageSelect} selected={selectedPage} />
         ))}
 
-        {/* زر إضافة وظيفة داخل الشريط الجانبي – يظهر فقط للأدمن */}
-        {user?.role === 'admin' && (
-          <button
-            type="button"
-            onClick={() => navigate('/admin/jobs/new')}
-            className="w-full mt-6 flex items-center px-3 sm:px-0 xl:px-3 justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-3 cursor-pointer sidebar-item text-left"
-            title="إضافة وظيفة"
-          >
-            {/* أيقونة حقيبة عمل */}
-            <svg className="w-8 h-8 xl:w-5 xl:h-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M10 4h4a2 2 0 012 2v1h3a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2h3V6a2 2 0 012-2zm4 3V6h-4v1h4zM5 11v7h14v-7h-5v1a1 1 0 11-2 0v-1H5z"/>
-            </svg>
-            <div className="block sm:hidden xl:block ml-2">إضافة وظيفة</div>
-          </button>
-        )}
-
         <div className="mt-8 mb-0 font-bold px-3 block sm:hidden xl:block">
           SHORTCUTS
         </div>
