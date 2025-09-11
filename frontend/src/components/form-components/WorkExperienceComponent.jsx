@@ -34,16 +34,8 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
     }
   }, [formData.works]); // re-sync when upstream formData.works changes
 
-  // Update formData whenever workExperiences changes
-  useEffect(() => {
-    setFormData(prev => ({
-      ...prev,
-      works: workExperiences
-    }));
-  }, [workExperiences, setFormData]);
-
   const addWorkExperience = () => {
-    setWorkExperiences([...workExperiences, {
+    const newExperience = {
       title: '',
       company: '',
       start_date: '',
@@ -53,13 +45,23 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
       responsibilities: '',
       achievements: '',
       description: []
-    }]);
+    };
+    const updatedExperiences = [...workExperiences, newExperience];
+    setWorkExperiences(updatedExperiences);
+    setFormData(prev => ({
+      ...prev,
+      works: updatedExperiences
+    }));
   };
 
   const removeWorkExperience = (index) => {
     if (workExperiences.length > 1) {
       const updated = workExperiences.filter((_, i) => i !== index);
       setWorkExperiences(updated);
+      setFormData(prev => ({
+        ...prev,
+        works: updated
+      }));
     }
   };
 
@@ -94,6 +96,10 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
       return next;
     });
     setWorkExperiences(updated);
+    setFormData(prev => ({
+      ...prev,
+      works: updated
+    }));
   };
 
   // legacy validator removed (auto period computation now)
