@@ -102,8 +102,3 @@ alerts:
     operators:
       - type: GREATER_THAN
         value: 5
-  - rule: RESTART_COUNT
-    disabled: false
-    operators:
-      - type: GREATER_THAN
-        value: 5
