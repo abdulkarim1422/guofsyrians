@@ -1,5 +1,41 @@
 {
+  "name": "training-employment",
+  "version": "1.0.0",
+  "description": "Training Employment Platform - Full Stack Application",
+  "scripts": {
+    "dev": "concurrently \"npm run db:start\" \"npm run backend:dev\" \"npm run frontend:dev\" --names \"🗄️ DB,🌐 API,🎨 UI\" --prefix-colors \"blue,green,cyan\"",
+    "db:start": "docker-compose up -d db && echo MongoDB started successfully",
+    "backend:dev": "cd backend && python -m uvicorn app.main:app --host 0.0.0.0 --port 8222 --reload",
+    "frontend:dev": "cd frontend && npm run dev",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && pip install -r requirements.txt",
+    "build": "cd frontend && npm run build",
+    "start": "npm run dev",
+    "test": "cd backend && python -m pytest tests/ -v",
+    "clean": "docker-compose down && cd frontend && rm -rf node_modules && cd ../backend && rm -rf __pycache__"
+  },
   "dependencies": {
     "react-icons": "^5.5.0"
-  }
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "python": ">=3.11.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mamdouhal/training-employment"
+  },
+  "keywords": [
+    "training",
+    "employment",
+    "resume",
+    "jobs",
+    "react",
+    "fastapi",
+    "mongodb"
+  ],
+  "license": "MIT"
 }
