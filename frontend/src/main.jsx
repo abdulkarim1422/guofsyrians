@@ -17,6 +17,8 @@ import RequireAdmin from "@/components/RequireAdmin.jsx";
 import AdminNewJob from "@/pages/AdminNewJob.jsx";
 import AdminJobsManage from "@/pages/AdminJobsManage.jsx";
 import JobDetails from '@/pages/JobDetails.jsx';
+import { ComponentTest } from '@/pages/ComponentTest.jsx';
+import { LoginTest } from '@/pages/LoginTest.jsx';
 
 
 
@@ -43,6 +45,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="/form" element={
                                 <ResumeForm />
                         } />
+                        <Route path="/test" element={<ComponentTest />} />
+                        <Route path="/login-test" element={<LoginTest />} />
                         <Route path="/dashboard" element={
                             <ProtectedRoute>
                                 <Dashboard />

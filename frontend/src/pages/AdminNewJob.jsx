@@ -45,18 +45,16 @@ export default function AdminNewJob() {
     title: "",
     company: "",
     location: "",
-    employment_type: "full_time", // سيُرسل كـ type
-    workplace_type: "onsite",     // شكلي (غير مستخدم)
+    city: "",
+    nature_of_work: "administrative",
+    employment_type: "full_time",
+    workplace_type: "onsite",
     description: "",
-    requirements: "",             // نص متعدد الأسطر
+    requirements: "",
     is_active: true,
-
-    // حد المتقدّمين
-    unlimited_applicants: true,   // إن true لن نرسل max_applicants
-    max_applicants: "",           // رقم اختياري عند إلغاء "غير محدود"
-  };
-
-  const [form, setForm] = useState(emptyForm);
+    unlimited_applicants: true,
+    max_applicants: "",
+  };  const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -78,7 +76,10 @@ export default function AdminNewJob() {
     title: f.title,
     company: f.company,
     location: f.location,
-    type: f.employment_type,      // الباك عادةً يسمّيها "type"
+    city: f.city,
+    nature_of_work: f.nature_of_work,
+    employment_type: f.employment_type,
+    workplace_type: f.workplace_type,
     description: f.description,
     requirements: f.requirements,
     is_active: !!f.is_active,
@@ -98,8 +99,10 @@ export default function AdminNewJob() {
       title: job.title || "",
       company: job.company || "",
       location: job.location || "",
-      employment_type: job.type || "full_time",
-      workplace_type: "onsite",
+      city: job.city || "",
+      nature_of_work: job.nature_of_work || "administrative",
+      employment_type: job.employment_type || job.type || "full_time",
+      workplace_type: job.workplace_type || "onsite",
       description: job.description || "",
       requirements: job.requirements || "",
       is_active: !!job.is_active,
@@ -304,15 +307,49 @@ export default function AdminNewJob() {
                     <Field label="الموقع" value={form.location}
                            onChange={(v) => setForm({ ...form, location: v })} />
                     <SelectField
+                      label="مدينة العمل"
+                      value={form.city}
+                      onChange={(v) => setForm({ ...form, city: v })}
+                      options={[
+                        { v: "Istanbul", t: "اسطنبول" },
+                        { v: "Ankara", t: "أنقرة" },
+                        { v: "Izmir", t: "إزمير" },
+                        { v: "Bursa", t: "بورصة" },
+                        { v: "Adana", t: "أضنة" },
+                        { v: "Gaziantep", t: "غازي عنتاب" },
+                        { v: "Konya", t: "قونيا" },
+                        { v: "Antalya", t: "أنطاليا" },
+                        { v: "Kayseri", t: "قيصري" },
+                        { v: "Mersin", t: "مرسين" },
+                        { v: "Other", t: "أخرى" },
+                      ]}
+                    />
+                    <SelectField
+                      label="طبيعة العمل"
+                      value={form.nature_of_work}
+                      onChange={(v) => setForm({ ...form, nature_of_work: v })}
+                      options={[
+                        { v: "administrative", t: "إداري" },
+                        { v: "fieldwork", t: "ميداني" },
+                        { v: "remote", t: "عن بُعد" },
+                        { v: "technical", t: "تقني" },
+                        { v: "creative", t: "إبداعي" },
+                        { v: "analytical", t: "تحليلي" },
+                        { v: "sales", t: "مبيعات" },
+                        { v: "support", t: "دعم" },
+                      ]}
+                    />
+                    <SelectField
                       label="نوع الدوام"
                       value={form.employment_type}
                       onChange={(v) => setForm({ ...form, employment_type: v })}
                       options={[
                         { v: "full_time", t: "دوام كامل" },
                         { v: "part_time", t: "دوام جزئي" },
-                        { v: "contract", t: "عقد" },
                         { v: "internship", t: "تدريب" },
+                        { v: "contract", t: "عقد" },
                         { v: "temporary", t: "مؤقت" },
+                        { v: "freelance", t: "عمل حر" },
                       ]}
                     />
                     <SelectField

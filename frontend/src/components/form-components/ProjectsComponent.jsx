@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Award, Plus, Trash2 } from 'lucide-react';
+import { Award, Plus, Trash2, X } from 'lucide-react';
 
 export function ProjectsComponent({ formData, setFormData }) {
   // Validation helper for project dates
@@ -92,9 +92,46 @@ export function ProjectsComponent({ formData, setFormData }) {
         start_date: '',
         end_date: '',
         is_ongoing: false,
+        project_type: 'personal',
+        project_status: 'ongoing',
         company: '',
+        role: '',
+        tools: [],
+        newTool: '',
+        responsibilities: '',
+        outcomes: '',
         description: ['']
       }]
+    }));
+  };
+
+  // New handlers for project tools
+  const addProjectTool = (projectIndex) => {
+    setFormData(prev => ({
+      ...prev,
+      projects: prev.projects.map((project, i) => {
+        if (i === projectIndex && project.newTool?.trim()) {
+          const newTools = [...(project.tools || []), project.newTool.trim()];
+          return {
+            ...project,
+            tools: newTools,
+            newTool: ''
+          };
+        }
+        return project;
+      })
+    }));
+  };
+
+  const removeProjectTool = (projectIndex, toolIndex) => {
+    setFormData(prev => ({
+      ...prev,
+      projects: prev.projects.map((project, i) => 
+        i === projectIndex ? {
+          ...project,
+          tools: (project.tools || []).filter((_, j) => j !== toolIndex)
+        } : project
+      )
     }));
   };
 
@@ -171,7 +208,7 @@ export function ProjectsComponent({ formData, setFormData }) {
           </div>
           
           <div className="grid md:grid-cols-2 gap-4 mb-4">
-            {/* Project Name and Company on same line */}
+            {/* Project Name and Type on same line */}
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
                 Project Name *
@@ -187,6 +224,28 @@ export function ProjectsComponent({ formData, setFormData }) {
             </div>
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
+                Project Type *
+              </label>
+              <select
+                value={project.project_type || 'personal'}
+                onChange={(e) => handleProjectChange(index, 'project_type', e.target.value)}
+                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                required
+              >
+                <option value="graduation">Graduation Project</option>
+                <option value="internship">Internship Project</option>
+                <option value="freelance">Freelance Work</option>
+                <option value="volunteer">Volunteer Project</option>
+                <option value="personal">Personal Project</option>
+                <option value="professional">Professional Work</option>
+                <option value="academic">Academic Research</option>
+                <option value="open_source">Open Source Contribution</option>
+              </select>
+            </div>
+            
+            {/* Company/Client and Role */}
+            <div>
+              <label className="block text-sm font-medium text-carbon mb-2">
                 Company/Client
               </label>
               <input
@@ -195,6 +254,19 @@ export function ProjectsComponent({ formData, setFormData }) {
                 onChange={(e) => handleProjectChange(index, 'company', e.target.value)}
                 className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                 placeholder="Client Name, Personal Project, Company Name, etc."
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-carbon mb-2">
+                Your Role *
+              </label>
+              <input
+                type="text"
+                value={project.role || ''}
+                onChange={(e) => handleProjectChange(index, 'role', e.target.value)}
+                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                placeholder="Lead Developer, UI/UX Designer, Project Manager, etc."
+                required
               />
             </div>
             
@@ -214,77 +286,117 @@ export function ProjectsComponent({ formData, setFormData }) {
             {!project.is_ongoing && (
               <div>
                 <label className="block text-sm font-medium text-carbon mb-2">
-                  End Date *
+                  End Date {project.project_status === 'completed' || project.project_status === 'expected' ? '*' : ''}
                 </label>
                 <input
                   type="date"
                   value={project.end_date}
                   onChange={(e) => handleProjectChange(index, 'end_date', e.target.value)}
                   className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                  required
+                  required={project.project_status === 'completed' || project.project_status === 'expected'}
                 />
               </div>
             )}
             
-            {/* Ongoing project checkbox */}
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id={`project-ongoing-${index}`}
-                  checked={project.is_ongoing}
-                  onChange={(e) => handleProjectOngoingChange(index, e.target.checked)}
-                  className="w-4 h-4 text-rich-gold bg-white border-2 border-gray-200 rounded focus:ring-rich-gold focus:ring-2"
-                />
-                <label htmlFor={`project-ongoing-${index}`} className="text-sm font-medium text-carbon">
-                  This project is ongoing
-                </label>
-              </div>
-              <p className="text-xs text-gray-600 mt-1">
-                Check this box if you're still working on this project
-              </p>
+            {/* Project Status */}
+            <div>
+              <label className="block text-sm font-medium text-carbon mb-2">
+                Project Status *
+              </label>
+              <select
+                value={project.project_status || 'ongoing'}
+                onChange={(e) => handleProjectChange(index, 'project_status', e.target.value)}
+                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                required
+              >
+                <option value="ongoing">Ongoing</option>
+                <option value="completed">Completed</option>
+                <option value="expected">Expected Completion</option>
+                <option value="paused">Paused</option>
+              </select>
             </div>
           </div>
           
-          {/* Project Description */}
+          {/* Tools/Technologies Section */}
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
               <label className="block text-sm font-medium text-carbon">
-                Project Description *
+                Tools & Technologies *
               </label>
               <button
                 type="button"
-                onClick={() => addProjectDescription(index)}
+                onClick={() => addProjectTool(index)}
                 className="text-deep-green hover:text-green-dark text-sm flex items-center space-x-1 transition-colors"
               >
                 <Plus className="w-3 h-3" />
-                <span>Add Description</span>
+                <span>Add Tool</span>
               </button>
             </div>
-            {project.description.map((desc, descIndex) => (
-              <div key={descIndex} className="mb-2 relative">
-                <textarea
-                  value={desc}
-                  onChange={(e) => handleProjectDescriptionChange(index, descIndex, e.target.value)}
-                  rows={2}
-                  className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none"
-                  placeholder={`• Project feature or achievement ${descIndex + 1}`}
-                  required={descIndex === 0}
-                />
-                {project.description.length > 1 && (
+            <div className="flex flex-wrap gap-2 mb-2">
+              {(project.tools || []).map((tool, toolIndex) => (
+                <div key={toolIndex} className="flex items-center bg-gray-100 rounded-lg px-3 py-1">
+                  <span className="text-sm text-carbon">{tool}</span>
                   <button
                     type="button"
-                    onClick={() => removeProjectDescription(index, descIndex)}
-                    className="absolute top-2 right-2 text-red-400 hover:text-red-600 transition-colors"
-                    title="Remove this description"
+                    onClick={() => removeProjectTool(index, toolIndex)}
+                    className="ml-2 text-red-400 hover:text-red-600 transition-colors"
+                    title="Remove this tool"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <X className="w-3 h-3" />
                   </button>
-                )}
-              </div>
-            ))}
+                </div>
+              ))}
+            </div>
+            <input
+              type="text"
+              value={project.newTool || ''}
+              onChange={(e) => handleProjectChange(index, 'newTool', e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  addProjectTool(index);
+                }
+              }}
+              className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+              placeholder="Type technology name and press Enter (e.g., React, Python, Figma)"
+            />
             <p className="text-xs text-gray-600 mt-1">
-              Highlight key features, technologies used, and project outcomes
+              Add technologies, frameworks, tools, or languages used in this project
+            </p>
+          </div>
+          
+          {/* Role & Responsibilities */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-carbon mb-2">
+              Role & Responsibilities *
+            </label>
+            <textarea
+              value={project.responsibilities || ''}
+              onChange={(e) => handleProjectChange(index, 'responsibilities', e.target.value)}
+              rows={3}
+              className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none"
+              placeholder="Describe your specific role and key responsibilities in this project..."
+              required
+            />
+            <p className="text-xs text-gray-600 mt-1">
+              Detail what you were responsible for and how you contributed to the project
+            </p>
+          </div>
+          
+          {/* Results/Outcomes */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-carbon mb-2">
+              Results/Outcomes
+            </label>
+            <textarea
+              value={project.outcomes || ''}
+              onChange={(e) => handleProjectChange(index, 'outcomes', e.target.value)}
+              rows={3}
+              className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none"
+              placeholder="Describe the project outcomes, impact, metrics, or achievements..."
+            />
+            <p className="text-xs text-gray-600 mt-1">
+              Include quantifiable results, user feedback, performance metrics, or business impact
             </p>
           </div>
         </div>

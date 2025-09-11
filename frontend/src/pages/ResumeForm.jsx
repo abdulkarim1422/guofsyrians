@@ -7,7 +7,7 @@ import { PhoneInputComponent } from '@/components/form-components/PhoneInputComp
 import { SkillsInputComponent } from '@/components/form-components/SkillsInputComponent';
 import { InterestsInputComponent } from '@/components/form-components/InterestsInputComponent';
 import { SocialInputComponent } from '@/components/form-components/SocialInputComponent';
-import { WorkExperienceComponent } from '@/components/form-components/WorkExperienceComponent';
+import WorkExperienceComponent from '@/components/form-components/WorkExperienceComponent';
 import { ProjectsComponent } from '@/components/form-components/ProjectsComponent';
 import { AcademicInputComponent } from '@/components/form-components/AcademicInputComponent';
 import { getMemberImageUrl, getDefaultAvatarPath } from '@/utils/imageUtils';
@@ -55,7 +55,10 @@ export const ResumeForm = () => {
         end_date: '',
         currently_working: false,
         company: '',
-        description: ['']
+        period: '',
+        responsibilities: '',
+        achievements: '',
+        description: [''] // Keep for backward compatibility
       }
     ],
     
@@ -65,7 +68,9 @@ export const ResumeForm = () => {
         degreeLevel: '',
         major: '',
         date: '',
-        institution: ''
+        institution: '',
+        gpa: '',
+        rank: ''
       }
     ],
     
@@ -76,8 +81,15 @@ export const ResumeForm = () => {
         start_date: '',
         end_date: '',
         is_ongoing: false,
+        project_type: 'personal',
+        project_status: 'ongoing',
         company: '',
-        description: ['']
+        role: '',
+        tools: [],
+        newTool: '',
+        responsibilities: '',
+        outcomes: '',
+        description: [''] // Keep for backward compatibility
       }
     ]
   });
@@ -104,9 +116,16 @@ export const ResumeForm = () => {
       setIsLoadingExistingData(true);
       
       try {
-        // ⚠️ بدون /api: baseURL يضيفها تلقائيًا
-        console.log('Fetching resume data for user:', user.id);
-        const resumeResponse = await api.get(`/resume/by-user-id/${user.id}`);
+          console.log('Fetching resume data for user:', user.id);
+        // Try v2 API first, fallback to legacy
+        let resumeResponse;
+        try {
+          const { resumeV2API } = await import('@/utils/v2Api');
+          resumeResponse = { data: await resumeV2API.getByUserId(user.id) };
+        } catch (v2Error) {
+          console.log('V2 API failed, trying legacy:', v2Error);
+          resumeResponse = await api.get(`/resume/by-user-id/${user.id}`);
+        }
         const resumeData = resumeResponse.data;
         console.log('Resume data loaded:', resumeData);
         
@@ -123,8 +142,8 @@ export const ResumeForm = () => {
 
         setIsEditMode(true);
 
-        // Populate form with existing data
-        setFormData(prevData => ({
+  // Populate form with existing data (supports normalized description_list)
+  setFormData(prevData => ({
           ...prevData,
           // Profile data from member
           name: memberData.name || '',
@@ -142,19 +161,28 @@ export const ResumeForm = () => {
           social_media: memberData.social_media || {},
           
           // Transform work experiences from backend format
-          works: workExperiences.length > 0 ? workExperiences.map(work => ({
-            title: work.job_title || '',
-            start_date: work.start_date ? work.start_date.split('T')[0] : '',
-            end_date: work.end_date ? work.end_date.split('T')[0] : '',
-            currently_working: !work.end_date,
-            company: work.company || '',
-            description: work.description ? [work.description] : ['']
-          })) : [{
+          works: workExperiences.length > 0 ? workExperiences.map(work => {
+            const descList = work.description_list || (work.description ? [work.description] : []);
+            return {
+              title: work.job_title || '',
+              start_date: work.start_date ? work.start_date.split('T')[0] : '',
+              end_date: work.end_date ? work.end_date.split('T')[0] : '',
+              currently_working: !work.end_date,
+              company: work.company || '',
+              period: `${work.start_date ? work.start_date.split('T')[0] : ''} - ${work.end_date ? work.end_date.split('T')[0] : 'Present'}`,
+              responsibilities: work.responsibilities || '',
+              achievements: work.achievements || '',
+              description: descList.length ? descList : ['']
+            };
+          }) : [{
             title: '',
             start_date: '',
             end_date: '',
             currently_working: false,
             company: '',
+            period: '',
+            responsibilities: '',
+            achievements: '',
             description: ['']
           }],
 
@@ -163,28 +191,47 @@ export const ResumeForm = () => {
             degreeLevel: edu.degree || '',
             major: edu.field_of_study || '',
             date: edu.end_date ? edu.end_date.split('T')[0] : '',
-            institution: edu.institution || ''
+            institution: edu.institution || '',
+            gpa: edu.gpa || '',
+            rank: edu.academic_standing || edu.grade || ''
           })) : [{
             degreeLevel: '',
             major: '',
             date: '',
-            institution: ''
+            institution: '',
+            gpa: '',
+            rank: ''
           }],
 
           // Transform projects from backend format
-          projects: projects.length > 0 ? projects.map(project => ({
-            name: project.project_name || '',
-            start_date: project.start_date ? project.start_date.split('T')[0] : '',
-            end_date: project.end_date ? project.end_date.split('T')[0] : '',
-            is_ongoing: !project.end_date,
-            company: project.role || '',
-            description: project.description ? [project.description] : ['']
-          })) : [{
+          projects: projects.length > 0 ? projects.map(project => {
+            const descList = project.description_list || (project.description ? [project.description] : []);
+            return {
+              name: project.project_name || '',
+              start_date: project.start_date ? project.start_date.split('T')[0] : '',
+              end_date: project.end_date ? project.end_date.split('T')[0] : '',
+              is_ongoing: !project.end_date,
+              company: project.company || '',
+              period: `${project.start_date ? project.start_date.split('T')[0] : ''} - ${project.end_date ? project.end_date.split('T')[0] : 'Present'}`,
+              project_type: project.project_type || 'other',
+              tools: project.tools || [],
+              role: project.role || '',
+              responsibilities: project.responsibilities || '',
+              outcomes: project.outcomes || '',
+              description: descList.length ? descList : ['']
+            };
+          }) : [{
             name: '',
             start_date: '',
             end_date: '',
             is_ongoing: false,
             company: '',
+            period: '',
+            project_type: 'other',
+            tools: [],
+            role: '',
+            responsibilities: '',
+            outcomes: '',
             description: ['']
           }]
         }));
@@ -236,55 +283,7 @@ export const ResumeForm = () => {
     if (fileInput) fileInput.value = '';
   };
 
-  const handleProjectChange = (index, field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      projects: prev.projects.map((project, i) => i === index ? { ...project, [field]: value } : project)
-    }));
-  };
-
-  const handleProjectDescriptionChange = (projectIndex, descIndex, value) => {
-    setFormData(prev => ({
-      ...prev,
-      projects: prev.projects.map((project, i) => 
-        i === projectIndex
-          ? { ...project, description: project.description.map((d, j) => j === descIndex ? value : d) }
-          : project
-      )
-    }));
-  };
-
-  const addProjectEntry = () => {
-    setFormData(prev => ({
-      ...prev,
-      projects: [...prev.projects, { name: '', company: '', period: '', description: [''] }]
-    }));
-  };
-
-  const removeProjectEntry = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      projects: prev.projects.filter((_, i) => i !== index)
-    }));
-  };
-
-  const addProjectDescription = (projectIndex) => {
-    setFormData(prev => ({
-      ...prev,
-      projects: prev.projects.map((project, i) => 
-        i === projectIndex ? { ...project, description: [...project.description, ''] } : project
-      )
-    }));
-  };
-
-  const removeProjectDescription = (projectIndex, descIndex) => {
-    setFormData(prev => ({
-      ...prev,
-      projects: prev.projects.map((project, i) => 
-        i === projectIndex ? { ...project, description: project.description.filter((_, j) => j !== descIndex) } : project
-      )
-    }));
-  };
+  // Legacy project handlers removed - components now manage their own state internally
 
   // Helper function to format work period for backend compatibility
   const formatWorkPeriod = (startDate, endDate, currentlyWorking) => {
@@ -348,6 +347,8 @@ export const ResumeForm = () => {
             company: w.company,
             description: (w.description || []).filter(d => d.trim() !== ''),
             period: formatWorkPeriod(w.start_date, w.end_date, w.currently_working),
+            responsibilities: w.responsibilities?.trim() || undefined,
+            achievements: w.achievements?.trim() || undefined,
           })),
         academic: formData.academic.filter(edu => edu.degreeLevel && edu.institution),
         projects: formData.projects
@@ -357,16 +358,33 @@ export const ResumeForm = () => {
             company: p.company,
             description: (p.description || []).filter(d => d.trim() !== ''),
             period: formatProjectPeriod(p.start_date, p.end_date, p.is_ongoing),
+            project_type: p.project_type || undefined,
+            tools: Array.isArray(p.tools) ? p.tools.filter(t => t && t.trim()) : [],
+            role: p.role?.trim() || undefined,
+            responsibilities: p.responsibilities?.trim() || undefined,
+            outcomes: p.outcomes?.trim() || undefined,
           })),
       };
 
       let response;
-      if (isEditMode && memberId) {
-        // تحديث موجود
-        response = await api.put(`/resume/${memberId}`, resumeData);
-      } else {
-        // إنشاء جديد (نستخدم formApi بلا Authorization)
-        response = await formApi.post(`/resume/submit`, resumeData);
+      try {
+        const { resumeV2API } = await import('@/utils/v2Api');
+        if (isEditMode && memberId) {
+          // تحديث موجود via V2
+          response = { data: await resumeV2API.update(memberId, resumeData) };
+        } else {
+          // إنشاء جديد via V2
+          response = { data: await resumeV2API.submit(resumeData) };
+        }
+      } catch (v2Error) {
+        console.log('V2 API failed, using legacy:', v2Error);
+        if (isEditMode && memberId) {
+          // تحديث موجود
+          response = await api.put(`/resume/${memberId}`, resumeData);
+        } else {
+          // إنشاء جديد (نستخدم formApi بلا Authorization)
+          response = await formApi.post(`/resume/submit`, resumeData);
+        }
       }
       
       const result = response.data;
@@ -469,7 +487,7 @@ export const ResumeForm = () => {
                       />
                     </div>
 
-                    {MailInputComponent(formData, setFormData)}
+                    <MailInputComponent formData={formData} setFormData={setFormData} />
 
                     <PhoneInputComponent formData={formData} setFormData={setFormData} />
 
