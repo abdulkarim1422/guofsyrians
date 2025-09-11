@@ -48,6 +48,8 @@ class JobBase(_NormalizeLists):
     title: str
     company: Optional[str] = None
     location: Optional[str] = None
+    city: Optional[str] = None
+    nature_of_work: str = "administrative"
 
     employment_type: Employment = "full_time"
     workplace_type: Workplace = "onsite"
