@@ -11,9 +11,11 @@ class Job(Document):
     title: str
     company: Optional[str] = None
     location: Optional[str] = None
+    city: Optional[str] = None           # City of Employment with "Other" option
+    nature_of_work: str = "administrative"  # administrative | fieldwork | remote | technical | creative | analytical | sales | support
 
     # نوع الدوام ومكانه
-    employment_type: str = "full_time"   # full_time | part_time | contract | internship | temporary | freelance | other
+    employment_type: str = "full_time"   # full_time | part_time | internship | contract | temporary | freelance | other
     workplace_type: str = "onsite"       # onsite | remote | hybrid
 
     # وصف

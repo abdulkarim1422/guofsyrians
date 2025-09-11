@@ -1,25 +1,52 @@
 # app/main.py
 from fastapi import FastAPI, Request, HTTPException
+import asyncio
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 import logging
+import contextlib
 import os
 
 from app.config.database import init_db, db
 from app.routers import all_routers
+from app.api.v2 import api_v2_router
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from app.core import errors as core_errors
 
 # ── logging ────────────────────────────────────────────────────────────────────
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("guof-backend")
 
 # ── app ────────────────────────────────────────────────────────────────────────
+from contextlib import asynccontextmanager
+
+
+@asynccontextmanager
+async def lifespan(app_: FastAPI):
+    # startup
+    await init_db()
+    try:
+        await db["applications"].create_index([("job_id", 1), ("user_id", 1)], unique=True)
+    except Exception as e:
+        logger.warning(f"create_index(applications) warning: {e}")
+    yield
+    # shutdown (nothing custom now)
+
+
 app = FastAPI(
     title="GuofSyrians backend",
     description="backend for managing Guof Syrians members and teams",
     version="1.0.0",
+    lifespan=lifespan,
 )
+
+# ── Error handlers (applies also to v2) ───────────────────────────────────────
+app.add_exception_handler(StarletteHTTPException, core_errors.http_exception_handler)
+app.add_exception_handler(RequestValidationError, core_errors.validation_exception_handler)
+app.add_exception_handler(Exception, core_errors.unhandled_exception_handler)
 
 load_dotenv()
 
@@ -32,6 +59,11 @@ DEFAULT_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://localhost:4173",     # Vite preview
     "http://127.0.0.1:4173",
+    "http://localhost:5174",     # Additional Vite ports
+    "http://localhost:5175",
+    "http://localhost:5176",
+    "http://localhost:5177",
+    "http://127.0.0.1:5177",
     # أضف IP جهازك على الشبكة إن احتجت (مثال):
     # "http://192.168.1.111:5173",
 ]
@@ -71,18 +103,12 @@ uploads_dir = "uploads"
 os.makedirs(uploads_dir, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=uploads_dir), name="uploads")
 
-# ── Routers (includes /api/jobs) ──────────────────────────────────────────────
-app.include_router(all_routers.router, prefix="/api")
+# ── Routers (legacy + v2) ─────────────────────────────────────────────────────
+app.include_router(all_routers.router, prefix="/api")            # legacy
+app.include_router(api_v2_router, prefix="/api/v2")               # new versioned
 
 # ── Startup ───────────────────────────────────────────────────────────────────
-@app.on_event("startup")
-async def on_startup():
-    await init_db()
-    # فهرس فريد لمنع التقديم المكرر على نفس الوظيفة
-    try:
-        await db["applications"].create_index([("job_id", 1), ("user_id", 1)], unique=True)
-    except Exception as e:
-        logger.warning(f"create_index(applications) warning: {e}")
+# (legacy on_event startup removed in favor of lifespan)
 
 @app.get("/")
 def read_root():

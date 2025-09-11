@@ -10,7 +10,6 @@ click==8.1.8
 colorama==0.4.6
 cryptography==45.0.4
 dnspython==2.7.0
-dotenv==0.9.9
 ecdsa==0.19.1
 email_validator==2.1.1
 fastapi==0.115.11
@@ -18,13 +17,13 @@ h11==0.14.0
 idna==3.10
 lazy-model==0.2.0
 motor==3.7.0
-passlib==1.7.4
+python-dotenv==1.1.1
 pyasn1==0.6.1
 pycparser==2.22
 pydantic==2.10.6
 pydantic_core==2.27.2
+pydantic-settings==2.10.1
 pymongo==4.11.3
-python-dotenv==1.1.1
 python-jose==3.3.0
 python-multipart==0.0.6
 requests==2.32.4
