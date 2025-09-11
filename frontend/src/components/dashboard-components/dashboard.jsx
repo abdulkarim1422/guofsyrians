@@ -92,9 +92,11 @@ function DashboardContent({ onSidebarHide }) {
         </div>
 
         {/* 👇 ملخص الطلاب تحتها مباشرة */}
-        <div className="w-full p-2">
-          <StudentsOverviewWidget />
-        </div>
+        {user?.role === 'admin' && (
+          <div className="w-full p-2">
+            <StudentsOverviewWidget />
+          </div>
+        )}
       </div>
     </div>
   );
