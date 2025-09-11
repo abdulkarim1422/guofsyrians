@@ -121,10 +121,48 @@ def read_root():
     return {"Hello": "World"}
 
 @app.get("/health")
-def health_check():
-    return {
-        "status": "healthy",
-        "message": "GuofSyrians API is running",
-        "cors_origins": origins,
-        "allow_credentials": ALLOW_CREDENTIALS,
-    }
+async def health_check():
+    """Health check endpoint for DigitalOcean App Platform"""
+    try:
+        # Test database connection
+        db_status = "connected"
+        try:
+            # Simple ping to test MongoDB connection
+            await db.client.admin.command('ping')
+        except Exception as e:
+            db_status = f"error: {str(e)}"
+            logger.warning(f"Database health check failed: {e}")
+        
+        # Get environment info
+        environment = os.getenv("ENVIRONMENT", "development")
+        port = os.getenv("PORT", "8222")
+        
+        health_data = {
+            "status": "healthy",
+            "message": "Training Employment API is running",
+            "environment": environment,
+            "port": port,
+            "database": db_status,
+            "version": "2.0.0",
+            "timestamp": f"{asyncio.get_event_loop().time()}"
+        }
+        
+        # Return 503 if database is not connected in production
+        if environment == "production" and "error" in db_status:
+            return JSONResponse(
+                status_code=503,
+                content={**health_data, "status": "unhealthy"}
+            )
+        
+        return health_data
+        
+    except Exception as e:
+        logger.error(f"Health check failed: {e}")
+        return JSONResponse(
+            status_code=503,
+            content={
+                "status": "unhealthy", 
+                "message": f"Health check failed: {str(e)}",
+                "timestamp": f"{asyncio.get_event_loop().time()}"
+            }
+        )

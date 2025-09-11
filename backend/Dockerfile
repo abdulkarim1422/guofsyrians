@@ -1,34 +1,49 @@
-# Use an official Python runtime as a parent image
-FROM python:3.11-slim-buster
+# DigitalOcean App Platform optimized Dockerfile
+FROM python:3.11-slim
 
-# Set the working directory in the container
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PORT=8080
+
+# Set work directory
 WORKDIR /app
 
-# Add a non-root user and group
-RUN groupadd --gid 1001 appgroup
-RUN useradd --uid 1001 --gid appgroup appuser
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first to leverage Docker cache
 COPY requirements.txt ./
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code and startup script
+# Copy application code
 COPY . .
-COPY startup.sh .
 
-# Set permissions
-RUN chown -R appuser:appgroup /app && \
-    chown -R appuser:appgroup /usr/local && \
-    chown -R appuser:appgroup /tmp && \
-    chmod +x startup.sh
+# Create necessary directories
+RUN mkdir -p uploads logs
 
-# Expose the application port
-EXPOSE 8222
+# Create non-root user for security
+RUN groupadd --gid 1001 appgroup && \
+    useradd --uid 1001 --gid appgroup --shell /bin/bash --create-home appuser
+
+# Set proper permissions
+RUN chown -R appuser:appgroup /app
+
+# Health check for App Platform
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:${PORT}/health || exit 1
+
+# Expose port (App Platform uses PORT env var)
+EXPOSE $PORT
 
 # Switch to non-root user
 USER appuser
 
-# Command to run the application
-CMD ["./startup.sh"]
+# Start command optimized for App Platform
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "1", "--access-log", "--log-level", "info"]
