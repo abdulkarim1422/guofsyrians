@@ -8,10 +8,13 @@
     "backend:dev": "cd backend && python -m uvicorn app.main:app --host 0.0.0.0 --port 8222 --reload",
     "frontend:dev": "cd frontend && npm run dev",
     "install:all": "npm install && cd frontend && npm install && cd ../backend && pip install -r requirements.txt",
-    "build": "cd frontend && npm run build",
     "start": "npm run dev",
     "test": "cd backend && python -m pytest tests/ -v",
     "clean": "docker-compose down && cd frontend && rm -rf node_modules && cd ../backend && rm -rf __pycache__"
+  },
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
   },
   "dependencies": {
     "react-icons": "^5.5.0"
