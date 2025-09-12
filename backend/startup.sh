@@ -8,16 +8,6 @@ set -e
 echo "🚀 Starting GuofSyrians Backend..."
 
 # Wait for MongoDB to be ready
-echo "Waiting for MongoDB to be ready..."
-python wait-for-mongo.py
-
-# Create admin user
-echo "Creating admin user..."
-python create_admin.py
-
-# Start the application
-echo "Starting FastAPI application..."
-uvicorn app.main:app --host 0.0.0.0 --port 8222 --timeout-keep-alive 7200 --no-access-log
 echo "📡 Checking MongoDB connection..."
 python wait-for-mongo.py
 
