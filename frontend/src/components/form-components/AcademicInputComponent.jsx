@@ -382,7 +382,7 @@ function UniversitySelector({ value, onChange, placeholder }) {
           onChange={handleInputChange}
           onFocus={handleInputFocus}
           onKeyDown={handleUniversityKeyPress}
-          className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all pr-10"
+          className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all pr-8 sm:pr-10 text-xs sm:text-base"
           placeholder={placeholder}
           autoComplete="off"
         />
@@ -718,7 +718,7 @@ export function AcademicInputComponent({ formData, setFormData }) {
               <select
                 value={edu.degreeLevel}
                 onChange={(e) => handleAcademicChange(index, 'degreeLevel', e.target.value)}
-                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all text-xs sm:text-base"
                 required
               >
                 <option value="">Select degree level</option>
