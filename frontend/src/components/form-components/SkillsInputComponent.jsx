@@ -409,7 +409,7 @@ export function SkillsInputComponent({ formData, setFormData }) {
                   onChange={handleInputChange}
                   onFocus={handleInputFocus}
                   onKeyDown={handleSkillKeyPress}
-                  className="w-full pl-4 pr-10 py-2.5 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                  className="w-full pl-3 sm:pl-4 pr-8 sm:pr-10 py-1.5 sm:py-2.5 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all text-xs sm:text-base"
                   placeholder="Search or type a skill (e.g., JavaScript, Project Management, etc.)"
                 />
                 {currentSkill && (
