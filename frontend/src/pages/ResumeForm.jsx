@@ -1,5 +1,5 @@
 // C:\Users\abodi\OneDrive\Desktop\guofsyrians-main\frontend\src\pages\ResumeForm.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { MapPin, Send, User, MessageSquare } from 'lucide-react';
 import { SEO } from '@/components/common/SEO';
 import { MailInputComponent } from '@/components/form-components/MailInputComponent';
@@ -415,44 +415,44 @@ export const ResumeForm = () => {
       />
       
       <div className="min-h-screen bg-sand overflow-auto">
-        <div className="w-full flex flex-col items-center px-4 py-8 max-w-none">
+        <div className="w-full flex flex-col items-center px-2 sm:px-4 py-4 sm:py-8 max-w-none">
           {/* Loading State */}
           {isLoadingExistingData && (
-            <div className="text-center mb-12 flex flex-col items-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rich-gold mb-4"></div>
-              <p className="text-lg text-gray-700">Loading your existing resume data...</p>
+            <div className="text-center mb-8 sm:mb-12 flex flex-col items-center px-4">
+              <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-rich-gold mb-4"></div>
+              <p className="text-base sm:text-lg text-gray-700">Loading your existing resume data...</p>
             </div>
           )}
 
           {!isLoadingExistingData && (
             <>
-              {/* Header Section */}
-              <div className="text-center mb-12 flex flex-col items-center">
-                <h1 className="text-4xl md:text-5xl font-bold text-carbon mb-4">
+              {/* Header Section - Mobile Optimized */}
+              <div className="text-center mb-8 sm:mb-12 flex flex-col items-center px-2">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-carbon mb-3 sm:mb-4 leading-tight">
                   {isEditMode ? 'Edit Resume' : 'Resume Form'}
                 </h1>
-                <p className="text-lg text-gray-700 max-w-2xl">
+                <p className="text-sm sm:text-lg text-gray-700 max-w-2xl leading-relaxed px-2">
                   {isEditMode 
                     ? 'Update your professional information, skills, experience, and projects.'
                     : 'Create your professional resume by filling out the information below.'
                   }
                 </p>
                 {isEditMode && (
-                  <p className="text-sm text-rich-gold mt-2">
+                  <p className="text-xs sm:text-sm text-rich-gold mt-2 px-2">
                     You are editing your existing resume as {user?.name}
                   </p>
                 )}
               </div>
 
-              <form onSubmit={handleSubmit} className="w-full max-w-4xl space-y-8">
-                {/* Profile Information */}
-                <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-                  <h2 className="text-2xl font-semibold text-carbon mb-6 flex items-center arabic-text-semibold" dir="rtl">
-                    <User className="w-6 h-6 ml-2 text-rich-gold" />
+              <form onSubmit={handleSubmit} className="w-full max-w-4xl space-y-6 sm:space-y-8">
+                {/* Profile Information - Mobile Enhanced */}
+                <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-8 border border-gray-200 mx-2 sm:mx-0">
+                  <h2 className="text-lg sm:text-2xl font-semibold text-carbon mb-4 sm:mb-6 flex items-center arabic-text-semibold" dir="rtl">
+                    <User className="w-5 h-5 sm:w-6 sm:h-6 ml-2 text-rich-gold" />
                     معلومات الملف الشخصي
                   </h2>
                   
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-carbon mb-2 arabic-text-medium" dir="rtl">
                         الاسم الكامل *
@@ -464,7 +464,7 @@ export const ResumeForm = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text"
+                        className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text text-xs sm:text-base"
                         placeholder="اسمك الكامل"
                         dir="rtl"
                       />
@@ -481,7 +481,7 @@ export const ResumeForm = () => {
                         value={formData.professional_title}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text"
+                        className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text text-xs sm:text-base"
                         placeholder="المسمى الوظيفي"
                         dir="rtl"
                       />
@@ -496,14 +496,14 @@ export const ResumeForm = () => {
                         المدينة (داخل تركيا) *
                       </label>
                       <div className="relative">
-                        <MapPin className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                        <MapPin className="absolute left-3 top-2.5 sm:top-3 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
                         <select
                           id="city"
                           name="city"
                           value={formData.city}
                           onChange={handleInputChange}
                           required
-                          className="w-full pl-10 pr-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text"
+                          className="w-full pl-8 sm:pl-10 pr-2 sm:pr-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text text-xs sm:text-base"
                           dir="rtl"
                         >
                           <option value="" disabled>اختر مدينة تركية</option>
@@ -524,7 +524,7 @@ export const ResumeForm = () => {
                         value={formData.relocateToSyria}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text"
+                        className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text text-xs sm:text-base"
                         dir="rtl"
                       >
                         <option value="" disabled>اختر إجابتك</option>
@@ -545,7 +545,7 @@ export const ResumeForm = () => {
                         value={formData.birthdate}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                        className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all text-xs sm:text-base"
                         dir="rtl"
                       />
                     </div>
@@ -560,7 +560,7 @@ export const ResumeForm = () => {
                         value={formData.sex}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text"
+                        className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all arabic-text text-xs sm:text-base"
                         dir="rtl"
                       >
                         <option value="">اختر الجنس</option>
@@ -574,35 +574,36 @@ export const ResumeForm = () => {
                         صورة الملف الشخصي
                       </label>
                       
-                      {/* Image Preview */}
+                      {/* Image Preview - Mobile Responsive */}
                       <div className="mb-4 relative inline-block">
                         <img 
                           src={imagePreview || getMemberImageUrl(formData.image, formData.sex)} 
                           alt="Profile preview" 
-                          className="w-32 h-32 object-cover rounded-lg border-2 border-gray-200"
+                          className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg border-2 border-gray-200"
                           onError={(e) => { e.target.src = getDefaultAvatarPath(formData.sex); }}
                         />
                         {(imagePreview || formData.image) && (
                           <button
                             type="button"
                             onClick={removeImage}
-                            className="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm transition-colors"
+                            className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-600 hover:bg-red-700 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm transition-colors"
                             title="Remove image"
+                            aria-label="حذف الصورة"
                           >
                             ×
                           </button>
                         )}
                       </div>
                       
-                      {/* File Upload */}
+                      {/* File Upload - Touch Friendly */}
                       <div className="relative">
                         <input type="file" id="imageFile" accept="image/*" onChange={handleImageUpload} className="hidden" />
                         <label
                           htmlFor="imageFile"
-                          className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all cursor-pointer hover:bg-gray-50 flex items-center justify-center space-x-2 arabic-text"
+                          className="w-full px-2 sm:px-4 py-2 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all cursor-pointer hover:bg-gray-50 flex items-center justify-center space-x-2 arabic-text text-xs sm:text-base min-h-[40px] sm:min-h-[44px]"
                           dir="rtl"
                         >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                           </svg>
                           <span className="mr-2">
@@ -612,7 +613,7 @@ export const ResumeForm = () => {
                       </div>
                       
                       {(formData.imageFile || formData.image) && (
-                        <p className="text-sm text-gray-600 mt-2 arabic-text" dir="rtl">
+                        <p className="text-xs sm:text-sm text-gray-600 mt-2 arabic-text" dir="rtl">
                           المحدد: {formData.imageFile ? formData.imageFile.name : formData.image || 'صورة من النظام'}
                         </p>
                       )}
@@ -625,12 +626,14 @@ export const ResumeForm = () => {
                 </div>
 
                 {/* Academic Section */}
-                <AcademicInputComponent formData={formData} setFormData={setFormData} />
+                <div className="mx-2 sm:mx-0">
+                  <AcademicInputComponent formData={formData} setFormData={setFormData} />
+                </div>
 
-                {/* About Me Section */}
-                <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-                  <h2 className="text-2xl font-semibold text-carbon mb-6 flex items-center">
-                    <MessageSquare className="w-6 h-6 mr-2 text-rich-gold" />
+                {/* About Me Section - Mobile Enhanced */}
+                <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-8 border border-gray-200 mx-2 sm:mx-0">
+                  <h2 className="text-lg sm:text-2xl font-semibold text-carbon mb-4 sm:mb-6 flex items-center">
+                    <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-rich-gold" />
                     About Me
                   </h2>
                   <div className="space-y-4">
@@ -644,8 +647,8 @@ export const ResumeForm = () => {
                         value={formData.bio}
                         onChange={handleInputChange}
                         required
-                        rows={4}
-                        className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none"
+                        rows={3}
+                        className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none text-xs sm:text-base"
                         placeholder="Brief description about yourself..."
                       />
                     </div>
@@ -653,50 +656,71 @@ export const ResumeForm = () => {
                 </div>
 
                 {/* Skills Section */}
-                <SkillsInputComponent formData={formData} setFormData={setFormData} />
+                <div className="mx-2 sm:mx-0">
+                  <SkillsInputComponent formData={formData} setFormData={setFormData} />
+                </div>
 
                 {/* Interests Section */}
-                <InterestsInputComponent formData={formData} setFormData={setFormData} />
+                <div className="mx-2 sm:mx-0">
+                  <InterestsInputComponent formData={formData} setFormData={setFormData} />
+                </div>
 
                 {/* Social Media Section */}
-                <SocialInputComponent formData={formData} setFormData={setFormData} />
+                <div className="mx-2 sm:mx-0">
+                  <SocialInputComponent formData={formData} setFormData={setFormData} />
+                </div>
 
                 {/* Work Experience Section */}
-                <WorkExperienceComponent formData={formData} setFormData={setFormData} />
+                <div className="mx-2 sm:mx-0">
+                  <WorkExperienceComponent formData={formData} setFormData={setFormData} />
+                </div>
 
                 {/* Projects Section */}
-                <ProjectsComponent formData={formData} setFormData={setFormData} />
+                <div className="mx-2 sm:mx-0">
+                  <ProjectsComponent formData={formData} setFormData={setFormData} />
+                </div>
 
-                {/* Submit Button */}
-                <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                {/* Submit Button - Mobile Optimized */}
+                <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-8 border border-gray-200 mx-2 sm:mx-0">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-rich-gold hover:bg-gold-dark disabled:bg-gray-400 text-deep-green font-medium py-4 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2 text-lg"
+                    className="w-full bg-rich-gold hover:bg-gold-dark disabled:bg-gray-400 text-deep-green font-medium py-3 sm:py-4 px-4 sm:px-6 rounded-lg transition-colors flex items-center justify-center space-x-2 text-base sm:text-lg min-h-[48px] sm:min-h-[56px] touch-manipulation"
+                    aria-label={isEditMode ? "تحديث السيرة الذاتية" : "حفظ بيانات السيرة الذاتية"}
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-deep-green"></div>
-                        <span>{isEditMode ? 'Updating Resume...' : 'Saving Resume...'}</span>
+                        <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-b-2 border-deep-green"></div>
+                        <span className="ml-2">{isEditMode ? 'Updating Resume...' : 'Saving Resume...'}</span>
                       </>
                     ) : (
                       <>
-                        <Send className="w-6 h-6" />
-                        <span>{isEditMode ? 'Update Resume' : 'Save Resume Data'}</span>
+                        <Send className="w-5 h-5 sm:w-6 sm:h-6" />
+                        <span className="ml-2">{isEditMode ? 'Update Resume' : 'Save Resume Data'}</span>
                       </>
                     )}
                   </button>
 
-                  {/* Success/Error Messages */}
+                  {/* Success/Error Messages - Mobile Friendly */}
                   {submitStatus === 'success' && (
-                    <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mt-4">
-                      {submitMessage}
+                    <div className="bg-green-50 border border-green-200 text-green-800 px-3 sm:px-4 py-3 rounded-lg mt-4 text-sm sm:text-base">
+                      <div className="flex items-start">
+                        <svg className="w-5 h-5 text-green-500 ml-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        {submitMessage}
+                      </div>
                     </div>
                   )}
 
                   {submitStatus === 'error' && (
-                    <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mt-4">
-                      {submitMessage}
+                    <div className="bg-red-50 border border-red-200 text-red-800 px-3 sm:px-4 py-3 rounded-lg mt-4 text-sm sm:text-base">
+                      <div className="flex items-start">
+                        <svg className="w-5 h-5 text-red-500 ml-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                        {submitMessage}
+                      </div>
                     </div>
                   )}
                 </div>
