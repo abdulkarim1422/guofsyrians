@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { membersAPI } from '../../utils/api';
 import { getMemberImageUrl, getDefaultAvatarPath } from '../../utils/imageUtils';
 
-function StudentsList({ onSidebarHide }) {
+function StudentsList() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [yearFilter, setYearFilter] = useState([]);
@@ -235,11 +235,6 @@ function StudentsList({ onSidebarHide }) {
                 )}
               </div>
             </div>
-            <IconButton
-              icon="res-react-dash-sidebar-open"
-              className="block sm:hidden"
-              onClick={onSidebarHide}
-            />
           </div>
           <div className="w-full sm:w-auto mt-4 sm:mt-0 flex flex-col sm:flex-row gap-4">
             {/* Search Input */}
