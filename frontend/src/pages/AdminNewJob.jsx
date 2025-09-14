@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext.tsx";
 import { jobsAPI } from "../utils/api";
 
 export default function AdminNewJob() {
-  const { user, logout } = useAuth();
+  useAuth(); // Keep auth context active
   const nav = useNavigate();
 
   // ---- إدارة القائمة و النموذج (إنشاء/تعديل) ----
@@ -139,30 +139,30 @@ export default function AdminNewJob() {
       <div className="flex-1">
         {/* شريط علوي */}
         <div className="bg-[#ede3cf]">
-          <div className="max-w-6xl mx-auto px-4 py-8">
-            <h1 className="text-3xl font-semibold text-gray-900">
+          <div className="max-w-6xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
+            <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900">
               {editId ? "تعديل وظيفة" : "إضافة وظيفة جديدة"}
             </h1>
-            <p className="text-gray-700 mt-2">
+            <p className="text-gray-700 mt-2 text-sm sm:text-base">
               أنشئ وظائف جديدة أو عدّل الوظائف الحالية — وستظهر مباشرة ضمن صفحة الإعلانات.
             </p>
           </div>
         </div>
 
-        <div className="-mt-6 px-4 pb-12">
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-5 gap-6">
+        <div className="-mt-6 px-2 sm:px-4 pb-12">
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-5 gap-3 sm:gap-6">
             {/* جدول الإدارة */}
             <div className="lg:col-span-3">
-              <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-lg font-bold text-[#214937]">إدارة الوظائف</h2>
-                  <div className="flex gap-2">
+              <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl border border-gray-100 p-3 sm:p-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2">
+                  <h2 className="text-base sm:text-lg font-bold text-[#214937]">إدارة الوظائف</h2>
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <button onClick={resetForm}
-                            className="px-3 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50">
+                            className="px-3 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm sm:text-base min-h-[44px] touch-manipulation">
                       + إضافة جديدة
                     </button>
                     <Link to="/announcements"
-                          className="px-3 py-2 rounded-xl bg-[#295a45] text-white hover:bg-[#214937]">
+                          className="px-3 py-2 rounded-xl bg-[#295a45] text-white hover:bg-[#214937] text-sm sm:text-base min-h-[44px] flex items-center justify-center touch-manipulation">
                       عرض الإعلانات
                     </Link>
                   </div>
@@ -172,46 +172,51 @@ export default function AdminNewJob() {
                   <div className="p-6 text-center text-gray-500">جاري التحميل…</div>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="min-w-full text-sm">
+                    <table className="min-w-full text-xs sm:text-sm">
                       <thead className="bg-gray-50">
                         <tr className="text-right text-gray-700">
-                          <th className="p-3">المسمّى</th>
-                          <th className="p-3">الشركة</th>
-                          <th className="p-3">الحالة</th>
-                          <th className="p-3">المتقدّمون</th>
-                          <th className="p-3">حد المتقدّمين</th>
-                          <th className="p-3">إجراءات</th>
+                          <th className="p-2 sm:p-3">المسمّى</th>
+                          <th className="p-2 sm:p-3 hidden sm:table-cell">الشركة</th>
+                          <th className="p-2 sm:p-3">الحالة</th>
+                          <th className="p-2 sm:p-3 hidden sm:table-cell">المتقدّمون</th>
+                          <th className="p-2 sm:p-3 hidden lg:table-cell">حد المتقدّمين</th>
+                          <th className="p-2 sm:p-3">إجراءات</th>
                         </tr>
                       </thead>
                       <tbody>
                         {rows.map(job => (
                           <tr key={job.id} className="border-t">
-                            <td className="p-3">{job.title}</td>
-                            <td className="p-3">{job.company}</td>
-                            <td className="p-3">
-                              <span className={`px-2 py-1 rounded ${job.is_active ? "bg-green-100 text-green-700":"bg-gray-200 text-gray-700"}`}>
+                            <td className="p-2 sm:p-3">
+                              <div className="font-medium">{job.title}</div>
+                              <div className="text-xs text-gray-500 sm:hidden">{job.company}</div>
+                            </td>
+                            <td className="p-2 sm:p-3 hidden sm:table-cell">{job.company}</td>
+                            <td className="p-2 sm:p-3">
+                              <span className={`px-2 py-1 rounded text-xs ${job.is_active ? "bg-green-100 text-green-700":"bg-gray-200 text-gray-700"}`}>
                                 {job.is_active ? "نشط" : "متوقف"}
                               </span>
                             </td>
-                            <td className="p-3">
+                            <td className="p-2 sm:p-3 hidden sm:table-cell">
                               {job[applicantsKey] ?? 0}
                             </td>
-                            <td className="p-3">
+                            <td className="p-2 sm:p-3 hidden lg:table-cell">
                               {job.max_applicants == null ? "غير محدود" : job.max_applicants}
                             </td>
-                            <td className="p-3 flex gap-2 flex-wrap">
-                              <button onClick={() => toggleActive(job)}
-                                      className="px-3 py-1 rounded bg-indigo-600 hover:bg-indigo-700 text-white">
-                                {job.is_active ? "إيقاف" : "تفعيل"}
-                              </button>
-                              <button onClick={() => fillFormForEdit(job)}
-                                      className="px-3 py-1 rounded bg-amber-500 hover:bg-amber-600 text-white">
-                                تعديل
-                              </button>
-                              <button onClick={() => remove(job.id)}
-                                      className="px-3 py-1 rounded bg-rose-600 hover:bg-rose-700 text-white">
-                                حذف
-                              </button>
+                            <td className="p-2 sm:p-3">
+                              <div className="flex gap-1 sm:gap-2 flex-wrap">
+                                <button onClick={() => toggleActive(job)}
+                                        className="px-2 sm:px-3 py-1 sm:py-1 rounded bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm min-h-[32px] touch-manipulation">
+                                  {job.is_active ? "إيقاف" : "تفعيل"}
+                                </button>
+                                <button onClick={() => fillFormForEdit(job)}
+                                        className="px-2 sm:px-3 py-1 sm:py-1 rounded bg-amber-500 hover:bg-amber-600 text-white text-xs sm:text-sm min-h-[32px] touch-manipulation">
+                                  تعديل
+                                </button>
+                                <button onClick={() => remove(job.id)}
+                                        className="px-2 sm:px-3 py-1 sm:py-1 rounded bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm min-h-[32px] touch-manipulation">
+                                  حذف
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -228,16 +233,19 @@ export default function AdminNewJob() {
 
             {/* نموذج الإنشاء/التعديل */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 md:p-8">
-                <form onSubmit={submit} className="space-y-6" dir="rtl">
-                  <div className="grid md:grid-cols-2 gap-5">
+              <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl border border-gray-100 p-3 sm:p-6 md:p-8">
+                <h2 className="text-lg sm:text-xl font-bold text-[#214937] mb-4 sm:mb-6">
+                  {editId ? "تعديل وظيفة" : "إضافة وظيفة جديدة"}
+                </h2>
+                <form onSubmit={submit} className="space-y-4 sm:space-y-6" dir="rtl">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
                     <Field label="المسمى الوظيفي" required value={form.title}
                            onChange={(v) => setForm({ ...form, title: v })} />
                     <Field label="الشركة" required value={form.company}
                            onChange={(v) => setForm({ ...form, company: v })} />
                   </div>
 
-                  <div className="grid md:grid-cols-3 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
                     <Field label="الموقع" value={form.location}
                            onChange={(v) => setForm({ ...form, location: v })} />
                     <SelectField
@@ -307,7 +315,7 @@ export default function AdminNewJob() {
                             onChange={(v) => setForm({ ...form, requirements: v })} />
 
                   {/* حد المتقدمين */}
-                  <div className="grid md:grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
                     <div className="flex items-center gap-3">
                       <input
                         id="unlimited_applicants"
@@ -340,23 +348,23 @@ export default function AdminNewJob() {
                     <label htmlFor="is_active" className="text-sm text-gray-700">نشط (ظاهر للمتقدمين)</label>
                   </div>
 
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="text-xs text-gray-500">
                       {editId ? `تحرير الوظيفة #${editId}` : "إنشاء وظيفة جديدة"}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
                       {editId && (
                         <button type="button" onClick={() => remove(editId)}
-                                className="px-4 py-2 rounded-2xl bg-rose-600 text-white hover:bg-rose-700">
+                                className="px-4 py-3 rounded-2xl bg-rose-600 text-white hover:bg-rose-700 text-sm sm:text-base min-h-[44px] touch-manipulation">
                           حذف
                         </button>
                       )}
                       <button type="button" onClick={() => nav("/announcements")}
-                              className="px-4 py-2 rounded-2xl border border-gray-300 text-gray-700 hover:bg-gray-50">
+                              className="px-4 py-3 rounded-2xl border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm sm:text-base min-h-[44px] touch-manipulation">
                         إلغاء
                       </button>
                       <button type="submit" disabled={saving}
-                              className="px-5 py-2.5 rounded-2xl bg-[#295a45] text-white hover:bg-[#214937] disabled:opacity-60">
+                              className="px-5 py-3 rounded-2xl bg-[#295a45] text-white hover:bg-[#214937] disabled:opacity-60 text-sm sm:text-base min-h-[44px] font-medium touch-manipulation">
                         {saving ? "جاري الحفظ..." : (editId ? "حفظ التعديلات" : "حفظ ونشر")}
                       </button>
                     </div>
@@ -376,14 +384,15 @@ export default function AdminNewJob() {
 function Field({ label, value, onChange, type = "text", required, placeholder, min, disabled }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
       <input
         type={type}
         min={min}
         disabled={disabled}
         className={clsx(
-          "w-full rounded-2xl border border-gray-300 bg-white px-4 py-2.5 placeholder:text-gray-400",
+          "w-full rounded-2xl border border-gray-300 bg-white px-3 sm:px-4 py-3 sm:py-2.5 placeholder:text-gray-400 text-sm sm:text-base",
           "focus:outline-none focus:ring-2 focus:ring-emerald-600/30 focus:border-emerald-600",
+          "min-h-[44px] touch-manipulation", // Mobile touch targets
           disabled && "bg-gray-100 cursor-not-allowed"
         )}
         value={value}
@@ -398,9 +407,9 @@ function Field({ label, value, onChange, type = "text", required, placeholder, m
 function SelectField({ label, value, onChange, options }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
       <select
-        className="w-full rounded-2xl border border-gray-300 bg-white px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-600/30 focus:border-emerald-600"
+        className="w-full rounded-2xl border border-gray-300 bg-white px-3 sm:px-4 py-3 sm:py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-600/30 focus:border-emerald-600 text-sm sm:text-base min-h-[44px] touch-manipulation"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >
@@ -415,10 +424,10 @@ function SelectField({ label, value, onChange, options }) {
 function TextArea({ label, value, onChange, rows = 4, required }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
       <textarea
         rows={rows}
-        className="w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-600/30 focus:border-emerald-600 placeholder:text-gray-400"
+        className="w-full rounded-2xl border border-gray-300 bg-white px-3 sm:px-4 py-3 sm:py-3 focus:outline-none focus:ring-2 focus:ring-emerald-600/30 focus:border-emerald-600 placeholder:text-gray-400 text-sm sm:text-base resize-none min-h-[120px] touch-manipulation"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
