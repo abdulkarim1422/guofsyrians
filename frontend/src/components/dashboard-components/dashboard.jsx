@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 /* ===================== الصفحة الرئيسية ===================== */
-function DashboardContent({ onSidebarHide }) {
+function DashboardContent() {
   const { user } = useAuth();
 
   // إحصائيات الأعضاء (كروت أعلى الصفحة)
@@ -49,10 +49,10 @@ function DashboardContent({ onSidebarHide }) {
   }, []);
 
   return (
-    <div className="flex w-full">
-      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">.</div>
+    <div className="flex w-full min-h-screen dashboard-tablet-container dashboard-desktop-container">
+      <div className="w-full hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">.</div>
 
-      <div className="relative h-screen flex-grow overflow-x-hidden overflow-auto flex flex-wrap content-start p-2">
+      <div className="relative flex-grow overflow-x-hidden flex flex-wrap content-start p-2 dashboard-inner-content">
         {/* رأس الصفحة */}
         <div className="w-full sm:flex p-2 items-end">
           <div className="sm:flex-grow flex justify-between">
@@ -71,8 +71,6 @@ function DashboardContent({ onSidebarHide }) {
                 </div>
               </div>
             </div>
-
-            <IconButton icon="res-react-dash-sidebar-open" className="block sm:hidden" onClick={onSidebarHide} />
           </div>
         </div>
 
@@ -340,12 +338,13 @@ function Icon({ path = 'options', className = 'w-4 h-4' }) {
   return <img src={`https://assets.codepen.io/3685267/${path}.svg`} alt="" className={clsx(className)} />;
 }
 
-function IconButton({ onClick = () => {}, icon = 'options', className = 'w-4 h-4' }) {
-  return (
-    <button onClick={onClick} type="button" className={className}>
-      <img src={`https://assets.codepen.io/3685267/${icon}.svg`} alt="" className="w-full h-full" />
-    </button>
-  );
-}
+// Unused function - keeping for potential future use
+// function IconButton({ onClick = () => {}, icon = 'options', className = 'w-4 h-4' }) {
+//   return (
+//     <button onClick={onClick} type="button" className={className}>
+//       <img src={`https://assets.codepen.io/3685267/${icon}.svg`} alt="" className="w-full h-full" />
+//     </button>
+//   );
+// }
 
 export default DashboardContent;
