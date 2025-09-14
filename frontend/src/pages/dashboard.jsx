@@ -137,8 +137,36 @@ const DashboardApp = () => {
   
   useEffect(() => {
     document.body.className = 'dashboard-body';
-    return () => { document.body.className = ''; };
+    
+    // Fix for mobile viewport height issues
+    const setVH = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', setVH);
+    
+    return () => { 
+      document.body.className = '';
+      window.removeEventListener('resize', setVH);
+      window.removeEventListener('orientationchange', setVH);
+    };
   }, []);
+
+  // Handle mobile sidebar body scroll lock
+  useEffect(() => {
+    if (showSidebar) {
+      document.body.classList.add('sidebar-open');
+    } else {
+      document.body.classList.remove('sidebar-open');
+    }
+    
+    return () => {
+      document.body.classList.remove('sidebar-open');
+    };
+  }, [showSidebar]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -146,9 +174,27 @@ const DashboardApp = () => {
         setShowUserMenu(false);
       }
     };
+
+    const handleKeyDown = (event) => {
+      // Close sidebar with Escape key
+      if (event.key === 'Escape') {
+        if (showSidebar) {
+          onSetShowSidebar(false);
+        }
+        if (showUserMenu) {
+          setShowUserMenu(false);
+        }
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showUserMenu, setShowUserMenu]);
+    document.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showUserMenu, setShowUserMenu, showSidebar, onSetShowSidebar]);
 
   const getSelectedPageFromPath = (pathname) => {
     const menuItem = getMenuItemByPath(pathname);
@@ -169,6 +215,10 @@ const DashboardApp = () => {
       navigate(menuItem.path);
     } else {
       navigate('/dashboard');
+    }
+    // Auto-close sidebar on mobile after selection
+    if (window.innerWidth < 640) { // sm breakpoint
+      onSetShowSidebar(false);
     }
   };
 
@@ -218,7 +268,7 @@ const DashboardApp = () => {
 
     if (isSettingsPage) {
       return (
-        <div className="flex-1 ml-0 sm:ml-20 xl:ml-60 overflow-hidden h-screen bg-gray-100">
+        <div className="flex-1 ml-0 sm:ml-20 xl:ml-60 bg-gray-100">
           {content}
         </div>
       );
@@ -228,7 +278,18 @@ const DashboardApp = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-brand-background">
+    <div className="flex min-h-screen bg-brand-background overflow-hidden dashboard-mobile-container mobile-smooth-scroll">
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => onSetShowSidebar(true)}
+        className="fixed top-4 left-4 z-20 sm:hidden bg-brand-carbon text-white p-3 rounded-lg shadow-lg hover:bg-gray-700 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+        aria-label="Open navigation menu"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
       <Sidebar
         onSidebarHide={() => { onSetShowSidebar(false); }}
         showSidebar={showSidebar}
@@ -241,8 +302,8 @@ const DashboardApp = () => {
         navigate={navigate}
         sidebarItems={sidebarItems}
       />
-      <div className="flex flex-col flex-1 min-h-screen">
-        <div className="flex-1 flex flex-col">
+      <div className="flex flex-col flex-1 dashboard-content-mobile mobile-scroll-contained">
+        <div className="flex-1 flex flex-col dashboard-inner-content">
           {renderCurrentPage()}
         </div>
       </div>
@@ -255,138 +316,169 @@ function Sidebar({
   user, onLogout, showUserMenu, setShowUserMenu, navigate, sidebarItems
 }) {
   return (
-    <div
-      className={clsx(
-        'fixed inset-y-0 left-0 bg-card w-full sm:w-20 xl:w-60 sm:flex flex-col z-10',
-        showSidebar ? 'flex' : 'hidden',
+    <>
+      {/* Mobile Overlay */}
+      {showSidebar && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-[9] sm:hidden"
+          onClick={onSidebarHide}
+          aria-label="Close sidebar"
+        />
       )}
-      style={{ overflow: 'visible' }}
-    >
-      <div className="flex-shrink-0 overflow-hidden p-2">
-        <div
-          className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-top"
-          onClick={() => navigate('/dashboard')}
-          style={{ cursor: 'pointer' }}
-        >
-          <div className="w-full flex justify-center items-center">
-            <img src="/favicon.png" alt="Logo"
-                 style={{ width: 100, height: 100, marginBottom: -10, marginTop: -10 }} />
-          </div>
-          <div className="flex-grow sm:hidden xl:block" />
-          <IconButton
-            icon="res-react-dash-sidebar-close"
-            className="block sm:hidden"
-            onClick={onSidebarHide}
-          />
-        </div>
-      </div>
-
-      <div className="flex-grow overflow-x-hidden overflow-y-auto flex flex-col">
-        <div className="w-full p-3 h-24 sm:h-20 xl:h-24 hidden sm:block flex-shrink-0">
-          <div className="bg-sidebar-card-top rounded-xl w-full h-full flex items-center justify-start sm:justify-center xl:justify-start px-3 sm:px-0 xl:px-3">
-            <div className="bg-white rounded-2xl">
-              <img src="/favicon.png" alt="Logo" style={{ width: 75, height: 50 }} />
-            </div>
-            <div className="block sm:hidden xl:block ml-3">
-              <div className="text-sm font-bold white">الاتّحاد العام</div>
-              <div className="text-sm">سيتم إضافة بقيّة الاتّحادات لاحقاً</div>
-            </div>
-            <div className="block sm:hidden xl:block flex-grow" />
-            <Icon path="res-react-dash-sidebar-card-select" className="block sm:hidden xl:block w-5 h-5" />
-          </div>
-        </div>
-
-        {sidebarItems[0].map((i) => (
-          <MenuItem key={i.id} item={i} onClick={onPageSelect} selected={selectedPage} />
-        ))}
-
-        <div className="mt-8 mb-0 font-bold px-3 block sm:hidden xl:block">
-          SHORTCUTS
-        </div>
-
-        {sidebarItems[1].map((i) => (
-          <MenuItem key={i.id} item={i} onClick={onPageSelect} selected={selectedPage} />
-        ))}
-
-        <div className="flex-grow" />
-      </div>
-
-      <AttributionComponent />
-
-      <div className="flex-shrink-0 p-2 relative user-menu-container">
-        <div
-          className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-bottom cursor-pointer hover:bg-gray-700/50 rounded-lg transition-colors"
-          onClick={() => setShowUserMenu(!showUserMenu)}
-        >
-          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-bold">
-              {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-            </span>
-          </div>
-          <div className="block sm:hidden xl:block ml-2">
-            <div className="font-bold dashboard-username text-sm">{user?.name || 'User'}</div>
-            <div className="text-xs dashboard-user-role">{user?.role || 'member'}</div>
-          </div>
-          <div className="flex-grow block sm:hidden xl:block" />
-          <div className="block sm:hidden xl:block w-6 h-6 text-gray-400 hover:text-white transition-colors">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-        </div>
-
-        {showUserMenu && (
-          <div
-            className="fixed bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-[1000] min-w-[280px]"
-            style={{ bottom: '80px', left: '8px', right: '8px', maxWidth: '280px' }}
-          >
-            <div className="p-3 border-b border-gray-700">
-              <div className="flex items-center space-x-2 mb-2">
-                <div className={`w-2 h-2 rounded-full ${user ? 'bg-green-400' : 'bg-red-400'}`} />
-                <span className="text-white text-xs font-medium">
-                  {user ? 'Authenticated' : 'Not Authenticated'}
-                </span>
-              </div>
-              {user && (
-                <div className="text-xs text-gray-300 space-y-1">
-                  <div>ID: {user.id}</div>
-                  <div>Email: {user.email}</div>
-                  <div>Active: {user.is_active ? 'Yes' : 'No'}</div>
-                  <div>Verified: {user.is_verified ? 'Yes' : 'No'}</div>
-                </div>
-              )}
-            </div>
-            <div className="p-3 border-b border-gray-700">
-              <div className="text-white font-medium text-sm">{user?.name}</div>
-              <div className="text-gray-400 text-xs">{user?.email}</div>
-              <div className="text-gray-400 text-xs capitalize">{user?.role || 'member'}</div>
-            </div>
-            <div className="py-2">
-              <button
-                onClick={() => { setShowUserMenu(false); navigate('/profile'); }}
-                className="w-full px-3 py-2 text-left text-gray-300 hover:bg-gray-700 hover:text-white transition-colors text-sm flex items-center"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                Profile
-              </button>
-              <button
-                onClick={() => { setShowUserMenu(false); onLogout(); }}
-                className="w-full px-3 py-2 text-left text-red-400 hover:bg-red-600 hover:text-white transition-colors text-sm flex items-center"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-                Logout
-              </button>
-            </div>
-          </div>
+      
+      <div
+        className={clsx(
+          'fixed inset-y-0 left-0 bg-card w-full sm:w-20 xl:w-60 sm:flex flex-col z-10 sidebar-mobile-fixed',
+          'transition-transform duration-300 ease-in-out',
+          showSidebar ? 'flex translate-x-0' : 'hidden sm:flex sm:translate-x-0 -translate-x-full',
         )}
+        style={{ overflow: 'visible' }}
+        role="navigation"
+        aria-label="Main navigation"
+      >
+        {/* Mobile Header */}
+        <div className="flex-shrink-0 overflow-hidden p-2">
+          <div
+            className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-top"
+            onClick={() => navigate('/dashboard')}
+            style={{ cursor: 'pointer' }}
+          >
+            <div className="w-full flex justify-center items-center">
+              <img src="/favicon.png" alt="Logo"
+                   style={{ width: 100, height: 100, marginBottom: -10, marginTop: -10 }} />
+            </div>
+            <div className="flex-grow sm:hidden xl:block" />
+            <button
+              className="block sm:hidden bg-gray-700 hover:bg-gray-600 p-2 rounded-lg transition-colors"
+              onClick={onSidebarHide}
+              aria-label="Close sidebar"
+            >
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div className="flex-grow overflow-x-hidden overflow-y-auto flex flex-col">
+          <div className="w-full p-3 h-24 sm:h-20 xl:h-24 hidden sm:block flex-shrink-0">
+            <div className="bg-sidebar-card-top rounded-xl w-full h-full flex items-center justify-start sm:justify-center xl:justify-start px-3 sm:px-0 xl:px-3">
+              <div className="bg-white rounded-2xl">
+                <img src="/favicon.png" alt="Logo" style={{ width: 75, height: 50 }} />
+              </div>
+              <div className="block sm:hidden xl:block ml-3">
+                <div className="text-sm font-bold white">الاتّحاد العام</div>
+                <div className="text-sm">سيتم إضافة بقيّة الاتّحادات لاحقاً</div>
+              </div>
+              <div className="block sm:hidden xl:block flex-grow" />
+              <Icon path="res-react-dash-sidebar-card-select" className="block sm:hidden xl:block w-5 h-5" />
+            </div>
+          </div>
+
+          {sidebarItems[0].map((i) => (
+            <MenuItem key={i.id} item={i} onClick={onPageSelect} selected={selectedPage} />
+          ))}
+
+          <div className="mt-8 mb-0 font-bold px-3 block sm:hidden xl:block">
+            SHORTCUTS
+          </div>
+
+          {sidebarItems[1].map((i) => (
+            <MenuItem key={i.id} item={i} onClick={onPageSelect} selected={selectedPage} />
+          ))}
+
+          <div className="flex-grow" />
+        </div>
+
+        <AttributionComponent />
+
+        <div className="flex-shrink-0 p-2 relative user-menu-container">
+          <div
+            className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-bottom cursor-pointer hover:bg-gray-700/50 rounded-lg transition-colors min-h-[44px]"
+            onClick={() => setShowUserMenu(!showUserMenu)}
+            role="button"
+            tabIndex={0}
+            aria-expanded={showUserMenu}
+            aria-haspopup="true"
+            aria-label="User menu"
+          >
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+              <span className="text-white text-sm font-bold">
+                {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+              </span>
+            </div>
+            <div className="block sm:hidden xl:block ml-2">
+              <div className="font-bold dashboard-username text-sm">{user?.name || 'User'}</div>
+              <div className="text-xs dashboard-user-role">{user?.role || 'member'}</div>
+            </div>
+            <div className="flex-grow block sm:hidden xl:block" />
+            <div className="block sm:hidden xl:block w-6 h-6 text-gray-400 hover:text-white transition-colors">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+
+          {showUserMenu && (
+            <div
+              className="fixed bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-[1000] min-w-[280px] sm:min-w-[320px]"
+              style={{ bottom: '80px', left: '8px', right: '8px', maxWidth: 'calc(100vw - 16px)' }}
+              role="menu"
+              aria-orientation="vertical"
+            >
+              {/* Authentication status panel - hidden for production */}
+              {/* 
+              <div className="p-3 border-b border-gray-700">
+                <div className="flex items-center space-x-2 mb-2">
+                  <div className={`w-2 h-2 rounded-full ${user ? 'bg-green-400' : 'bg-red-400'}`} />
+                  <span className="text-white text-xs font-medium">
+                    {user ? 'Authenticated' : 'Not Authenticated'}
+                  </span>
+                </div>
+                {user && (
+                  <div className="text-xs text-gray-300 space-y-1">
+                    <div>ID: {user.id}</div>
+                    <div>Email: {user.email}</div>
+                    <div>Active: {user.is_active ? 'Yes' : 'No'}</div>
+                    <div>Verified: {user.is_verified ? 'Yes' : 'No'}</div>
+                  </div>
+                )}
+              </div>
+              */}
+              <div className="p-3 border-b border-gray-700">
+                <div className="text-white font-medium text-sm">{user?.name}</div>
+                <div className="text-gray-400 text-xs">{user?.email}</div>
+                <div className="text-gray-400 text-xs capitalize">{user?.role || 'member'}</div>
+              </div>
+              <div className="py-2">
+                <button
+                  onClick={() => { setShowUserMenu(false); navigate('/profile'); }}
+                  className="w-full px-3 py-3 text-left text-gray-300 hover:bg-gray-700 hover:text-white transition-colors text-sm flex items-center min-h-[44px]"
+                  role="menuitem"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  Profile
+                </button>
+                <button
+                  onClick={() => { setShowUserMenu(false); onLogout(); }}
+                  className="w-full px-3 py-3 text-left text-red-400 hover:bg-red-600 hover:text-white transition-colors text-sm flex items-center min-h-[44px]"
+                  role="menuitem"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  Logout
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -395,17 +487,28 @@ function MenuItem({ item: { id, title, notifications, icon }, onClick, selected 
     <div
       className={clsx(
         'w-full mt-6 flex items-center px-3 sm:px-0 xl:px-3 justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-3 cursor-pointer',
-        selected === id ? 'sidebar-item-selected' : 'sidebar-item',
+        'min-h-[44px] py-2 rounded-lg mx-2 sm:mx-1 xl:mx-2 transition-all duration-200',
+        'hover:bg-gray-700/50 active:bg-gray-600/50 touch-manipulation',
+        selected === id ? 'sidebar-item-selected bg-brand-rich-gold/20' : 'sidebar-item',
       )}
       onClick={() => onClick(id)}
+      role="button"
+      tabIndex={0}
+      aria-label={`Navigate to ${title}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick(id);
+        }
+      }}
     >
-      <svg className="w-8 h-8 xl:w-5 xl:h-5" viewBox="0 0 24 24" fill="currentColor">
+      <svg className="w-8 h-8 xl:w-5 xl:h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
         {icon}
       </svg>
-      <div className="block sm:hidden xl:block ml-2">{title}</div>
+      <div className="block sm:hidden xl:block ml-2 truncate">{title}</div>
       <div className="block sm:hidden xl:block flex-grow" />
       {notifications && (
-        <div className="flex sm:hidden xl:flex bg-pink-600  w-5 h-5 items-center justify-center rounded-full mr-2">
+        <div className="flex sm:hidden xl:flex bg-pink-600 w-5 h-5 items-center justify-center rounded-full mr-2 flex-shrink-0">
           <div className="text-white text-sm">{notifications}</div>
         </div>
       )}
@@ -416,20 +519,6 @@ function MenuItem({ item: { id, title, notifications, icon }, onClick, selected 
 function Icon({ path = 'options', className = 'w-4 h-4' }) {
   return (
     <img src={`https://assets.codepen.io/3685267/${path}.svg`} alt="" className={clsx(className)} />
-  );
-}
-
-function IconButton({ onClick = () => {}, icon = 'options', className = 'w-4 h-4' }) {
-  return (
-    <button onClick={onClick} type="button" className={className}>
-      <img src={`https://assets.codepen.io/3685267/${icon}.svg`} alt="" className="w-full h-full" />
-    </button>
-  );
-}
-
-function Image({ path = '1', className = 'w-4 h-4' }) {
-  return (
-    <img src={`https://assets.codepen.io/3685267/${path}.jpg`} alt="" className={clsx(className, 'rounded-full')} />
   );
 }
 
