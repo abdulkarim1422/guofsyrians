@@ -44,19 +44,27 @@ export function PhoneInputComponent({ formData, setFormData }) {
             }
             
             .phone-input-container .react-international-phone-country-selector-button {
-              padding: 12px !important;
+              padding: 6px 8px !important;
               background-color: white !important;
               border: 2px solid #d1d5db !important;
               border-right: none !important;
               border-radius: 0.5rem 0 0 0.5rem !important;
               color: #1f2937 !important;
-              font-size: 14px !important;
+              font-size: 12px !important;
               transition: all 0.2s !important;
-              min-width: 80px !important;
-              height: 48px !important;
+              min-width: 60px !important;
+              height: 36px !important;
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
+            }
+            
+            @media (min-width: 640px) {
+              .phone-input-container .react-international-phone-country-selector-button {
+                padding: 12px !important;
+                min-width: 80px !important;
+                height: 48px !important;
+              }
             }
             
             .phone-input-container .react-international-phone-country-selector-button:focus {
@@ -67,16 +75,23 @@ export function PhoneInputComponent({ formData, setFormData }) {
             
             .phone-input-container .react-international-phone-input {
               flex: 1 !important;
-              padding: 12px 16px !important;
+              padding: 6px 8px !important;
               background-color: white !important;
               border: 2px solid #d1d5db !important;
               border-left: none !important;
               border-radius: 0 0.5rem 0.5rem 0 !important;
               color: #1f2937 !important;
-              font-size: 14px !important;
+              font-size: 12px !important;
               transition: all 0.2s !important;
-              height: 48px !important;
+              height: 36px !important;
               outline: none !important;
+            }
+            
+            @media (min-width: 640px) {
+              .phone-input-container .react-international-phone-input {
+                padding: 12px 16px !important;
+                height: 48px !important;
+              }
             }
             
             .phone-input-container .react-international-phone-input:focus {
