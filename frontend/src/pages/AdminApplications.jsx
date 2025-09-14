@@ -240,7 +240,7 @@ const AdminApplications = () => {
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
                         <div className="flex items-center space-x-3 rtl:space-x-reverse">
                           <div className="text-base sm:text-lg font-medium text-gray-900">
-                            طلب #{application.id}
+                            طلب
                           </div>
                           <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(application.status)}`}>
                             {getStatusText(application.status)}
@@ -279,7 +279,7 @@ const AdminApplications = () => {
                       {/* Application Details - Mobile Grid */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-600">
                         <div className="flex justify-between sm:block bg-gray-50 sm:bg-transparent p-2 sm:p-0 rounded sm:rounded-none">
-                          <span className="font-medium">المستخدم:</span> 
+                          <span className="font-medium">مقدم الطلب:</span> 
                           <span className="text-gray-900">
                             {loading ? (
                               <span className="text-gray-500">جاري التحميل...</span>
