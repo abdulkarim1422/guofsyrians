@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
-import { applicationsAPI } from "../../utils/api";
+import { applicationsAPI, userAPI } from "../../utils/api";
 
 export default function ApplicationList({ jobId }) {
   const [apps, setApps] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchApplications = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
         setError(null);
-        const applications = jobId 
-          ? await applicationsAPI.getApplicationsForJob(jobId)
-          : await applicationsAPI.getAllApplications();
-        setApps(applications);
+        
+        // Fetch applications and users in parallel
+        const [applicationsData, usersData] = await Promise.all([
+          jobId ? applicationsAPI.getApplicationsForJob(jobId) : applicationsAPI.getAllApplications(),
+          userAPI.getAllUsers()
+        ]);
+        
+        setApps(applicationsData);
+        setUsers(usersData);
       } catch (err) {
         console.error('Error fetching applications:', err);
         setError('فشل في جلب الطلبات');
@@ -23,8 +29,17 @@ export default function ApplicationList({ jobId }) {
       }
     };
 
-    fetchApplications();
+    fetchData();
   }, [jobId]);
+
+  const getUserName = (userId) => {
+    const userData = users.find(u => u.id === userId);
+    if (userData && userData.name) {
+      return userData.name;
+    }
+    // Fallback to user ID if name is not found or users are still loading
+    return `مستخدم #${userId}`;
+  };
 
   if (loading) {
     return (
@@ -68,7 +83,7 @@ export default function ApplicationList({ jobId }) {
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 rtl:space-x-reverse">
                     <div className="text-sm font-medium text-gray-900">
-                      مستخدم #{app.user_id}
+                      {getUserName(app.user_id)}
                     </div>
                     <div className="text-xs text-gray-500">
                       {new Date(app.created_at).toLocaleDateString('ar-SA')} - {new Date(app.created_at).toLocaleTimeString('ar-SA')}
