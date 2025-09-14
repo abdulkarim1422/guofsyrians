@@ -252,7 +252,7 @@ export function ProjectsComponent({ formData, setFormData }) {
                 type="text"
                 value={project.company}
                 onChange={(e) => handleProjectChange(index, 'company', e.target.value)}
-                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                className="w-full px-2 sm:px-4 py-2 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all text-sm sm:text-base"
                 placeholder="Client Name, Personal Project, Company Name, etc."
               />
             </div>
@@ -264,7 +264,7 @@ export function ProjectsComponent({ formData, setFormData }) {
                 type="text"
                 value={project.role || ''}
                 onChange={(e) => handleProjectChange(index, 'role', e.target.value)}
-                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                className="w-full px-2 sm:px-4 py-2 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all text-sm sm:text-base"
                 placeholder="Lead Developer, UI/UX Designer, Project Manager, etc."
                 required
               />
@@ -279,7 +279,7 @@ export function ProjectsComponent({ formData, setFormData }) {
                 type="date"
                 value={project.start_date}
                 onChange={(e) => handleProjectChange(index, 'start_date', e.target.value)}
-                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                className="w-full px-2 sm:px-4 py-2 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all text-sm sm:text-base"
                 required
               />
             </div>
@@ -374,7 +374,7 @@ export function ProjectsComponent({ formData, setFormData }) {
               value={project.responsibilities || ''}
               onChange={(e) => handleProjectChange(index, 'responsibilities', e.target.value)}
               rows={3}
-              className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none"
+              className="w-full px-2 sm:px-4 py-2 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none text-sm sm:text-base"
               placeholder="Describe your specific role and key responsibilities in this project..."
               required
             />
