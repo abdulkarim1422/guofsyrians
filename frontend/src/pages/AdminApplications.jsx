@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { applicationsAPI, jobsAPI, userAPI } from '@/utils/api';
+import { applicationsAPI, jobsAPI, userAPI, resumeAPI } from '@/utils/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
+import ResumeModal from '@/components/ResumeModal';
 
 const AdminApplications = () => {
   const { user } = useAuth();
@@ -12,6 +13,12 @@ const AdminApplications = () => {
   const [error, setError] = useState(null);
   const [selectedJobId, setSelectedJobId] = useState('');
   const [filteredApplications, setFilteredApplications] = useState([]);
+
+  // Resume modal state
+  const [resumeModalOpen, setResumeModalOpen] = useState(false);
+  const [resumeData, setResumeData] = useState(null);
+  const [resumeLoading, setResumeLoading] = useState(false);
+  const [resumeError, setResumeError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,6 +130,33 @@ const AdminApplications = () => {
       default:
         return status || 'غير محدد';
     }
+  };
+
+  const handleViewResume = async (userId) => {
+    try {
+      setResumeLoading(true);
+      setResumeError(null);
+      setResumeData(null);
+      setResumeModalOpen(true);
+
+      const data = await resumeAPI.getResumeByUserId(userId);
+      setResumeData(data);
+    } catch (err) {
+      console.error('Error fetching resume:', err);
+      setResumeError(
+        err.response?.status === 404 
+          ? 'لم يتم العثور على السيرة الذاتية لهذا المستخدم.' 
+          : 'فشل في تحميل السيرة الذاتية. يرجى المحاولة مرة أخرى.'
+      );
+    } finally {
+      setResumeLoading(false);
+    }
+  };
+
+  const closeResumeModal = () => {
+    setResumeModalOpen(false);
+    setResumeData(null);
+    setResumeError(null);
   };
 
   if (loading) {
@@ -249,6 +283,17 @@ const AdminApplications = () => {
                         
                         {/* Action Buttons - Mobile Friendly */}
                         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 rtl:sm:space-x-reverse">
+                          {/* View Resume Button */}
+                          <button
+                            onClick={() => handleViewResume(application.user_id)}
+                            className="inline-flex items-center justify-center px-3 py-2 border border-green-300 rounded-md text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 transition-colors min-h-[40px]"
+                          >
+                            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            عرض السيرة الذاتية
+                          </button>
+
                           {application.resume_url && (
                             <a
                               href={application.resume_url}
@@ -259,7 +304,7 @@ const AdminApplications = () => {
                               <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                               </svg>
-                              السيرة الذاتية
+                              ملف السيرة الذاتية
                             </a>
                           )}
                           
@@ -394,6 +439,15 @@ const AdminApplications = () => {
           </div>
         )}
       </div>
+
+      {/* Resume Modal */}
+      <ResumeModal
+        isOpen={resumeModalOpen}
+        onClose={closeResumeModal}
+        resumeData={resumeData}
+        loading={resumeLoading}
+        error={resumeError}
+      />
     </div>
   );
 };
