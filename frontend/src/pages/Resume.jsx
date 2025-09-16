@@ -200,6 +200,8 @@ export const Resume = () => {
               ? `${new Date(work.start_date).toLocaleDateString()} - Present`
               : "Period not specified",
           company: work.company || "Company",
+          achievements: work.achievements || [],
+          responsibilities: work.responsibilities || [],
           description: work.description ? [work.description] : [],
         })),
         academic: education.map((edu) => ({
