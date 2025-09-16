@@ -52,8 +52,30 @@ async def submit_resume_v2(payload: ResumeCreateRequest):
             "social_media": payload.social_media,
         }
         
-        # Use existing resume submission logic
-        from app.routers.resume_routers import submit_resume
+        # Import the required models for conversion
+        from app.routers.resume_routers import (
+            submit_resume, 
+            WorkExperienceRequest, 
+            AcademicEntryRequest, 
+            ProjectEntryRequest
+        )
+        
+        # Convert dictionaries to proper Pydantic models
+        converted_works = []
+        for work_dict in payload.works:
+            work_obj = WorkExperienceRequest(**work_dict)
+            converted_works.append(work_obj)
+        
+        converted_academic = []
+        for acad_dict in payload.academic:
+            acad_obj = AcademicEntryRequest(**acad_dict)
+            converted_academic.append(acad_obj)
+        
+        converted_projects = []
+        for proj_dict in payload.projects:
+            proj_obj = ProjectEntryRequest(**proj_dict)
+            converted_projects.append(proj_obj)
+        
         # Create a mock request object
         class MockRequest:
             def __init__(self, data):
@@ -61,9 +83,9 @@ async def submit_resume_v2(payload: ResumeCreateRequest):
         
         mock_req = MockRequest({
             **member_data,
-            "works": payload.works,
-            "academic": payload.academic,
-            "projects": payload.projects,
+            "works": converted_works,
+            "academic": converted_academic,
+            "projects": converted_projects,
         })
         
         result = await submit_resume(mock_req)

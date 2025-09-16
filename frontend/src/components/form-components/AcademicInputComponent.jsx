@@ -382,7 +382,7 @@ function UniversitySelector({ value, onChange, placeholder }) {
           onChange={handleInputChange}
           onFocus={handleInputFocus}
           onKeyDown={handleUniversityKeyPress}
-          className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all pr-10"
+          className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all pr-8 sm:pr-10 text-xs sm:text-base"
           placeholder={placeholder}
           autoComplete="off"
         />
@@ -475,10 +475,30 @@ export function AcademicInputComponent({ formData, setFormData }) {
           "Chemical Engineering",
           "Computer Engineering",
           "Aerospace Engineering",
-          "Environmental Engineering"
+          "Environmental Engineering",
+          "Industrial Design Engineering",
+          "Architecture (الهندسة المعمارية)",
+          "Industrial Engineering (الهندسة الصناعية)",
+          "Energy Engineering / Renewable Energy (هندسة الطاقة / الطاقة المتجددة)",
+          "Marine Engineering / Maritime Transport (الهندسة البحرية / الهندسة البحرية والنقل البحري)",
+          "Biomedical Engineering (الهندسة الطبية الحيوية)",
+          "Systems Engineering / Control Engineering (هندسة النظم / هندسة التحكم الآلي)",
+          "Geotechnical Engineering (الهندسة الجيوتقنية)",
+          "Agricultural Engineering (الهندسة الزراعية)",
+          "Petroleum Engineering / Oil & Gas Engineering (الهندسة البترولية / هندسة النفط والغاز)"
         ],
         "Medicine & Health": [
           "Pre-Medicine",
+          "Medicine",
+          "Dentistry (طب الأسنان)",
+          "Pharmacy / Pharmaceutical Sciences (الصيدلة)",
+          "Midwifery (القبالة)",
+          "Radiology / Radiologic Technology (علم الأشعة)",
+          "Nutrition / Dietetics (التغذية)",
+          "Audiology & Speech Therapy (السمعيات والنطق)",
+          "Health Administration / Health Management (إدارة الخدمات الصحية)",
+          "Medical Laboratory Sciences (علوم المختبرات الطبية)",
+          "Paramedic Studies (الإسعافات)",
           "Nursing",
           "Public Health",
           "Biomedical Sciences",
@@ -494,7 +514,12 @@ export function AcademicInputComponent({ formData, setFormData }) {
           "International Business",
           "Accounting",
           "Economics",
-          "Management Information Systems"
+          "Management Information Systems",
+          "Entrepreneurship (ريادة الأعمال)",
+          "Supply Chain & Logistics Management (إدارة سلسلة الإمداد / اللوجستيات)",
+          "Business Analytics / Data Analytics (التحليلات التجارية / علوم البيانات للأعمال)",
+          "E-commerce / Digital Business (التجارة الإلكترونية)",
+          "Hospitality & Tourism Management (الإدارة الفندقية والسياحة)"
         ],
         "Humanities & Social Sciences": [
           "Psychology",
@@ -504,7 +529,12 @@ export function AcademicInputComponent({ formData, setFormData }) {
           "Political Science",
           "Philosophy",
           "Anthropology",
-          "Communications"
+          "Communications",
+          "Language & Translation / Linguistics (اللغة والترجمة)",
+          "Geography (الجغرافيا)",
+          "Development Studies / Applied Economics (علم الاقتصاد التطبيقي / التنمية)",
+          "Digital Media / New Media Studies (الإعلام الرقمي)",
+          "International Relations (الدراسات الدولية / العلاقات الدولية)"
         ],
         "Sciences": [
           "Computer Science",
@@ -523,7 +553,14 @@ export function AcademicInputComponent({ formData, setFormData }) {
           "Music",
           "Theater Arts",
           "Digital Media",
-          "Industrial Design"
+          "Industrial Design",
+          "Interior Design (التصميم الداخلي / İç Mimarlık)",
+          "Photography (التصوير الفوتوغرافي)",
+          "Cinema & Television / Film Studies (السينما والتلفزيون)",
+          "Visual Arts (الفنون البصرية)",
+          "Fashion & Textile Design (تصميم الأزياء والمنسوجات)",
+          "Plastic Arts / Sculpture, Painting, Ceramics (الفنون التشكيلية)",
+          "Visual Communication Design (تصميم الاتصالات البصرية)"
         ]
       },
       "Master's": {
@@ -718,7 +755,7 @@ export function AcademicInputComponent({ formData, setFormData }) {
               <select
                 value={edu.degreeLevel}
                 onChange={(e) => handleAcademicChange(index, 'degreeLevel', e.target.value)}
-                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all text-xs sm:text-base"
                 required
               >
                 <option value="">Select degree level</option>

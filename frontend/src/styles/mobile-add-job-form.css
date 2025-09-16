@@ -1,0 +1,240 @@
+/* Mobile Optimization for Add Job Form - iPhone specific */
+
+/* ==========================================================================
+   MOBILE-ONLY OPTIMIZATIONS FOR ADD JOB FORM
+   ========================================================================== */
+
+/* Target mobile devices only (iPhone and similar small screens) */
+@media (max-width: 640px) {
+  
+  /* Form container optimizations */
+  .admin-job-form-container {
+    margin: 0 8px !important;
+    border-radius: 16px !important;
+    padding: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  /* Form field improvements */
+  .admin-job-field {
+    margin-bottom: 16px !important;
+  }
+
+  .admin-job-field label {
+    font-size: 14px !important;
+    margin-bottom: 8px !important;
+    font-weight: 500 !important;
+  }
+
+  .admin-job-field input,
+  .admin-job-field select,
+  .admin-job-field textarea {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    min-height: 44px !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Textarea specific optimizations */
+  .admin-job-field textarea {
+    min-height: 120px !important;
+    resize: vertical !important;
+  }
+
+  /* Grid layout optimizations */
+  .admin-job-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Button optimizations */
+  .admin-job-button {
+    min-height: 48px !important;
+    font-size: 16px !important;
+    padding: 12px 20px !important;
+    border-radius: 12px !important;
+    font-weight: 500 !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  /* Primary action buttons */
+  .admin-job-button-primary {
+    background: #295a45 !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(41, 90, 69, 0.2) !important;
+  }
+
+  .admin-job-button-primary:hover {
+    background: #214937 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(41, 90, 69, 0.25) !important;
+  }
+
+  /* Secondary buttons */
+  .admin-job-button-secondary {
+    background: white !important;
+    color: #374151 !important;
+    border: 1px solid #d1d5db !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Danger buttons */
+  .admin-job-button-danger {
+    background: #dc2626 !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2) !important;
+  }
+
+  /* Form header optimization */
+  .admin-job-header {
+    font-size: 20px !important;
+    margin-bottom: 20px !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Table optimizations for mobile */
+  .admin-job-table {
+    font-size: 12px !important;
+  }
+
+  .admin-job-table th,
+  .admin-job-table td {
+    padding: 8px 6px !important;
+  }
+
+  /* Hide non-essential table columns on mobile */
+  .admin-job-table .hide-mobile {
+    display: none !important;
+  }
+
+  /* Compact table buttons */
+  .admin-job-table-button {
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+    min-height: 32px !important;
+    border-radius: 6px !important;
+  }
+
+  /* Checkbox and radio optimizations */
+  .admin-job-checkbox,
+  .admin-job-radio {
+    width: 18px !important;
+    height: 18px !important;
+    margin-right: 8px !important;
+  }
+
+  /* Focus states for accessibility */
+  .admin-job-field input:focus,
+  .admin-job-field select:focus,
+  .admin-job-field textarea:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5) !important;
+    border-color: #10b981 !important;
+  }
+
+  /* Improve tap targets */
+  .admin-job-tap-target {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Status badges mobile optimization */
+  .admin-job-status-badge {
+    font-size: 11px !important;
+    padding: 4px 8px !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+  }
+
+  /* Loading states */
+  .admin-job-loading {
+    padding: 40px 16px !important;
+    text-align: center !important;
+    color: #6b7280 !important;
+  }
+
+  /* Error states */
+  .admin-job-error {
+    padding: 12px 16px !important;
+    background: #fef2f2 !important;
+    border: 1px solid #fecaca !important;
+    border-radius: 8px !important;
+    color: #dc2626 !important;
+    font-size: 14px !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* Success states */
+  .admin-job-success {
+    padding: 12px 16px !important;
+    background: #f0fdf4 !important;
+    border: 1px solid #bbf7d0 !important;
+    border-radius: 8px !important;
+    color: #166534 !important;
+    font-size: 14px !important;
+    margin-bottom: 16px !important;
+  }
+}
+
+/* iPhone specific optimizations */
+@media (max-width: 390px) {
+  .admin-job-form-container {
+    margin: 0 4px !important;
+    padding: 12px !important;
+  }
+
+  .admin-job-field input,
+  .admin-job-field select,
+  .admin-job-field textarea {
+    padding: 10px 14px !important;
+  }
+
+  .admin-job-button {
+    padding: 10px 16px !important;
+    min-height: 44px !important;
+  }
+
+  .admin-job-header {
+    font-size: 18px !important;
+  }
+}
+
+/* Landscape orientation optimizations for mobile */
+@media (max-width: 640px) and (orientation: landscape) {
+  .admin-job-form-container {
+    padding: 12px !important;
+  }
+
+  .admin-job-field {
+    margin-bottom: 12px !important;
+  }
+
+  .admin-job-field textarea {
+    min-height: 80px !important;
+  }
+}
+
+/* Dark mode support for mobile */
+@media (max-width: 640px) and (prefers-color-scheme: dark) {
+  .admin-job-form-container {
+    background: #1f2937 !important;
+    border-color: #374151 !important;
+  }
+
+  .admin-job-field label {
+    color: #f3f4f6 !important;
+  }
+
+  .admin-job-field input,
+  .admin-job-field select,
+  .admin-job-field textarea {
+    background: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #f3f4f6 !important;
+  }
+}

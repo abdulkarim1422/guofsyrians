@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "./styles/brand-theme.css";
 @import "./styles/brand-components.css";
+@import "./styles/mobile-utilities.css";
+@import "./styles/mobile-dashboard-fix.css";
+@import "./styles/mobile-add-job-form.css";
 
 /*===== FONTS & ICONS =====*/
 @import "@fontsource/tajawal/400.css";

@@ -278,6 +278,19 @@ export const membersAPI = {
   }
 };
 
+// ===== Resume =====
+export const resumeAPI = {
+  getResumeByUserId: async (userId) => {
+    const res = await api.get(`/resume/by-user-id/${userId}`);
+    return res.data;
+  },
+  
+  getResumeById: async (memberId) => {
+    const res = await api.get(`/resume/${memberId}`);
+    return res.data;
+  }
+};
+
 
 export { formApi }
 export default api
