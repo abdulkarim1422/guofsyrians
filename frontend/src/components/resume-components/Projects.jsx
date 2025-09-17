@@ -13,7 +13,7 @@ export const Projects = ({ projects }) => {
   );
 };
 
-const Project = ({ name, company, period, description }) => {
+const Project = ({ name, company, period, description, role, responsibilities, outcomes }) => {
   return (
     <div className="experience__content">
       <div className="experience__time">
@@ -24,7 +24,9 @@ const Project = ({ name, company, period, description }) => {
         <h3 className="experience__title">
           {name} - {company}
         </h3>
+        <span className="experience__role">{role}</span>
         <span className="experience__project">{period}</span>
+        {responsibilities && <span className="experience__responsibility">Responsibilities: {responsibilities}</span>}
         {description.map((desc, i) => <Description key={i} desc={desc} />)}
       </div>
     </div>

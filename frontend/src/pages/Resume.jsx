@@ -220,6 +220,7 @@ export const Resume = () => {
         projects: projects.map((project) => ({
           name: project.project_name || "Project",
           company: member.name || "Personal",
+          role: project.role || "Role",
           period:
             project.start_date && project.end_date
               ? `${new Date(project.start_date).toLocaleDateString()} - ${new Date(
@@ -228,6 +229,8 @@ export const Resume = () => {
               : project.start_date
               ? `${new Date(project.start_date).toLocaleDateString()} - Present`
               : "Period not specified",
+          responsibilities: project.responsibilities || [],
+          outcomes: project.outcomes || [],
           description: project.description ? [project.description] : [],
         })),
       },
