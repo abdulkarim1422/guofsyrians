@@ -13,7 +13,7 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
         company: w.company || '',
         start_date: w.start_date || '',
         end_date: w.end_date || '',
-        currently_working: w.currently_working || (!w.end_date && !!w.start_date) || false,
+        currently_working: w.currently_working || false,
         period: w.period || '',
         responsibilities: w.responsibilities || '',
         achievements: w.achievements || '',
