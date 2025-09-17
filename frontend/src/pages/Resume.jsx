@@ -212,6 +212,10 @@ export const Resume = () => {
             ? new Date(edu.end_date).getFullYear().toString()
             : "Year not specified",
           institution: edu.institution || "Institution",
+          degree: edu.degree || "Degree",
+          field_of_study: edu.field_of_study || "Field of Study",
+          grade: edu.grade || "",
+          rank: edu.rank || "",
         })),
         projects: projects.map((project) => ({
           name: project.project_name || "Project",
