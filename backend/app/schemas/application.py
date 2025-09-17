@@ -12,6 +12,7 @@ class ApplicationOut(BaseModel):
     id: str
     job_id: str
     user_id: str
+    member_id: Optional[str] = None
     cover_letter: Optional[str] = None
     resume_url: Optional[str] = None
     status: str

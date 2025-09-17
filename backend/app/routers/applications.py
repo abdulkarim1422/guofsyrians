@@ -43,15 +43,27 @@ async def list_applications_admin(
     apps = await Application.find(query).sort(-Application.created_at).to_list()
     
     # Convert to ApplicationOut with proper string IDs
-    return [
-        ApplicationOut(
+    result = []
+    for app in apps:
+        # Get user by user_id to obtain email, then get member by email
+        from app.crud.user_crud import UserCRUD
+        from app.crud.member_crud import get_member_by_email
+        
+        user = await UserCRUD.get_user_by_id(app.user_id)
+        member_id = None
+        if user and user.email:
+            member = await get_member_by_email(user.email)
+            member_id = str(member.id) if member else None
+        
+        result.append(ApplicationOut(
             id=str(app.id),
             job_id=app.job_id,
             user_id=app.user_id,
+            member_id=member_id,
             cover_letter=app.cover_letter,
             resume_url=app.resume_url,
             status=app.status,
             created_at=app.created_at
-        )
-        for app in apps
-    ]
+        ))
+    
+    return result
