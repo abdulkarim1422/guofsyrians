@@ -361,7 +361,7 @@ function Sidebar({
         </div>
 
         <div className="flex-grow overflow-x-hidden overflow-y-auto flex flex-col">
-          <div className="w-full p-3 h-24 sm:h-20 xl:h-24 hidden sm:block flex-shrink-0">
+      {/* <div className="w-full p-3 h-24 sm:h-20 xl:h-24 hidden sm:block flex-shrink-0">
             <div className="bg-sidebar-card-top rounded-xl w-full h-full flex items-center justify-start sm:justify-center xl:justify-start px-3 sm:px-0 xl:px-3">
               <div className="bg-white rounded-2xl">
                 <img src="/favicon.png" alt="Logo" style={{ width: 75, height: 50 }} />
@@ -373,7 +373,7 @@ function Sidebar({
               <div className="block sm:hidden xl:block flex-grow" />
               <Icon path="res-react-dash-sidebar-card-select" className="block sm:hidden xl:block w-5 h-5" />
             </div>
-          </div>
+          </div> */}
 
           {sidebarItems[0].map((i) => (
             <MenuItem key={i.id} item={i} onClick={onPageSelect} selected={selectedPage} />
