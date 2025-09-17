@@ -1,11 +1,12 @@
 from app.crud import member_crud
-from fastapi import APIRouter, HTTPException, UploadFile, File
+from fastapi import APIRouter, HTTPException, UploadFile, File, Depends
 from app.models import member_model
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime, timezone
 from bson import ObjectId
-from app.services import resume_services
+from app.services import resume_services, auth_services
+from app.models.user_model import User
 import asyncio
 
 router = APIRouter()
@@ -15,19 +16,28 @@ class WorkExperienceRequest(BaseModel):
     title: str
     period: str
     company: str
-    description: List[str]
+    description: List[str]  # Kept for backward compatibility
+    responsibilities: Optional[str] = None  # New field for responsibilities
+    achievements: Optional[str] = None      # New field for achievements
 
 class AcademicEntryRequest(BaseModel):
     degreeLevel: str
     major: str
     date: str
     institution: str
+    gpa: Optional[float] = None      # New field for GPA (0-4 scale)
+    rank: Optional[str] = None       # New field for academic honors/rank
 
 class ProjectEntryRequest(BaseModel):
     name: str
-    company: str
+    company: str  # Kept for backward compatibility
     period: str
-    description: List[str]
+    description: List[str]  # Kept for backward compatibility
+    project_type: Optional[str] = None      # New field for project type
+    tools: Optional[List[str]] = []         # New field for tools/technologies
+    role: Optional[str] = None              # New field for role in project
+    responsibilities: Optional[str] = None   # New field for responsibilities
+    outcomes: Optional[str] = None          # New field for outcomes/achievements
 
 class ResumeFormRequest(BaseModel):
     # Profile data - using backend field names
@@ -81,6 +91,8 @@ async def create_education_entries(member_id: str, academic: List[AcademicEntryR
             degree=edu.degreeLevel,
             field_of_study=edu.major,
             end_date=graduation_date,  # Using end_date as graduation date
+            gpa=edu.gpa,              # New GPA field
+            rank=edu.rank,            # New rank field
         )
         await member_crud.create_member_education(education)
 
@@ -122,7 +134,9 @@ async def create_work_experiences(member_id: str, works: List[WorkExperienceRequ
             member_id=member_id,
             job_title=work.title,
             company=work.company,
-            description="; ".join(work.description),  # Join descriptions into a single string
+            description="; ".join(work.description),  # Join descriptions into a single string - kept for backward compatibility
+            responsibilities=work.responsibilities,   # New responsibilities field
+            achievements=work.achievements,         # New achievements field
             start_date=start_date,
             end_date=end_date,
         )
@@ -165,8 +179,12 @@ async def create_project_entries(member_id: str, projects: List[ProjectEntryRequ
         project = member_model.MemberProject(
             member_id=member_id,
             project_name=proj.name,
-            description="; ".join(proj.description),  # Join descriptions into a single string
-            role=proj.company,  # Using company field as role for now
+            description="; ".join(proj.description),  # Join descriptions into a single string - kept for backward compatibility
+            project_type=proj.project_type,         # New project type field
+            tools=proj.tools,                      # New tools field
+            role=proj.role or proj.company,        # Use new role field or fallback to company
+            responsibilities=proj.responsibilities, # New responsibilities field
+            outcomes=proj.outcomes,                # New outcomes field
             start_date=start_date,
             end_date=end_date
         )
@@ -182,10 +200,17 @@ async def submit_resume(resume_data: ResumeFormRequest):
     """
     print("backend -- Received resume data:", resume_data)
     try:
-        # create user with resume form data
-        user = await resume_services.create_user_with_resume_form_and_send_welcome_email(
-            mail=resume_data.email, name=resume_data.name
-        )
+        # create or reuse user with resume form data
+        user = None
+        if resume_data.email:
+            from app.crud.user_crud import UserCRUD
+            existing_user = await UserCRUD.get_user_by_email(resume_data.email)
+            if existing_user:
+                user = existing_user
+            else:
+                user = await resume_services.create_user_with_resume_form_and_send_welcome_email(
+                    mail=resume_data.email, name=resume_data.name
+                )
 
         user_id = str(getattr(user, "id", None)) if getattr(user, "id", None) is not None else None
         print("backend -- User created with ID:", user_id)
@@ -255,69 +280,101 @@ async def get_all_resumes():
         raise HTTPException(status_code=500, detail=f"Failed to retrieve resumes: {str(e)}")
 
 @router.get("/resume/{member_id}")
-async def get_resume(member_id: str):
-    """
-    Get a complete resume by member ID
-    Returns member data along with work experience, education, and projects
-    """
+async def get_resume_by_member_id(member_id: str):
+    """Get a complete resume by member ID with normalized description fields."""
+    from bson.errors import InvalidId
     try:
-        # Get member data
-        member = await member_crud.get_member_by_member_id(ObjectId(member_id))
+        obj_id = ObjectId(member_id)
+    except (InvalidId, TypeError):
+        raise HTTPException(status_code=400, detail="Invalid member_id format")
+
+    try:
+        member = await member_crud.get_member_by_member_id(obj_id)
         if not member:
             raise HTTPException(status_code=404, detail="Resume not found")
-        
-        # Get related documents using CRUD functions
-        work_experiences = await member_crud.get_all_work_experiences_by_member_id(ObjectId(member_id))
-        education = await member_crud.get_all_educations_by_member_id(ObjectId(member_id))
-        projects = await member_crud.get_all_projects_by_member_id(ObjectId(member_id))
-        
-        # Format the response
-        resume_data = {
+
+        work_experiences = await member_crud.get_all_work_experiences_by_member_id(obj_id)
+        education = await member_crud.get_all_educations_by_member_id(obj_id)
+        projects = await member_crud.get_all_projects_by_member_id(obj_id)
+
+        def _split_legacy(desc: str):
+            if not desc:
+                return []
+            # legacy stored either "; " joined or newlines
+            parts = [p.strip() for p in desc.replace("\n", "; ").split("; ") if p.strip()]
+            return parts
+
+        # Produce normalized copies (avoid mutating DB objects)
+        normalized_work = []
+        for w in work_experiences:
+            d = w.model_dump() if hasattr(w, "model_dump") else w.dict()
+            d["description_list"] = _split_legacy(d.get("description", ""))
+            normalized_work.append(d)
+
+        normalized_projects = []
+        for p in projects:
+            d = p.model_dump() if hasattr(p, "model_dump") else p.dict()
+            d["description_list"] = _split_legacy(d.get("description", ""))
+            normalized_projects.append(d)
+
+        return {
             "member": member,
-            "work_experiences": work_experiences,
+            "work_experiences": normalized_work,
             "education": education,
-            "projects": projects
+            "projects": normalized_projects,
         }
-        
-        return resume_data
-        
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to retrieve resume: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve resume: {e}")
 
 @router.get("/resume/by-user-id/{user_id}")
-async def get_resume(user_id: str):
-    """
-    Get a complete resume by user ID
-    Returns member data along with work experience, education, and projects
-    """
+async def get_resume_by_user_id(user_id: str):
+    """Get a complete resume by user ID with normalized description fields."""
     try:
-        # Get member data
         member = await member_crud.get_member_by_user_id(user_id)
         if not member:
             raise HTTPException(status_code=404, detail="Resume not found")
-        
-        # Get related documents using CRUD functions
-        member_id = str(member.id)  # Convert ObjectId to string for consistency
-        work_experiences = await member_crud.get_all_work_experiences_by_member_id(ObjectId(member_id))
-        education = await member_crud.get_all_educations_by_member_id(ObjectId(member_id))
-        projects = await member_crud.get_all_projects_by_member_id(ObjectId(member_id))
 
-        # Format the response
-        resume_data = {
+        member_id = str(member.id)
+        obj_id = ObjectId(member_id)
+
+        work_experiences = await member_crud.get_all_work_experiences_by_member_id(obj_id)
+        education = await member_crud.get_all_educations_by_member_id(obj_id)
+        projects = await member_crud.get_all_projects_by_member_id(obj_id)
+
+        def _split_legacy(desc: str):
+            if not desc:
+                return []
+            parts = [p.strip() for p in desc.replace("\n", "; ").split("; ") if p.strip()]
+            return parts
+
+        normalized_work = []
+        for w in work_experiences:
+            d = w.model_dump() if hasattr(w, "model_dump") else w.dict()
+            d["description_list"] = _split_legacy(d.get("description", ""))
+            normalized_work.append(d)
+
+        normalized_projects = []
+        for p in projects:
+            d = p.model_dump() if hasattr(p, "model_dump") else p.dict()
+            d["description_list"] = _split_legacy(d.get("description", ""))
+            normalized_projects.append(d)
+
+        return {
             "member": member,
-            "work_experiences": work_experiences,
+            "work_experiences": normalized_work,
             "education": education,
-            "projects": projects
+            "projects": normalized_projects,
         }
-        
-        return resume_data
-        
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to retrieve resume: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve resume by user id: {e}")
 
 
 @router.put("/resume/{member_id}")
-async def update_resume(member_id: str, resume_data: ResumeFormRequest):
+async def update_resume(member_id: str, resume_data: ResumeFormRequest, current_user: User = Depends(auth_services.get_current_user)):
     """
     Update an existing resume
     Updates member data and replaces all related work experience, education, and project documents
@@ -336,6 +393,10 @@ async def update_resume(member_id: str, resume_data: ResumeFormRequest):
             except ValueError:
                 raise HTTPException(status_code=400, detail="Invalid birthdate format. Use YYYY-MM-DD")
         
+        # Authorization: only owner (linked by user_id) or admin can update
+        if existing_member.user_id and str(existing_member.user_id) != str(current_user.id) and current_user.role != "admin":
+            raise HTTPException(status_code=403, detail="Not authorized to modify this resume")
+
         # Update member fields
         existing_member.name = resume_data.name
         existing_member.professional_title = resume_data.professional_title

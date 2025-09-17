@@ -13,7 +13,7 @@ export const Works = ({ works }) => {
   );
 };
 
-const Work = ({ title, period, company, description }) => {
+const Work = ({ title, period, company, description, responsibilities, achievements }) => {
   return (
     <div className="experience__content">
       <div className="experience__time">
@@ -25,6 +25,8 @@ const Work = ({ title, period, company, description }) => {
         <span className="experience__company">
           {period} | {company}
         </span>
+        {responsibilities && (<div>responsibilities: {responsibilities}</div>)}
+        {achievements && (<div>achievements: {achievements}</div>)}
         {description.map((desc, i) => <Description key={i} desc={desc} />)}
       </div>
     </div>

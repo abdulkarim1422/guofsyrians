@@ -1,3 +1,6 @@
+// C:\Users\abodi\OneDrive\Desktop\guofsyrians-main\frontend\src\main.jsx
+
+
 import React from "react";
 
 import ReactDOM from "react-dom/client";
@@ -10,6 +13,16 @@ import LoginPage from "@/pages/LoginPage.tsx";
 import { AuthProvider } from "@/contexts/AuthContext.tsx";
 import ProtectedRoute from "@/components/auth-components/ProtectedRoute.tsx";
 import {Wave} from "@/pages/MainLandingPage.jsx";
+import JobDetails from '@/pages/JobDetails.jsx';
+import { ComponentTest } from '@/pages/ComponentTest.jsx';
+import { LoginTest } from '@/pages/LoginTest.jsx';
+import AdminApplications from '@/pages/AdminApplications.jsx';
+
+
+
+
+
+
 
 import "./App.css";
 
@@ -30,6 +43,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                         <Route path="/form" element={
                                 <ResumeForm />
                         } />
+                        <Route path="/test" element={<ComponentTest />} />
+                        <Route path="/login-test" element={<LoginTest />} />
                         <Route path="/dashboard" element={
                             <ProtectedRoute>
                                 <Dashboard />
@@ -80,6 +95,19 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                                 <Dashboard />
                             </ProtectedRoute>
                         } />
+                         {/* 👇 مسار صفحة إضافة وظيفة للأدمن */}
+                        <Route path="/admin/jobs/new" element={
+                          <ProtectedRoute>
+                            <Dashboard />
+                          </ProtectedRoute>
+                        } />
+                        {/* 👇 مسار صفحة إدارة الطلبات للأدمن */}
+                        <Route path="/admin/applications" element={
+                          <ProtectedRoute>
+                            <AdminApplications />
+                          </ProtectedRoute>
+                        } />
+                        <Route path="/jobs/:id" element={<JobDetails />} />
                     </Routes>
                 </BrowserRouter>
             </AuthProvider>

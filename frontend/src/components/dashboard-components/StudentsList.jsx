@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { memberApi } from '../../utils/apiService';
+import { membersAPI } from '../../utils/api';
 import { getMemberImageUrl, getDefaultAvatarPath } from '../../utils/imageUtils';
 
-function StudentsList({ onSidebarHide }) {
+function StudentsList() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [yearFilter, setYearFilter] = useState([]);
@@ -24,7 +24,7 @@ function StudentsList({ onSidebarHide }) {
     const fetchMembers = async () => {
       try {
         setLoading(true);
-        const members = await memberApi.getAllMembers();
+        const members = await membersAPI.getAllMembersWithEducation();
         
         // Transform the API data to match the expected format
         const transformedData = members.map(member => ({
@@ -235,11 +235,6 @@ function StudentsList({ onSidebarHide }) {
                 )}
               </div>
             </div>
-            <IconButton
-              icon="res-react-dash-sidebar-open"
-              className="block sm:hidden"
-              onClick={onSidebarHide}
-            />
           </div>
           <div className="w-full sm:w-auto mt-4 sm:mt-0 flex flex-col sm:flex-row gap-4">
             {/* Search Input */}

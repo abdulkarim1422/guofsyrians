@@ -1,0 +1,163 @@
+/* Mobile Dashboard Scrollbar Fix */
+
+/* Ensure single scrolling container for mobile devices */
+@media (max-width: 640px) {
+  /* Root dashboard container should not overflow horizontally */
+  .dashboard-mobile-container {
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(220, 181, 87, 0.5) transparent;
+    /* Better mobile performance */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Hide scrollbar on webkit browsers but keep functionality */
+  .dashboard-mobile-container::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .dashboard-mobile-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .dashboard-mobile-container::-webkit-scrollbar-thumb {
+    background-color: rgba(220, 181, 87, 0.5);
+    border-radius: 2px;
+  }
+
+  .dashboard-mobile-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(220, 181, 87, 0.7);
+  }
+
+  /* Prevent horizontal scrolling issues */
+  .dashboard-content-mobile {
+    max-width: 100vw;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Fix for nested container issues */
+  .dashboard-inner-content {
+    min-height: auto;
+    height: auto;
+  }
+
+  /* Ensure sidebar doesn't interfere with main scrolling */
+  .sidebar-mobile-fixed {
+    position: fixed;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translateZ(0);
+  }
+
+  /* Prevent body scroll when sidebar is open */
+  body.sidebar-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+
+  /* Smooth scrolling for all mobile elements */
+  .mobile-smooth-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent bounce scrolling on iOS */
+  .mobile-scroll-contained {
+    overscroll-behavior: contain;
+    overscroll-behavior-y: contain;
+  }
+
+  /* Fix for viewport height issues on mobile browsers */
+  .mobile-vh-fix {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+
+  /* Additional mobile optimizations */
+  .dashboard-mobile-container * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent text selection during scroll */
+  .dashboard-mobile-container {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Re-enable text selection for specific elements */
+  .dashboard-mobile-container input,
+  .dashboard-mobile-container textarea,
+  .dashboard-mobile-container [contenteditable],
+  .dashboard-mobile-container .selectable-text {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+}
+
+/* Tablet specific adjustments */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .dashboard-tablet-container {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Desktop - ensure no conflicts */
+@media (min-width: 1025px) {
+  .dashboard-desktop-container {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(220, 181, 87, 0.3) transparent;
+  }
+
+  .dashboard-desktop-container::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .dashboard-desktop-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .dashboard-desktop-container::-webkit-scrollbar-thumb {
+    background-color: rgba(220, 181, 87, 0.3);
+    border-radius: 4px;
+  }
+
+  .dashboard-desktop-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(220, 181, 87, 0.5);
+  }
+}
+
+/* Universal mobile scroll improvements */
+@media (max-width: 640px) {
+  /* Smooth scrolling for all mobile elements */
+  .mobile-smooth-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent bounce scrolling on iOS */
+  .mobile-scroll-contained {
+    overscroll-behavior: contain;
+  }
+
+  /* Fix for viewport height issues on mobile browsers */
+  .mobile-vh-fix {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+}

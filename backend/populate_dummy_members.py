@@ -12,9 +12,17 @@ async def populate_dummy_members():
     client = motor.motor_asyncio.AsyncIOMotorClient(mongodb_uri)
     await init_beanie(database=client.guofsyrians_db, document_models=[Member, MemberEducation])
     
-    # Clear existing members (optional)
-    await Member.delete_all()
-    await MemberEducation.delete_all()
+    # Check if we already have data to avoid duplicates
+    existing_members_count = await Member.count()
+    if existing_members_count > 0:
+        print(f"ℹ️  Database already has {existing_members_count} members. Skipping dummy data population.")
+        return
+    
+    print("📝 No existing data found. Populating dummy data...")
+    
+    # REMOVED: Clear existing members - this was causing data loss!
+    # await Member.delete_all()        # ❌ DANGEROUS - DELETES ALL DATA
+    # await MemberEducation.delete_all()  # ❌ DANGEROUS - DELETES ALL DATA
     
     # Dummy members data
     dummy_members = [
@@ -344,19 +352,32 @@ async def populate_dummy_members():
         {"user_id": "user_020", "institution": "Washington University", "degree": "Lisans", "field_of_study": "Political Science", "graduation_date": "2025-01-20"}
     ]
 
-    # Insert members
+    # Insert members with duplicate checking
     members = []
     for member_data in dummy_members:
+        # Check if member already exists by email
+        existing_member = await Member.find_one({"email": member_data["email"]})
+        if existing_member:
+            print(f"⚠️  Member {member_data['name']} already exists, skipping...")
+            members.append(existing_member)
+            continue
+            
         member = Member(**member_data)
         await member.insert()
         members.append(member)
-        print(f"Created member: {member.name}")
+        print(f"✅ Created member: {member.name}")
 
-    # Insert education data
+    # Insert education data with duplicate checking
     for edu_data in education_data:
         # Find the corresponding member
         member = await Member.find_one({"user_id": edu_data["user_id"]})
         if member:
+            # Check if education record already exists
+            existing_education = await MemberEducation.find_one({"member_id": str(member.id)})
+            if existing_education:
+                print(f"⚠️  Education record for {member.name} already exists, skipping...")
+                continue
+                
             education = MemberEducation(
                 member_id=str(member.id),
                 institution=edu_data["institution"],
@@ -365,9 +386,9 @@ async def populate_dummy_members():
                 end_date=datetime.strptime(edu_data["graduation_date"], "%Y-%m-%d")
             )
             await education.insert()
-            print(f"Created education record for: {member.name}")
+            print(f"✅ Created education record for: {member.name}")
 
-    print(f"Successfully created {len(members)} members with education data!")
+    print(f"🎉 Successfully processed {len(members)} members with education data!")
 
 if __name__ == "__main__":
     asyncio.run(populate_dummy_members())

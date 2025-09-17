@@ -382,7 +382,7 @@ function UniversitySelector({ value, onChange, placeholder }) {
           onChange={handleInputChange}
           onFocus={handleInputFocus}
           onKeyDown={handleUniversityKeyPress}
-          className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all pr-10"
+          className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all pr-8 sm:pr-10 text-xs sm:text-base"
           placeholder={placeholder}
           autoComplete="off"
         />
@@ -475,10 +475,30 @@ export function AcademicInputComponent({ formData, setFormData }) {
           "Chemical Engineering",
           "Computer Engineering",
           "Aerospace Engineering",
-          "Environmental Engineering"
+          "Environmental Engineering",
+          "Industrial Design Engineering",
+          "Architecture (الهندسة المعمارية)",
+          "Industrial Engineering (الهندسة الصناعية)",
+          "Energy Engineering / Renewable Energy (هندسة الطاقة / الطاقة المتجددة)",
+          "Marine Engineering / Maritime Transport (الهندسة البحرية / الهندسة البحرية والنقل البحري)",
+          "Biomedical Engineering (الهندسة الطبية الحيوية)",
+          "Systems Engineering / Control Engineering (هندسة النظم / هندسة التحكم الآلي)",
+          "Geotechnical Engineering (الهندسة الجيوتقنية)",
+          "Agricultural Engineering (الهندسة الزراعية)",
+          "Petroleum Engineering / Oil & Gas Engineering (الهندسة البترولية / هندسة النفط والغاز)"
         ],
         "Medicine & Health": [
           "Pre-Medicine",
+          "Medicine",
+          "Dentistry (طب الأسنان)",
+          "Pharmacy / Pharmaceutical Sciences (الصيدلة)",
+          "Midwifery (القبالة)",
+          "Radiology / Radiologic Technology (علم الأشعة)",
+          "Nutrition / Dietetics (التغذية)",
+          "Audiology & Speech Therapy (السمعيات والنطق)",
+          "Health Administration / Health Management (إدارة الخدمات الصحية)",
+          "Medical Laboratory Sciences (علوم المختبرات الطبية)",
+          "Paramedic Studies (الإسعافات)",
           "Nursing",
           "Public Health",
           "Biomedical Sciences",
@@ -494,7 +514,12 @@ export function AcademicInputComponent({ formData, setFormData }) {
           "International Business",
           "Accounting",
           "Economics",
-          "Management Information Systems"
+          "Management Information Systems",
+          "Entrepreneurship (ريادة الأعمال)",
+          "Supply Chain & Logistics Management (إدارة سلسلة الإمداد / اللوجستيات)",
+          "Business Analytics / Data Analytics (التحليلات التجارية / علوم البيانات للأعمال)",
+          "E-commerce / Digital Business (التجارة الإلكترونية)",
+          "Hospitality & Tourism Management (الإدارة الفندقية والسياحة)"
         ],
         "Humanities & Social Sciences": [
           "Psychology",
@@ -504,7 +529,12 @@ export function AcademicInputComponent({ formData, setFormData }) {
           "Political Science",
           "Philosophy",
           "Anthropology",
-          "Communications"
+          "Communications",
+          "Language & Translation / Linguistics (اللغة والترجمة)",
+          "Geography (الجغرافيا)",
+          "Development Studies / Applied Economics (علم الاقتصاد التطبيقي / التنمية)",
+          "Digital Media / New Media Studies (الإعلام الرقمي)",
+          "International Relations (الدراسات الدولية / العلاقات الدولية)"
         ],
         "Sciences": [
           "Computer Science",
@@ -523,7 +553,14 @@ export function AcademicInputComponent({ formData, setFormData }) {
           "Music",
           "Theater Arts",
           "Digital Media",
-          "Industrial Design"
+          "Industrial Design",
+          "Interior Design (التصميم الداخلي / İç Mimarlık)",
+          "Photography (التصوير الفوتوغرافي)",
+          "Cinema & Television / Film Studies (السينما والتلفزيون)",
+          "Visual Arts (الفنون البصرية)",
+          "Fashion & Textile Design (تصميم الأزياء والمنسوجات)",
+          "Plastic Arts / Sculpture, Painting, Ceramics (الفنون التشكيلية)",
+          "Visual Communication Design (تصميم الاتصالات البصرية)"
         ]
       },
       "Master's": {
@@ -669,7 +706,9 @@ export function AcademicInputComponent({ formData, setFormData }) {
         degreeLevel: '',
         major: '',
         date: '',
-        institution: ''
+        institution: '',
+        gpa: '',
+        rank: ''
       }]
     }));
   };
@@ -716,7 +755,7 @@ export function AcademicInputComponent({ formData, setFormData }) {
               <select
                 value={edu.degreeLevel}
                 onChange={(e) => handleAcademicChange(index, 'degreeLevel', e.target.value)}
-                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all text-xs sm:text-base"
                 required
               >
                 <option value="">Select degree level</option>
@@ -792,6 +831,58 @@ export function AcademicInputComponent({ formData, setFormData }) {
               />
               <p className="text-xs text-gray-600 mt-1">
                 Search and select from Turkish universities or type your own
+              </p>
+            </div>
+            
+            {/* Optional GPA and Rank Fields */}
+            <div>
+              <label className="block text-sm font-medium text-carbon mb-2">
+                GPA (Optional)
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="4"
+                value={edu.gpa || ''}
+                onChange={(e) => handleAcademicChange(index, 'gpa', e.target.value)}
+                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+                placeholder="3.75"
+              />
+              <p className="text-xs text-gray-600 mt-1">
+                Grade Point Average (0.00 - 4.00 scale)
+              </p>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-carbon mb-2">
+                Rank/Level (Optional)
+              </label>
+              <select
+                value={edu.rank || ''}
+                onChange={(e) => handleAcademicChange(index, 'rank', e.target.value)}
+                className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
+              >
+                <option value="">Select rank (optional)</option>
+                <option value="summa_cum_laude">Summa Cum Laude</option>
+                <option value="magna_cum_laude">Magna Cum Laude</option>
+                <option value="cum_laude">Cum Laude</option>
+                <option value="honors">With Honors</option>
+                <option value="high_honors">High Honors</option>
+                <option value="distinction">With Distinction</option>
+                <option value="first_class">First Class</option>
+                <option value="upper_second">Upper Second Class</option>
+                <option value="lower_second">Lower Second Class</option>
+                <option value="third_class">Third Class</option>
+                <option value="dean_list">Dean's List</option>
+                <option value="valedictorian">Valedictorian</option>
+                <option value="salutatorian">Salutatorian</option>
+                <option value="top_5_percent">Top 5%</option>
+                <option value="top_10_percent">Top 10%</option>
+                <option value="top_quarter">Top 25%</option>
+              </select>
+              <p className="text-xs text-gray-600 mt-1">
+                Academic honors, class ranking, or distinction level
               </p>
             </div>
           </div>
