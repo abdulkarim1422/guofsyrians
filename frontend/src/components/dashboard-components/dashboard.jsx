@@ -59,10 +59,13 @@ function DashboardContent() {
             <div>
               <div className="flex items-center">
                 <div className="text-3xl font-bold dashboard-welcome-text">أهلاً وسهلاً {user?.name || 'User'}</div>
+                {/* الاتحاد السوري card - مخفي */}
+                {/* 
                 <div className="flex items-center p-2 bg-card ml-2 rounded-xl">
                   <Icon path="res-react-dash-premium-star" />
                   <div className="ml-2 font-bold text-premium-yellow">الاتحاد السوري</div>
                 </div>
+                */}
               </div>
               <div className="flex items-center">
                 <Icon path="res-react-dash-date-indicator" className="w-3 h-3" />
@@ -128,7 +131,10 @@ function LatestJobsWidget({ isAdmin = false }) {
           {isAdmin && (
             <Link
               to="/admin/jobs/new"
-              className="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white text-sm px-3 py-2 rounded-lg"
+              className="inline-flex items-center gap-2 text-white text-sm px-3 py-2 rounded-lg transition-colors"
+              style={{ backgroundColor: '#d6b549' }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#c4a73f'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#d6b549'}
             >
               <span className="text-xl leading-none">+</span>
               إضافة وظيفة
@@ -211,7 +217,10 @@ function JobCard({ job }) {
       <div className="p-4">
         <Link
           to={`/jobs/${id}`}
-          className="block w-full text-center bg-emerald-800 hover:bg-emerald-900 text-white rounded-lg py-2 text-sm"
+          className="block w-full text-center text-white rounded-lg py-2 text-sm transition-colors"
+          style={{ backgroundColor: '#d6b549' }}
+          onMouseEnter={(e) => e.target.style.backgroundColor = '#c4a73f'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = '#d6b549'}
         >
           التفاصيل
         </Link>
@@ -281,7 +290,10 @@ function StudentsOverviewWidget() {
                     </div>
                     <Link
                       to={`/cv/${m.id}`}
-                      className="text-sm bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-lg"
+                      className="text-sm text-white px-3 py-1.5 rounded-lg transition-colors"
+                      style={{ backgroundColor: '#d6b549' }}
+                      onMouseEnter={(e) => e.target.style.backgroundColor = '#c4a73f'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = '#d6b549'}
                     >
                       السيرة
                     </Link>
