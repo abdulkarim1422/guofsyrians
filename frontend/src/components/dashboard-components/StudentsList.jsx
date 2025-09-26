@@ -180,17 +180,15 @@ function StudentsList() {
     );
   };
   return (
-    <div className="flex w-full">
-      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
-        .
-      </div>
-      <div className="h-screen flex-grow overflow-x-hidden overflow-auto flex flex-col p-2">
+    <div className="w-full min-h-screen bg-gray-50">
+      <div className="w-full h-full flex flex-col p-3 sm:p-4 md:p-6 lg:p-8">
+        <div className="w-full max-w-screen-2xl mx-auto flex-grow overflow-x-hidden overflow-auto flex flex-col">
         {/* Loading State */}
         {loading && (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-              <div className="text-white text-lg">Loading students...</div>
+              <div className="text-white text-lg">جاري تحميل الطلاب...</div>
             </div>
           </div>
         )}
@@ -199,7 +197,7 @@ function StudentsList() {
         {error && !loading && (
           <div className="flex items-center justify-center h-full">
             <div className="text-center bg-red-600 bg-opacity-20 border border-red-600 rounded-lg p-6">
-              <div className="text-red-400 text-lg mb-2">Error Loading Data</div>
+              <div className="text-red-400 text-lg mb-2">خطأ في تحميل البيانات</div>
               <div className="text-red-300 text-sm mb-4">{error}</div>
               <button
                 onClick={() => window.location.reload()}
@@ -218,18 +216,18 @@ function StudentsList() {
           <div className="sm:flex-grow flex justify-between">
             <div className="">
               <div className="flex items-center">
-                <div className="text-3xl font-bold text-carbon">Students List</div>
+                <div className="text-3xl font-bold text-carbon">قائمة الطلاب</div>
                 <div className="flex items-center p-2 bg-card ml-2 rounded-xl">
                   <Icon path="res-react-dash-premium-star" />
                   <div className="ml-2 font-bold text-rich-gold">
-                    {sortedStudents.length} Students
+                    {sortedStudents.length} طالب
                   </div>
                 </div>
                 {activeFiltersCount > 0 && (
                   <div className="flex items-center p-2 bg-rich-gold ml-2 rounded-xl">
                     <Icon path="res-react-dash-search" className="w-4 h-4" />
                     <div className="ml-2 font-bold text-deep-green">
-                      {activeFiltersCount} Filter{activeFiltersCount > 1 ? 's' : ''} Active
+                      {activeFiltersCount} مرشح نشط
                     </div>
                   </div>
                 )}
@@ -289,9 +287,9 @@ function StudentsList() {
                 <option value="major-asc">التخصص أ-ي</option>
                 <option value="major-desc">التخصص ي-أ</option>
                 <option value="graduationDate-asc">تاريخ التخرج (الأقرب)</option>
-                <option value="graduationDate-desc">Graduation Date (Latest)</option>
-                <option value="year-asc">Academic Level (Low to High)</option>
-                <option value="year-desc">Academic Level (High to Low)</option>
+                <option value="graduationDate-desc">تاريخ التخرج (الأحدث)</option>
+                <option value="year-asc">المستوى الأكاديمي (من الأدنى للأعلى)</option>
+                <option value="year-desc">المستوى الأكاديمي (من الأعلى للأدنى)</option>
               </select>
             </div>
           </div>
@@ -301,20 +299,20 @@ function StudentsList() {
         {showFilters && (
           <div className="w-full p-4 bg-gray-800 rounded-lg border border-gray-700 mb-4">
             <div className="flex flex-wrap items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-white">Advanced Filters</h3>
+              <h3 className="text-lg font-semibold text-white">الفلاتر المتقدمة</h3>
               <button
                 onClick={clearAllFilters}
                 className="text-red-400 hover:text-red-300 text-sm font-medium flex items-center space-x-1"
               >
                 <Icon path="res-react-dash-close" className="w-4 h-4" />
-                <span>Clear All</span>
+                <span>مسح الكل</span>
               </button>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Academic Level Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Academic Level</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">المستوى الأكاديمي</label>
                 <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
                   {['Ön Lisans', 'Lisans', 'Yüksek Lisans', 'Doktora', 'Graduate'].map(year => (
                     <label key={year} className="flex items-center space-x-2 cursor-pointer">
@@ -332,7 +330,7 @@ function StudentsList() {
 
               {/* University Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">University</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">الجامعة</label>
                 <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
                   {uniqueUniversities.map(university => (
                     <label key={university} className="flex items-center space-x-2 cursor-pointer">
@@ -350,7 +348,7 @@ function StudentsList() {
 
               {/* Major Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Major</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">التخصص</label>
                 <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
                   {uniqueMajors.map(major => (
                     <label key={major} className="flex items-center space-x-2 cursor-pointer">
@@ -368,7 +366,7 @@ function StudentsList() {
 
               {/* Graduation Year Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Graduation Year</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">سنة التخرج</label>
                 <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
                   {uniqueGraduationYears.map(year => (
                     <label key={year} className="flex items-center space-x-2 cursor-pointer">
@@ -388,35 +386,35 @@ function StudentsList() {
             {/* Active Filters Summary */}
             {activeFiltersCount > 0 && (
               <div className="mt-4 p-3 bg-gray-700 rounded-lg">
-                <div className="text-sm text-gray-300 mb-2">Active Filters:</div>
+                <div className="text-sm text-gray-300 mb-2">المرشحات النشطة:</div>
                 <div className="flex flex-wrap gap-2">
                   {searchTerm && (
                     <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
-                      <span>Search: "{searchTerm}"</span>
+                      <span>بحث: &quot;{searchTerm}&quot;</span>
                       <button onClick={() => setSearchTerm('')} className="hover:text-gray-200">×</button>
                     </span>
                   )}
                   {yearFilter.map(year => (
                     <span key={year} className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
-                      <span>Level: {year}</span>
+                      <span>مستوى: {year}</span>
                       <button onClick={() => handleYearFilterChange(year)} className="hover:text-gray-200">×</button>
                     </span>
                   ))}
                   {universityFilter.map(university => (
                     <span key={university} className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
-                      <span>University: {university}</span>
+                      <span>جامعة: {university}</span>
                       <button onClick={() => handleUniversityFilterChange(university)} className="hover:text-gray-200">×</button>
                     </span>
                   ))}
                   {majorFilter.map(major => (
                     <span key={major} className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
-                      <span>Major: {major}</span>
+                      <span>تخصص: {major}</span>
                       <button onClick={() => handleMajorFilterChange(major)} className="hover:text-gray-200">×</button>
                     </span>
                   ))}
                   {graduationYearFilter.map(year => (
                     <span key={year} className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
-                      <span>Grad Year: {year}</span>
+                      <span>سنة التخرج: {year}</span>
                       <button onClick={() => handleGraduationYearFilterChange(year)} className="hover:text-gray-200">×</button>
                     </span>
                   ))}
@@ -431,34 +429,34 @@ function StudentsList() {
           {/* Results Summary */}
           <div className="mb-4 flex items-center justify-between">
             <div className="text-carbon">
-              Showing {studentsToShow.length} of {sortedStudents.length} students
+              عرض {studentsToShow.length} من {sortedStudents.length} طالب
               {sortedStudents.length !== studentsData.length && (
-                <span className="text-rich-gold"> (filtered from {studentsData.length} total)</span>
+                <span className="text-rich-gold"> (مفلتر من {studentsData.length} إجمالي)</span>
               )}
             </div>
             {sortedStudents.length > 0 && (
               <div className="text-sm text-deep-green">
-                Sorted by {sortBy.replace(/([A-Z])/g, ' $1').toLowerCase()} ({sortOrder === 'asc' ? 'ascending' : 'descending'})
+                مرتب حسب {sortBy.replace(/([A-Z])/g, ' $1').toLowerCase()} ({sortOrder === 'asc' ? 'تصاعدي' : 'تنازلي'})
               </div>
             )}
           </div>
 
           {sortedStudents.length === 0 ? (
             <div className="text-center py-12">
-              <div className="text-gray-400 text-lg mb-2">No students found</div>
-              <div className="text-gray-500 text-sm mb-4">Try adjusting your search criteria or filters</div>
+              <div className="text-gray-400 text-lg mb-2">لم يتم العثور على طلاب</div>
+              <div className="text-gray-500 text-sm mb-4">حاول تعديل معايير البحث أو المرشحات</div>
               {activeFiltersCount > 0 && (
                 <button
                   onClick={clearAllFilters}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                 >
-                  Clear All Filters
+                  مسح جميع المرشحات
                 </button>
               )}
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 auto-rows-fr">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5 lg:gap-6 auto-rows-fr">
                 {studentsToShow.map((student) => (
                   <StudentCard key={student.id} student={student} />
                 ))}
@@ -519,9 +517,10 @@ function StudentsList() {
               </button>
             </div>
           </div>
-        </div>
+          </div>
           </>
         )}
+        </div>
       </div>
     </div>
   );
@@ -554,10 +553,10 @@ function StudentCard({ student }) {
   const isGraduatingSoon = daysTillGraduation > 0 && daysTillGraduation <= 90;
 
   return (
-    <div className="brand-card bg-white rounded-2xl shadow-lg p-4 sm:p-6 space-y-3 sm:space-y-4 border border-gray-200 hover:shadow-xl transition-all duration-300 hover:border-rich-gold group h-full flex flex-col">
+    <div className="brand-card bg-white rounded-2xl shadow-md hover:shadow-xl p-3 sm:p-4 md:p-5 lg:p-6 space-y-3 md:space-y-4 border border-gray-200 hover:border-rich-gold group h-full flex flex-col transition-all duration-300 transform hover:-translate-y-1">
       {/* Header Section */}
-      <div className="flex items-start space-x-3 sm:space-x-4 flex-shrink-0">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-rich-gold flex items-center justify-center overflow-hidden ring-2 ring-gray-200 group-hover:ring-rich-gold transition-all flex-shrink-0">
+      <div className="flex items-start space-x-3 md:space-x-4 flex-shrink-0">
+        <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-rich-gold flex items-center justify-center overflow-hidden ring-2 ring-gray-200 group-hover:ring-rich-gold transition-all flex-shrink-0">
           <img 
             src={getMemberImageUrl(student.imageUrl, student.sex)}
             alt={student.name}
@@ -623,12 +622,12 @@ function StudentCard({ student }) {
         </div>
         {isGraduatingSoon && (
           <div className="px-2 py-1 bg-rich-gold text-deep-green rounded-full flex-shrink-0">
-            <span className="text-xs font-medium">Graduating Soon</span>
+            <span className="text-xs font-medium">قريب التخرج</span>
           </div>
         )}
         {isGraduated && (
           <div className="px-2 py-1 bg-deep-green text-white rounded-full flex-shrink-0">
-            <span className="text-xs font-medium">Graduated</span>
+            <span className="text-xs font-medium">متخرج</span>
           </div>
         )}
       </div>
