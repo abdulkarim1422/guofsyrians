@@ -519,7 +519,7 @@ export function SkillsInputComponent({ formData, setFormData }) {
         {(!formData.skills || formData.skills.length === 0) && (
           <div className="text-center py-6 text-gray-600">
             <Code className="w-10 h-10 mx-auto mb-3 opacity-50" />
-            <p className="text-sm">No skills added yet. Search or type a skill above and click "Add Skill".</p>
+            <p className="text-sm">لا توجد مهارات مضافة بعد. ابحث أو اكتب مهارة أعلاه واضغط "إضافة مهارة".</p>
             <p className="text-xs text-gray-500 mt-2">
               Popular suggestions will appear as you type
             </p>
