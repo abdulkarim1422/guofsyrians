@@ -515,7 +515,7 @@ function StudentsList() {
                 onClick={() => navigate("/form")}
               >
                 <Icon path="res-react-dash-add-component" className="w-5 h-5" />
-                <div className="ml-2">Add Student</div>
+                <div className="ml-2">إضافة طالب</div>
               </button>
             </div>
           </div>
