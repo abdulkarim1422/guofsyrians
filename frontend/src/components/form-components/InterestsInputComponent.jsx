@@ -391,7 +391,7 @@ export function InterestsInputComponent({ formData, setFormData }) {
               className="bg-deep-green hover:bg-green-dark disabled:bg-gray-300 disabled:cursor-not-allowed cursor-pointer text-white px-4 py-2.5 rounded-lg flex items-center space-x-2 transition-all duration-200 whitespace-nowrap hover:shadow-md"
             >
               <Plus className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" />
-              <span>Add Interest</span>
+              <span>إضافة اهتمام</span>
             </button>
           </div>
           
