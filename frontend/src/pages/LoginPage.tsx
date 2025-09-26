@@ -233,19 +233,19 @@ const LoginPage: React.FC = () => {
                 className="font-medium transition-colors hover:opacity-80"
                 style={{ color: '#dcb557' }}
               >
-                Contact Admin
+                تواصل مع الإدارة
               </button>
             </p>
             <p className="text-sm mt-2" style={{ color: '#214937' }}>
-              or fill the{' '}
+              أو املأ {' '}
               <button
                 onClick={() => navigate('/form')}
                 className="font-medium transition-colors hover:opacity-80 cursor-pointer"
                 style={{ color: '#dcb557' }}
               >
-                form
+                النموذج
               </button>
-              {' '}if you are a student
+              {' '}إذا كنت طالباً
             </p>
           </div>
         </div>
