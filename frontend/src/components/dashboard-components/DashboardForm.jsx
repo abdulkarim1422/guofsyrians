@@ -69,7 +69,7 @@ function DashboardForm({ onSidebarHide }) {
               </div>
               <div className="flex items-center">
                 <Icon path="res-react-dash-date-indicator" className="w-3 h-3" />
-                <div className="ml-2">Build your professional resume</div>
+                <div className="ml-2">بناء سيرتك الذاتية المهنية</div>
               </div>
             </div>
 
@@ -91,7 +91,7 @@ function DashboardForm({ onSidebarHide }) {
         <div className="w-full p-2">
           <div className="rounded-lg bg-card overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-700">
-              <h3 className="text-lg font-semibold text-white">Personal Information</h3>
+              <h3 className="text-lg font-semibold text-white">المعلومات الشخصية</h3>
               <p className="text-gray-400 text-sm">Fill in your details to generate your resume</p>
             </div>
 
@@ -219,7 +219,7 @@ function DashboardForm({ onSidebarHide }) {
                     ) : (
                       <>
                         <Icon path="res-react-dash-add-component" className="w-5 h-5 mr-2" />
-                        Generate Resume
+                        إنشاء السيرة الذاتية
                       </>
                     )}
                   </button>
@@ -233,14 +233,14 @@ function DashboardForm({ onSidebarHide }) {
                     })}
                     className="px-6 py-3 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-800 hover:border-gray-500 transition-all"
                   >
-                    Clear Form
+                    مسح النموذج
                   </button>
 
                   <button
                     type="button"
                     className="px-6 py-3 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
                   >
-                    Save Draft
+                    حفظ مسودة
                   </button>
                 </div>
 
