@@ -458,7 +458,7 @@ function StudentsList() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 auto-rows-fr">
                 {studentsToShow.map((student) => (
                   <StudentCard key={student.id} student={student} />
                 ))}
@@ -554,92 +554,95 @@ function StudentCard({ student }) {
   const isGraduatingSoon = daysTillGraduation > 0 && daysTillGraduation <= 90;
 
   return (
-    <div className="brand-card bg-white rounded-2xl shadow-lg p-6 space-y-4 border border-gray-200 hover:shadow-xl transition-all duration-300 hover:border-rich-gold group">
+    <div className="brand-card bg-white rounded-2xl shadow-lg p-4 sm:p-6 space-y-3 sm:space-y-4 border border-gray-200 hover:shadow-xl transition-all duration-300 hover:border-rich-gold group h-full flex flex-col">
       {/* Header Section */}
-      <div className="flex items-start justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="w-16 h-16 rounded-full bg-rich-gold flex items-center justify-center overflow-hidden ring-2 ring-gray-200 group-hover:ring-rich-gold transition-all">
-            <img 
-              src={getMemberImageUrl(student.imageUrl, student.sex)}
-              alt={student.name}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                // Fallback to gender-based avatar if image fails to load
-                e.target.src = getDefaultAvatarPath(student.sex);
-              }}
-            />
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold text-carbon group-hover:text-deep-green transition-colors">{student.name}</h2>
-            <p className="text-sm text-gray-600 mt-1">{student.major}</p>
-            <p className="text-xs text-gray-500">{student.university}</p>
-          </div>
+      <div className="flex items-start space-x-3 sm:space-x-4 flex-shrink-0">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-rich-gold flex items-center justify-center overflow-hidden ring-2 ring-gray-200 group-hover:ring-rich-gold transition-all flex-shrink-0">
+          <img 
+            src={getMemberImageUrl(student.imageUrl, student.sex)}
+            alt={student.name}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Fallback to gender-based avatar if image fails to load
+              e.target.src = getDefaultAvatarPath(student.sex);
+            }}
+          />
         </div>
-        <div className="flex flex-col items-end space-y-2">
-          <div className={clsx("px-3 py-1 rounded-full", getYearColor(student.year))}>
-            <span className="text-xs font-medium">{student.year}</span>
-          </div>
-          {isGraduatingSoon && (
-            <div className="px-2 py-1 bg-rich-gold text-deep-green rounded-full">
-              <span className="text-xs font-medium">Graduating Soon</span>
-            </div>
-          )}
-          {isGraduated && (
-            <div className="px-2 py-1 bg-deep-green text-white rounded-full">
-              <span className="text-xs font-medium">Graduated</span>
-            </div>
-          )}
+        <div className="min-w-0 flex-1">
+          <h2 className="text-lg sm:text-xl font-bold text-deep-green group-hover:text-rich-gold transition-colors truncate leading-tight">{student.name}</h2>
+          <p className="text-sm sm:text-base text-gray-700 mt-1 truncate font-medium">{student.major}</p>
+          <p className="text-xs sm:text-sm text-gray-600 truncate">{student.university}</p>
         </div>
       </div>
 
-      {/* Contact Info */}
-      <div className="space-y-2">
-        <div className="text-sm text-carbon flex items-center space-x-2">
-          <Icon path="res-react-dash-search" className="w-4 h-4 text-deep-green" />
+      {/* Content Section - flex-1 to take remaining space */}
+      <div className="flex-1 space-y-2 sm:space-y-3">
+        {/* Contact Info */}
+        <div className="text-xs sm:text-sm text-carbon flex items-center space-x-2">
+          <Icon path="res-react-dash-search" className="w-3 h-3 sm:w-4 sm:h-4 text-deep-green flex-shrink-0" />
           <button 
             onClick={handleEmailClick}
-            className="hover:text-rich-gold transition-colors hover:underline"
+            className="hover:text-rich-gold transition-colors hover:underline truncate min-w-0"
           >
             {student.email}
           </button>
         </div>
+
+        {/* Graduation Date */}
+        <div className="text-xs sm:text-sm text-carbon">
+          <div className="flex items-center justify-between">
+            <div className="truncate">
+              <span className="font-medium">Graduation:</span> {new Date(student.graduationDate).toLocaleDateString()}
+            </div>
+            {!isGraduated && (
+              <div className="text-xs text-gray-500 flex-shrink-0 ml-2">
+                {daysTillGraduation > 0 ? `${daysTillGraduation} days` : 'Overdue'}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* University and Major Tags */}
+        <div>
+          <div className="text-xs sm:text-sm font-medium text-carbon mb-2">Academic Info:</div>
+          <div className="flex flex-wrap gap-1 sm:gap-2">
+            <span className="px-2 sm:px-3 py-1 bg-sand text-deep-green text-xs font-medium rounded-full border border-deep-green truncate">
+              {student.university}
+            </span>
+            <span className="px-2 sm:px-3 py-1 bg-rich-gold text-deep-green text-xs font-medium rounded-full truncate">
+              {student.major}
+            </span>
+          </div>
+        </div>
       </div>
 
-      {/* Graduation Date */}
-      <div className="text-sm text-carbon flex items-center justify-between">
-        <div>
-          <span className="font-medium">Graduation:</span> {new Date(student.graduationDate).toLocaleDateString()}
+      {/* Status badges - horizontal section */}
+      <div className="flex items-center gap-2 px-4 py-3 border-t border-gray-100">
+        <div className={clsx("px-2 sm:px-3 py-1 rounded-full flex-shrink-0", getYearColor(student.year))}>
+          <span className="text-xs font-medium">{student.year}</span>
         </div>
-        {!isGraduated && (
-          <div className="text-xs text-gray-500">
-            {daysTillGraduation > 0 ? `${daysTillGraduation} days` : 'Overdue'}
+        {isGraduatingSoon && (
+          <div className="px-2 py-1 bg-rich-gold text-deep-green rounded-full flex-shrink-0">
+            <span className="text-xs font-medium">Graduating Soon</span>
+          </div>
+        )}
+        {isGraduated && (
+          <div className="px-2 py-1 bg-deep-green text-white rounded-full flex-shrink-0">
+            <span className="text-xs font-medium">Graduated</span>
           </div>
         )}
       </div>
 
-      {/* University and Major Tags */}
-      <div>
-        <div className="text-sm font-medium text-carbon mb-2">Academic Info:</div>
-        <div className="flex flex-wrap gap-2">
-          <span className="px-3 py-1 bg-sand text-deep-green text-xs font-medium rounded-full border border-deep-green">
-            {student.university}
-          </span>
-          <span className="px-3 py-1 bg-rich-gold text-deep-green text-xs font-medium rounded-full">
-            {student.major}
-          </span>
-        </div>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="flex items-center justify-center pt-4 border-t border-gray-200">
+      {/* Action Buttons - fixed at bottom */}
+      <div className="flex items-center justify-center pt-3 sm:pt-4 border-t border-gray-200 flex-shrink-0">
         <button
           onClick={() => handleCVClick(student.cvLink)}
-          className="brand-btn-secondary bg-deep-green hover:bg-green-dark text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-all duration-300 group"
+          className="brand-btn-secondary bg-deep-green hover:bg-green-dark text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center space-x-2 transition-all duration-300 group w-full justify-center"
         >
-          <Icon path="res-react-dash-options" className="w-4 h-4" />
+          <Icon path="res-react-dash-options" className="w-3 h-3 sm:w-4 sm:h-4" />
           <span>عرض السيرة</span>
           <svg 
-            className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1" 
+            className="w-3 h-3 sm:w-4 sm:h-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1" 
             fill="none" 
             stroke="currentColor" 
             viewBox="0 0 24 24"
