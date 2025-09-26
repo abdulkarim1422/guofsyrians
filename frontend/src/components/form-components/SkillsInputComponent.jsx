@@ -456,7 +456,7 @@ export function SkillsInputComponent({ formData, setFormData }) {
                   {searchResults.length === 0 && currentSkill.trim() && (
                     <div className="px-4 py-3 text-gray-500 text-center">
                       <div className="flex items-center justify-center space-x-2">
-                        <span>No suggestions found. Press Enter or click "Add Skill" to add</span>
+                        <span>لا توجد اقتراحات. اضغط Enter أو انقر على &quot;إضافة مهارة&quot; للإضافة</span>
                       </div>
                       <div className="mt-2">
                         <button
@@ -464,7 +464,7 @@ export function SkillsInputComponent({ formData, setFormData }) {
                           onClick={() => addSkill()}
                           className="text-deep-green hover:text-green-dark font-medium cursor-pointer transition-colors duration-200 hover:bg-green-50 px-2 py-1 rounded"
                         >
-                          Add "{currentSkill.trim()}"
+                          إضافة &quot;{currentSkill.trim()}&quot;
                         </button>
                       </div>
                     </div>
@@ -505,7 +505,7 @@ export function SkillsInputComponent({ formData, setFormData }) {
                     type="button"
                     onClick={() => removeSkill(index)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-all"
-                    title="Remove skill"
+                    title="إزالة المهارة"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -519,9 +519,9 @@ export function SkillsInputComponent({ formData, setFormData }) {
         {(!formData.skills || formData.skills.length === 0) && (
           <div className="text-center py-6 text-gray-600">
             <Code className="w-10 h-10 mx-auto mb-3 opacity-50" />
-            <p className="text-sm">لا توجد مهارات مضافة بعد. ابحث أو اكتب مهارة أعلاه واضغط "إضافة مهارة".</p>
+            <p className="text-sm">لا توجد مهارات مضافة بعد. ابحث أو اكتب مهارة أعلاه واضغط &quot;إضافة مهارة&quot;.</p>
             <p className="text-xs text-gray-500 mt-2">
-              Popular suggestions will appear as you type
+              ستظهر الاقتراحات الشائعة أثناء الكتابة
             </p>
           </div>
         )}
