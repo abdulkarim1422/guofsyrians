@@ -61,7 +61,7 @@ const RegisterForm = ({ onClose, onUserCreated }) => {
       if (err.response?.data?.detail) {
         setError(err.response.data.detail);
       } else {
-        setError('An error occurred during registration. Please try again.');
+        setError('حدث خطأ أثناء التسجيل. يرجى المحاولة مرة أخرى.');
       }
     } finally {
       setIsLoading(false);
@@ -72,7 +72,7 @@ const RegisterForm = ({ onClose, onUserCreated }) => {
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/20 w-full max-w-md">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-white">Register New User</h2>
+          <h2 className="text-2xl font-bold text-white">تسجيل مستخدم جديد</h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-white transition-colors"
@@ -92,7 +92,7 @@ const RegisterForm = ({ onClose, onUserCreated }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-              Full Name
+              الاسم الكامل
             </label>
             <input
               type="text"
@@ -101,14 +101,14 @@ const RegisterForm = ({ onClose, onUserCreated }) => {
               value={formData.name}
               onChange={handleInputChange}
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-              placeholder="Enter full name"
+              placeholder="أدخل الاسم الكامل"
               required
             />
           </div>
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-              Email Address
+              البريد الإلكتروني
             </label>
             <input
               type="email"
@@ -117,14 +117,14 @@ const RegisterForm = ({ onClose, onUserCreated }) => {
               value={formData.email}
               onChange={handleInputChange}
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-              placeholder="Enter email address"
+              placeholder="أدخل البريد الإلكتروني"
               required
             />
           </div>
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-              Password
+              كلمة المرور
             </label>
             <input
               type="password"
@@ -133,7 +133,7 @@ const RegisterForm = ({ onClose, onUserCreated }) => {
               value={formData.password}
               onChange={handleInputChange}
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-              placeholder="Enter password"
+              placeholder="أدخل كلمة المرور"
               required
               minLength={6}
             />
@@ -141,7 +141,7 @@ const RegisterForm = ({ onClose, onUserCreated }) => {
 
           <div>
             <label htmlFor="role" className="block text-sm font-medium text-gray-300 mb-2">
-              Role
+              الدور
             </label>
             <select
               id="role"
@@ -150,8 +150,8 @@ const RegisterForm = ({ onClose, onUserCreated }) => {
               onChange={handleInputChange}
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             >
-              <option value="member" className="bg-gray-800">Member</option>
-              <option value="admin" className="bg-gray-800">Admin</option>
+              <option value="member" className="bg-gray-800">عضو</option>
+              <option value="admin" className="bg-gray-800">مدير</option>
             </select>
           </div>
 
@@ -171,10 +171,10 @@ const RegisterForm = ({ onClose, onUserCreated }) => {
               {isLoading ? (
                 <div className="flex items-center justify-center">
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
-                  Creating...
+                  جاري الإنشاء...
                 </div>
               ) : (
-                'Create User'
+                'إنشاء مستخدم'
               )}
             </button>
           </div>
