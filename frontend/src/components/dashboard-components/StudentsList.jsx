@@ -248,7 +248,7 @@ function StudentsList() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="brand-form-input pl-12 py-2 pr-2 w-full sm:w-56 rounded-lg border-2 border-gray-300 bg-white text-carbon focus:border-rich-gold"
-                placeholder="Search students..."
+                placeholder="البحث عن الطلاب..."
               />
             </div>
 
@@ -263,7 +263,7 @@ function StudentsList() {
               )}
             >
               <Icon path="res-react-dash-options" className="w-4 h-4" />
-              <span>Filters</span>
+              <span>الفلاتر</span>
               {activeFiltersCount > 0 && (
                 <span className="bg-deep-green text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {activeFiltersCount}
@@ -282,13 +282,13 @@ function StudentsList() {
                 }}
                 className="brand-form-input px-4 py-2 pr-8 bg-white text-carbon rounded-lg border-2 border-gray-300 focus:border-rich-gold"
               >
-                <option value="name-asc">Name A-Z</option>
-                <option value="name-desc">Name Z-A</option>
-                <option value="university-asc">University A-Z</option>
-                <option value="university-desc">University Z-A</option>
-                <option value="major-asc">Major A-Z</option>
-                <option value="major-desc">Major Z-A</option>
-                <option value="graduationDate-asc">Graduation Date (Earliest)</option>
+                <option value="name-asc">الاسم أ-ي</option>
+                <option value="name-desc">الاسم ي-أ</option>
+                <option value="university-asc">الجامعة أ-ي</option>
+                <option value="university-desc">الجامعة ي-أ</option>
+                <option value="major-asc">التخصص أ-ي</option>
+                <option value="major-desc">التخصص ي-أ</option>
+                <option value="graduationDate-asc">تاريخ التخرج (الأقرب)</option>
                 <option value="graduationDate-desc">Graduation Date (Latest)</option>
                 <option value="year-asc">Academic Level (Low to High)</option>
                 <option value="year-desc">Academic Level (High to Low)</option>
@@ -471,7 +471,7 @@ function StudentsList() {
                     onClick={() => setShowMore(!showMore)}
                     className="brand-btn-primary bg-rich-gold hover:bg-gold-dark text-deep-green px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2 mx-auto"
                   >
-                    <span>{showMore ? 'Show Less' : `View More (${sortedStudents.length - 9} remaining)`}</span>
+                    <span>{showMore ? 'عرض أقل' : `عرض المزيد (${sortedStudents.length - 9} متبقي)`}</span>
                     <svg 
                       className={clsx("w-4 h-4 transition-transform", showMore ? "rotate-180" : "")} 
                       fill="none" 
@@ -502,10 +502,10 @@ function StudentsList() {
                 <Icon path="res-react-dash-add-component" className="w-8 h-8 text-deep-green" />
               </div>
               <div className="text-carbon font-bold mb-2">
-                Add New Student
+                إضافة طالب جديد
               </div>
               <div className="text-gray-600 mb-4">
-                Register a new student to the system
+                تسجيل طالب جديد في النظام
               </div>
               <button
                 className="brand-btn-primary bg-rich-gold hover:bg-gold-dark text-deep-green flex items-center p-3 rounded-2xl font-medium transition-colors"
@@ -637,7 +637,7 @@ function StudentCard({ student }) {
           className="brand-btn-secondary bg-deep-green hover:bg-green-dark text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-all duration-300 group"
         >
           <Icon path="res-react-dash-options" className="w-4 h-4" />
-          <span>View CV</span>
+          <span>عرض السيرة</span>
           <svg 
             className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1" 
             fill="none" 
