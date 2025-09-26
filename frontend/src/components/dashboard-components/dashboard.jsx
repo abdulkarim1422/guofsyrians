@@ -74,7 +74,7 @@ function DashboardContent() {
           </div>
         </div>
 
-        {/* الكروت السريعة */}
+        {/* الكروت السريعة - مخفية 
         <div className="w-full p-2">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <StatCard value={loading ? '...' : memberStats.totalMembers} label="إجمالي الأعضاء" icon="res-react-dash-tick" gradient="from-blue-600 to-blue-800" />
@@ -83,6 +83,7 @@ function DashboardContent() {
             <StatCard value={loading ? '...' : memberStats.activeEvents} label="فعالية نشطة" icon="res-react-dash-add-component" gradient="from-orange-600 to-orange-800" />
           </div>
         </div>
+        */}
 
         {/* 👇 الوظائف الأخيرة — الآن بعرض كامل */}
         <div className="w-full p-2">
