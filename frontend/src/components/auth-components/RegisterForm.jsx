@@ -161,7 +161,7 @@ const RegisterForm = ({ onClose, onUserCreated }) => {
               onClick={onClose}
               className="flex-1 bg-gray-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all"
             >
-              Cancel
+              إلغاء
             </button>
             <button
               type="submit"
