@@ -904,7 +904,7 @@ export function AcademicInputComponent({ formData, setFormData }) {
           className="bg-deep-green hover:bg-green-dark text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Education</span>
+          <span>إضافة تعليم</span>
         </button>
       </div>
     </div>
