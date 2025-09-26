@@ -19,7 +19,7 @@ import { ResumeForm } from '@/pages/ResumeForm.jsx';
 const MENU_ITEMS = {
   0: { 
     id: '0', 
-    title: 'Dashboard', 
+    title: 'لوحة التحكم', 
     path: '/dashboard', 
     alternativePaths: ['/'], 
     component: 'DashboardContent',
@@ -30,7 +30,7 @@ const MENU_ITEMS = {
   },
   1: { 
     id: '1', 
-    title: 'Students list', 
+    title: 'قائمة الطلاب', 
     path: '/students-list', 
     component: 'StudentsList',
     icon: (<><path fillRule="evenodd" clipRule="evenodd" d="M3 5C3 3.34315 4.34315 2 6 2H14C17.866 2 21 5.13401 21 9V19C21 20.6569 19.6569 22 18 22H6C4.34315 22 3 20.6569 3 19V5ZM13 4H6C5.44772 4 5 4.44772 5 5V19C5 19.5523 5.44772 20 6 20H18C18.5523 20 19 19.5523 19 19V9H13V4ZM18.584 7C17.9413 5.52906 16.6113 4.4271 15 4.10002V7H18.584Z" /></>),
@@ -40,7 +40,7 @@ const MENU_ITEMS = {
   },
   5: { 
     id: '5', 
-    title: 'Edit Resume', 
+    title: 'تعديل السيرة الذاتية', 
     path: '/edit-resume', 
     component: 'ResumeForm',
     icon: (<><path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2ZM18 20H6V4H13V9H18V20Z" /><path d="M8 12H16V14H8V12Z" /><path d="M8 16H13V18H8V16Z" /></>),
@@ -70,7 +70,7 @@ const MENU_ITEMS = {
   },
   2: { 
     id: '2', 
-    title: 'Settings', 
+    title: 'الإعدادات', 
     path: '/settings', 
     component: 'Settings',
     icon: (<><path d="M2 4V18L6.8 14.4C7.14582 14.1396 7.56713 13.9992 8 14H16C17.1046 14 18 13.1046 18 12V4C18 2.89543 17.1046 2 16 2H4C2.89543 2 2 2.89543 2 4ZM4 14V4H16V12H7.334C6.90107 11.9988 6.47964 12.1393 6.134 12.4L4 14Z" /><path d="M22 22V9C22 7.89543 21.1046 7 20 7V18L17.866 16.4C17.5204 16.1393 17.0989 15.9988 16.666 16H7C7 17.1046 7.89543 18 9 18H16C16.4329 17.9992 16.8542 18.1396 17.2 18.4L22 22Z" /></>),
@@ -80,7 +80,7 @@ const MENU_ITEMS = {
   },
   3: { 
     id: '3', 
-    title: 'Announcements', 
+    title: 'الإعلانات', 
     path: '/announcements', 
     component: 'Announcements',
     icon: (<><path d="M9 3C6.23858 3 4 5.23858 4 8C4 10.7614 6.23858 13 9 13C11.7614 13 14 10.7614 14 8C14 5.23858 11.7614 3 9 3ZM6 8C6 6.34315 7.34315 5 9 5C10.6569 5 12 6.34315 12 8C12 9.65685 10.6569 11 9 11C7.34315 11 6 9.65685 6 8Z" /><path d="M16.9084 8.21828C16.6271 8.07484 16.3158 8.00006 16 8.00006V6.00006C16.6316 6.00006 17.2542 6.14956 17.8169 6.43645C17.8789 6.46805 17.9399 6.50121 18 6.5359C18.4854 6.81614 18.9072 7.19569 19.2373 7.65055C19.6083 8.16172 19.8529 8.75347 19.9512 9.37737C20.0496 10.0013 19.9987 10.6396 19.8029 11.2401C19.6071 11.8405 19.2719 12.3861 18.8247 12.8321C18.3775 13.2782 17.8311 13.6119 17.2301 13.8062C16.6953 13.979 16.1308 14.037 15.5735 13.9772C15.5046 13.9698 15.4357 13.9606 15.367 13.9496C14.7438 13.8497 14.1531 13.6038 13.6431 13.2319L13.6421 13.2311L14.821 11.6156C15.0761 11.8017 15.3717 11.9248 15.6835 11.9747C15.9953 12.0247 16.3145 12.0001 16.615 11.903C16.9155 11.8059 17.1887 11.639 17.4123 11.416C17.6359 11.193 17.8035 10.9202 17.9014 10.62C17.9993 10.3198 18.0247 10.0006 17.9756 9.68869C17.9264 9.37675 17.8041 9.08089 17.6186 8.82531C17.4331 8.56974 17.1898 8.36172 16.9084 8.21828Z" /><path d="M19.9981 21C19.9981 20.475 19.8947 19.9551 19.6938 19.47C19.4928 18.9849 19.1983 18.5442 18.8271 18.1729C18.4558 17.8017 18.0151 17.5072 17.53 17.3062C17.0449 17.1053 16.525 17.0019 16 17.0019V15C16.6821 15 17.3584 15.1163 18 15.3431C18.0996 15.3783 18.1983 15.4162 18.2961 15.4567C19.0241 15.7583 19.6855 16.2002 20.2426 16.7574C20.7998 17.3145 21.2417 17.9759 21.5433 18.7039C21.5838 18.8017 21.6217 18.9004 21.6569 19C21.8837 19.6416 22 20.3179 22 21H19.9981Z" /><path d="M16 21H14C14 18.2386 11.7614 16 9 16C6.23858 16 4 18.2386 4 21H2C2 17.134 5.13401 14 9 14C12.866 14 16 17.134 16 21Z" /></>),
@@ -90,7 +90,7 @@ const MENU_ITEMS = {
   },
   4: { 
     id: '4', 
-    title: 'About', 
+    title: 'حول', 
     path: '/about', 
     component: 'About',
     icon: (<><path d="M19 22H5C3.89543 22 3 21.1046 3 20V6C3 4.89543 3.89543 4 5 4H7V2H9V4H15V2H17V4H19C20.1046 4 21 4.89543 21 6V20C21 21.1046 20.1046 22 19 22ZM5 10V20H19V10H5ZM5 6V8H19V6H5ZM17 14H7V12H17V14Z" /></>),
@@ -100,7 +100,7 @@ const MENU_ITEMS = {
   },
   profile: { 
     id: 'profile', 
-    title: 'Profile', 
+    title: 'الملف الشخصي', 
     path: '/profile', 
     component: 'ProfileSettings',
     icon: (<><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></>),
@@ -361,6 +361,8 @@ function Sidebar({
         </div>
 
         <div className="flex-grow overflow-x-hidden overflow-y-auto flex flex-col">
+          {/* الاتحاد العام green card - مخفي */}
+          {/* 
           <div className="w-full p-3 h-24 sm:h-20 xl:h-24 hidden sm:block flex-shrink-0">
             <div className="bg-sidebar-card-top rounded-xl w-full h-full flex items-center justify-start sm:justify-center xl:justify-start px-3 sm:px-0 xl:px-3">
               <div className="bg-white rounded-2xl">
@@ -374,13 +376,14 @@ function Sidebar({
               <Icon path="res-react-dash-sidebar-card-select" className="block sm:hidden xl:block w-5 h-5" />
             </div>
           </div>
+          */}
 
           {sidebarItems[0].map((i) => (
             <MenuItem key={i.id} item={i} onClick={onPageSelect} selected={selectedPage} />
           ))}
 
           <div className="mt-8 mb-0 font-bold px-3 block sm:hidden xl:block">
-            SHORTCUTS
+            اختصارات
           </div>
 
           {sidebarItems[1].map((i) => (
@@ -460,7 +463,7 @@ function Sidebar({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                           d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
-                  Profile
+                  الملف الشخصي
                 </button>
                 <button
                   onClick={() => { setShowUserMenu(false); onLogout(); }}
@@ -471,7 +474,7 @@ function Sidebar({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                           d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
-                  Logout
+                  تسجيل الخروج
                 </button>
               </div>
             </div>
