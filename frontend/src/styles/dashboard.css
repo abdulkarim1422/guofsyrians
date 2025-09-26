@@ -5,6 +5,21 @@
   font-family: 'Tajawal', sans-serif;
   color: var(--brand-carbon);
   background-color: var(--brand-sand);
+  /* Enhanced responsive behavior */
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Responsive viewport fixes */
+@media screen and (max-width: 768px) {
+  .dashboard-body {
+    overflow-x: hidden !important;
+  }
+}
+
+/* Smooth transitions for responsive layout changes */
+* {
+  transition: width 0.3s ease, margin 0.3s ease, padding 0.2s ease;
 }
 
 .bg-card {
