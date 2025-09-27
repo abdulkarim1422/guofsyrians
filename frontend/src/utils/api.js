@@ -201,6 +201,12 @@ export const userAPI = {
   deleteUser: async (userId) => (await api.delete(`/auth/users/${userId}`)).data,
   verifyUser: async (userId) => (await api.put(`/auth/users/${userId}/verify`)).data,
   deactivateUser: async (userId) => (await api.put(`/auth/users/${userId}/deactivate`)).data,
+  changePasswordViaAdmin: async (userId, newPassword) => {
+    return (await api.put('/auth/change-password-via-admin', {
+      user_id: userId,
+      new_password: newPassword
+    })).data;
+  },
 }
 
 // ===== Jobs =====
