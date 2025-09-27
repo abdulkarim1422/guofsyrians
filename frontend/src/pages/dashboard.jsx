@@ -358,8 +358,8 @@ function Sidebar({
               <img src="/favicon.png" alt="Logo" 
                    className="w-12 h-12 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain" />
               <div className="hidden lg:block ml-3 min-w-0">
-                <h1 className="text-base lg:text-lg font-bold text-deep-green truncate">الاتحاد العام</h1>
-                <p className="text-xs lg:text-sm text-gray-600 truncate">لطلبة سوريا - تركيا</p>
+                <h1 className="text-base lg:text-lg font-bold text-deep-green truncate">منصة إتقان</h1>
+                <p className="text-[12px] lg:text-[9px] text-gray-800 truncate">صُمِّمت لتسهيل وصولك إلى الفرص المناسبة</p>
               </div>
             </div>
             <div className="flex-grow sm:hidden lg:block" />
