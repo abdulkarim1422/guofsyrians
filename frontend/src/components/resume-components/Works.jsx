@@ -3,7 +3,7 @@ import { Description } from "./Description";
 export const Works = ({ works }) => {
   return (
     <section className="work-experience section" id="experience">
-      <h2 className="section-title">Experiences</h2>
+  <h2 className="section-title">الخبرات العملية</h2>
       <div className="experience__container bd-grid">
         {works.map((work) => (
           <Work key={work.company} {...work} />
@@ -25,8 +25,8 @@ const Work = ({ title, period, company, description, responsibilities, achieveme
         <span className="experience__company">
           {period} | {company}
         </span>
-        {responsibilities && (<div>responsibilities: {responsibilities}</div>)}
-        {achievements && (<div>achievements: {achievements}</div>)}
+        {responsibilities && (<div>المسؤوليات: {responsibilities}</div>)}
+        {achievements && (<div>الإنجازات: {achievements}</div>)}
         {description.map((desc, i) => <Description key={i} desc={desc} />)}
       </div>
     </div>

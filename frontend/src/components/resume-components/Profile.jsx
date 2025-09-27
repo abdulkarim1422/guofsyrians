@@ -17,29 +17,29 @@ export const Profile = ({
     <section className="home section" id="home">
       <Options />
       <div className="home__container bd-grid">
-        <div className="home__data bd-grid">
-          <img 
-            src={image} 
-            alt="profile_image" 
-            className="home__img no-print"
-            onError={(e) => {
-              // Fallback to default male avatar if image fails to load
-              e.target.src = getDefaultAvatarPath('male');
-            }}
-          />
-          <h1 className="home__title">{name}</h1>
-          <h3 className="home__profession">{ocupation}</h3>
-          <span className="home__information no-print">
-            <i className="bx bx-map home__icon" /> {location}
-          </span>
-        </div>
-        <div className='home__contact bd-grid'>
-          <span className="social__link print">
-            <i className="bx bx-map social__icon" /> {location}
-          </span>
-          <BoxIcon className="home__icon bx-envelope" label={`Enviar un correo electrónico a ${name}`} url={`mailto:${email}`} />
-          <BoxIcon className="home__icon bx-phone" label={`Llamar por teléfono a ${name}`} url={`tel:${telephone}`} />
-          {true && social.map((social) => <BoxIcon key={social.name} {...social} />)}
+        <div className="home__container bd-grid">
+          <div className="home__data bd-grid">
+            <img
+              src={image}
+              alt="صورة الملف الشخصي"
+              className="home__img no-print"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = getDefaultAvatarPath("male");
+              }}
+            />
+            <h1 className="home__title">{name}</h1>
+            <h3 className="home__profession">{ocupation}</h3>
+            <span className="home__information no-print">
+              <i className="bx bx-map home__icon" /> {location ? `الموقع: ${location}` : "الموقع غير محدد"}
+            </span>
+            <span className="home__information no-print">
+              <i className="bx bx-envelope home__icon" /> {email ? `البريد الإلكتروني: ${email}` : "البريد الإلكتروني غير محدد"}
+            </span>
+            <span className="home__information no-print">
+              <i className="bx bx-phone home__icon" /> {telephone ? `الهاتف: ${telephone}` : "الهاتف غير محدد"}
+            </span>
+          </div>
         </div>
       </div>
     </section>

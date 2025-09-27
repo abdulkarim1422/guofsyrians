@@ -3,7 +3,7 @@ import { Description } from "./Description";
 export const Projects = ({ projects }) => {
   return (
     <section className="projects-experience section mb-4" id="projects">
-      <h2 className="section-title">Projects</h2>
+  <h2 className="section-title">المشاريع</h2>
       <div className="experience__container bd-grid">
         {projects.map((project) => (
           <Project key={project.company} {...project} />
