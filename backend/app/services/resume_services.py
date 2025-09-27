@@ -94,9 +94,10 @@ def send_welcome_email(user: user_model.User, plain_password: str) -> None:
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
         <style>
             body {{
-                font-family: 'Arial', sans-serif;
+                font-family: 'Tajawal', 'Arial', sans-serif;
                 background-color: #f5f5f5;
                 margin: 0;
                 padding: 20px;
@@ -192,7 +193,7 @@ def send_welcome_email(user: user_model.User, plain_password: str) -> None:
                 </div>
                 
                 <div style="text-align: center;">
-                    <a href="https://app.guofsyrians.com/login" class="login-button">تسجيل الدخول الآن</a>
+                    <a href="https://app.guofsyrians.org/login" class="login-button">تسجيل الدخول الآن</a>
                 </div>
                 
                 <p style="margin-top: 30px; color: #6c757d; font-size: 14px;">
