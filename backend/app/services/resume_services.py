@@ -38,13 +38,10 @@ async def member_resume_form(user_id: str, form_data: Dict[str, Any]) -> member_
 
         # Process languages
         languages = form_data.get("languages", "")
-        if isinstance(languages, str):
-            existing_member.languages = [lang.strip() for lang in languages.split(",") if lang.strip()]
-        elif isinstance(languages, list):
-            existing_member.languages = [lang.strip() for lang in languages if lang and isinstance(lang, str)]
-        else:
-            existing_member.languages = []
-
+        languages = []
+        if languages:
+            languages.extend([lang.strip() for lang in languages.split(",") if lang.strip()])
+        existing_member.languages = languages
         # Process social media links
         social_media = {}
         if form_data.get("linkedinUrl"):

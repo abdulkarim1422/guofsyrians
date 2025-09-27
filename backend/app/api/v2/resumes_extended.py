@@ -49,6 +49,7 @@ async def submit_resume_v2(payload: ResumeCreateRequest):
             "bio": payload.bio,
             "skills": payload.skills,
             "interests": payload.interests,
+            "languages": payload.languages,
             "social_media": payload.social_media,
         }
         

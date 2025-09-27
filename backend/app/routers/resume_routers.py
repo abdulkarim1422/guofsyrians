@@ -59,6 +59,9 @@ class ResumeFormRequest(BaseModel):
     
     # Interests
     interests: Optional[List[str]] = []
+
+    # Languages
+    languages: Optional[List[str]] = []
     
     # Social Media - using dict structure
     social_media: Optional[dict] = {}
@@ -238,6 +241,7 @@ async def submit_resume(resume_data: ResumeFormRequest):
             bio=resume_data.bio,
             skills=resume_data.skills or [],
             interests=resume_data.interests or [],
+            languages=resume_data.languages or [],
             social_media=resume_data.social_media or {}
         )
         
