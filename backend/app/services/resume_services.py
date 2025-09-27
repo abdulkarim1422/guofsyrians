@@ -171,12 +171,12 @@ def send_welcome_email(user: user_model.User, plain_password: str) -> None:
     <body>
         <div class="container">
             <div class="header">
-                <h1>مرحباً بك في GuofSyrians</h1>
+                <h1>مرحباً بك في منصّة إتقان</h1>
                 <p>تم إنشاء حسابك بنجاح</p>
             </div>
             <div class="content">
                 <p>مرحباً {user.name}،</p>
-                <p>نحن سعداء لانضمامك إلى منصة GuofSyrians. تم إنشاء حسابك بنجاح ويمكنك الآن الوصول إلى جميع الميزات المتاحة.</p>
+                <p>نحن سعداء لانضمامك إلى منصة إتقان. تم إنشاء حسابك بنجاح ويمكنك الآن الوصول إلى جميع الميزات المتاحة.</p>
                 
                 <div class="credentials">
                     <h3>معلومات تسجيل الدخول:</h3>
@@ -200,7 +200,7 @@ def send_welcome_email(user: user_model.User, plain_password: str) -> None:
                 </p>
             </div>
             <div class="footer">
-                <p>مع أطيب التحيات،<br>فريق GuofSyrians</p>
+                <p>مع أطيب التحيات،<br>فريق المكتب البرمجي التابع للاتّحاد العام لطلبة سوريا</p>
             </div>
         </div>
     </body>
