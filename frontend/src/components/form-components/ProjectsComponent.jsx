@@ -194,7 +194,7 @@ export function ProjectsComponent({ formData, setFormData }) {
       {formData.projects.map((project, index) => (
         <div key={index} className="border border-gray-200 rounded-lg p-6 mb-6 bg-sand">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-carbon">Project {index + 1}</h3>
+            <h3 className="text-lg font-semibold text-carbon">المشروع {index + 1}</h3>
             {formData.projects.length > 1 && (
               <button
                 type="button"
@@ -253,19 +253,19 @@ export function ProjectsComponent({ formData, setFormData }) {
                 value={project.company}
                 onChange={(e) => handleProjectChange(index, 'company', e.target.value)}
                 className="w-full px-2 sm:px-4 py-2 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all text-sm sm:text-base"
-                placeholder="Client Name, Personal Project, Company Name, etc."
+                placeholder="اسم العميل، مشروع شخصي، اسم الشركة، إلخ"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
-                Your Role *
+                دورك في المشروع *
               </label>
               <input
                 type="text"
                 value={project.role || ''}
                 onChange={(e) => handleProjectChange(index, 'role', e.target.value)}
                 className="w-full px-2 sm:px-4 py-2 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all text-sm sm:text-base"
-                placeholder="Lead Developer, UI/UX Designer, Project Manager, etc."
+                placeholder="مطور رئيسي، مصمم واجهات، مدير مشروع، إلخ"
                 required
               />
             </div>
@@ -273,7 +273,7 @@ export function ProjectsComponent({ formData, setFormData }) {
             {/* Date fields */}
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
-                Start Date *
+                تاريخ البداية *
               </label>
               <input
                 type="date"
@@ -286,7 +286,7 @@ export function ProjectsComponent({ formData, setFormData }) {
             {!project.is_ongoing && (
               <div>
                 <label className="block text-sm font-medium text-carbon mb-2">
-                  End Date {project.project_status === 'completed' || project.project_status === 'expected' ? '*' : ''}
+                  تاريخ الانتهاء {project.project_status === 'completed' || project.project_status === 'expected' ? '*' : ''}
                 </label>
                 <input
                   type="date"
@@ -301,7 +301,7 @@ export function ProjectsComponent({ formData, setFormData }) {
             {/* Project Status */}
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
-                Project Status *
+                حالة المشروع *
               </label>
               <select
                 value={project.project_status || 'ongoing'}
@@ -321,7 +321,7 @@ export function ProjectsComponent({ formData, setFormData }) {
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
               <label className="block text-sm font-medium text-carbon">
-                Tools & Technologies *
+                الأدوات والتقنيات *
               </label>
               <button
                 type="button"
@@ -329,7 +329,7 @@ export function ProjectsComponent({ formData, setFormData }) {
                 className="text-deep-green hover:text-green-dark text-sm flex items-center space-x-1 transition-colors"
               >
                 <Plus className="w-3 h-3" />
-                <span>Add Tool</span>
+                <span>إضافة أداة</span>
               </button>
             </div>
             <div className="flex flex-wrap gap-2 mb-2">
@@ -358,45 +358,45 @@ export function ProjectsComponent({ formData, setFormData }) {
                 }
               }}
               className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-              placeholder="Type technology name and press Enter (e.g., React, Python, Figma)"
+              placeholder="اكتب اسم التقنية واضغط Enter (مثل: React، Python، Figma)"
             />
             <p className="text-xs text-gray-600 mt-1">
-              Add technologies, frameworks, tools, or languages used in this project
+              أضف التقنيات، الأطر، الأدوات، أو اللغات المستخدمة في هذا المشروع
             </p>
           </div>
           
           {/* Role & Responsibilities */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-carbon mb-2">
-              Role & Responsibilities *
+              الدور والمسؤوليات *
             </label>
             <textarea
               value={project.responsibilities || ''}
               onChange={(e) => handleProjectChange(index, 'responsibilities', e.target.value)}
               rows={3}
               className="w-full px-2 sm:px-4 py-2 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none text-sm sm:text-base"
-              placeholder="Describe your specific role and key responsibilities in this project..."
+              placeholder="اوصف دورك المحدد والمسؤوليات الرئيسية في هذا المشروع..."
               required
             />
             <p className="text-xs text-gray-600 mt-1">
-              Detail what you were responsible for and how you contributed to the project
+              وضح ما كنت مسؤولاً عنه وكيف ساهمت في المشروع
             </p>
           </div>
           
           {/* Results/Outcomes */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-carbon mb-2">
-              Results/Outcomes
+              النتائج/المخرجات
             </label>
             <textarea
               value={project.outcomes || ''}
               onChange={(e) => handleProjectChange(index, 'outcomes', e.target.value)}
               rows={3}
               className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none"
-              placeholder="Describe the project outcomes, impact, metrics, or achievements..."
+              placeholder="اوصف نتائج المشروع، التأثير، المقاييس، أو الإنجازات..."
             />
             <p className="text-xs text-gray-600 mt-1">
-              Include quantifiable results, user feedback, performance metrics, or business impact
+              اشمل النتائج القابلة للقياس، تعليقات المستخدمين، مقاييس الأداء، أو التأثير التجاري
             </p>
           </div>
         </div>
@@ -417,7 +417,7 @@ export function ProjectsComponent({ formData, setFormData }) {
           className="bg-deep-green hover:bg-green-dark text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Project</span>
+          <span>إضافة مشروع</span>
         </button>
       </div>
     </div>

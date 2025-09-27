@@ -74,7 +74,7 @@ export const ResumeForm = () => {
       }
     ],
     
-    // Projects
+    // Projects - المشاريع
     projects: [
       {
         name: '',
