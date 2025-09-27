@@ -119,7 +119,7 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-semibold text-carbon flex items-center">
             <Building className="w-6 h-6 mr-2 text-rich-gold" />
-            Work Experience
+            الخبرة العملية
           </h2>
           <button
             type="button"
@@ -127,11 +127,11 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
             className="bg-rich-gold hover:bg-gold-dark text-deep-green px-4 py-2 rounded-lg flex items-center transition-colors font-medium hover:shadow-md"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Add Experience
+            إضافة خبرة
           </button>
         </div>
         <p className="text-sm text-gray-600 mt-2">
-          Share your professional journey. Separate your key responsibilities from your achievements for better impact.
+          شارك رحلتك المهنية. افصل مسؤولياتك الأساسية عن إنجازاتك لتأثير أفضل.
         </p>
       </div>
 
@@ -141,14 +141,14 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-lg font-medium text-carbon flex items-center">
                 <User className="w-5 h-5 mr-2 text-rich-gold" />
-                Work Experience #{index + 1}
+                الخبرة العملية #{index + 1}
               </h3>
               {workExperiences.length > 1 && (
                 <button
                   type="button"
                   onClick={() => removeWorkExperience(index)}
                   className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-colors hover:shadow-md"
-                  title="Remove this work experience"
+                  title="إزالة هذه الخبرة العملية"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -159,14 +159,14 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
               {/* Job Title */}
               <div>
                 <label className="block text-sm font-medium text-carbon mb-2">
-                  Job Title *
+                  المسمى الوظيفي *
                 </label>
                 <input
                   type="text"
                   value={work.title}
                   onChange={(e) => updateWorkExperience(index, 'title', e.target.value)}
                   className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                  placeholder="e.g., Senior Software Engineer, Marketing Manager"
+                  placeholder="مثال: مهندس برمجيات أول، مدير تسويق"
                   required
                 />
               </div>
@@ -174,14 +174,14 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
               {/* Company */}
               <div>
                 <label className="block text-sm font-medium text-carbon mb-2">
-                  Company *
+                  الشركة *
                 </label>
                 <input
                   type="text"
                   value={work.company}
                   onChange={(e) => updateWorkExperience(index, 'company', e.target.value)}
                   className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                  placeholder="e.g., Google, Microsoft, Local Business"
+                  placeholder="مثال: جوجل، مايكروسوفت، شركة محلية"
                   required
                 />
               </div>
@@ -192,7 +192,7 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
               <div>
                 <label className="block text-sm font-medium text-carbon mb-2 flex items-center">
                   <Calendar className="w-4 h-4 mr-2" />
-                  Start Date *
+                  تاريخ البدء *
                 </label>
                 <input
                   type="date"
@@ -206,7 +206,7 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
                 <div>
                   <label className="block text-sm font-medium text-carbon mb-2 flex items-center">
                     <Calendar className="w-4 h-4 mr-2" />
-                    End Date
+                    تاريخ الانتهاء
                   </label>
                   <input
                     type="date"
@@ -226,27 +226,27 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
                   className="h-5 w-5 text-rich-gold focus:ring-rich-gold border-gray-300 rounded"
                 />
                 <label htmlFor={`currently_working_${index}`} className="text-sm text-carbon">
-                  I currently work here
+                  أعمل هنا حالياً
                 </label>
               </div>
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-carbon mb-1">Computed Period</label>
+              <label className="block text-sm font-medium text-carbon mb-1">الفترة المحسوبة</label>
               <input
                 type="text"
                 value={work.period}
                 readOnly
                 className="w-full px-4 py-2 bg-gray-50 border-2 border-gray-200 text-carbon rounded-lg text-sm"
-                placeholder="Auto-generated after selecting dates"
+                placeholder="يتم إنشاؤها تلقائياً بعد اختيار التواريخ"
               />
-              <p className="text-xs text-gray-500 mt-1">This value is sent to the backend for legacy compatibility.</p>
+              <p className="text-xs text-gray-500 mt-1">يتم إرسال هذه القيمة إلى الخلفية للتوافق مع الإصدارات السابقة.</p>
             </div>
 
             {/* Responsibilities */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-carbon mb-2 flex items-center">
                 <CheckCircle className="w-4 h-4 mr-2" />
-                Key Responsibilities *
+                المسؤوليات الأساسية *
               </label>
               <textarea
                 value={work.responsibilities}
@@ -257,7 +257,7 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
                     : 'border-gray-200'
                 }`}
                 rows="4"
-                placeholder="Describe your main duties and responsibilities in this role. Be specific about what you did day-to-day, the technologies you used, and the scope of your work..."
+                placeholder="اوصف واجباتك ومسؤولياتك الرئيسية في هذا الدور. كن محدداً حول ما فعلته يومياً، والتقنيات التي استخدمتها، ونطاق عملك..."
                 required
               />
               <div className="flex justify-between items-center mt-1">
