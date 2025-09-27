@@ -120,11 +120,11 @@ export const ResumeForm = () => {
         // Try v2 API first, fallback to legacy
         let resumeResponse;
         try {
+          resumeResponse = await api.get(`/resume/by-user-id/${user.id}`);
+        } catch (v2Error) {
+          console.log('V1 API failed, trying V2:', v2Error);
           const { resumeV2API } = await import('@/utils/v2Api');
           resumeResponse = { data: await resumeV2API.getByUserId(user.id) };
-        } catch (v2Error) {
-          console.log('V2 API failed, trying legacy:', v2Error);
-          resumeResponse = await api.get(`/resume/by-user-id/${user.id}`);
         }
         const resumeData = resumeResponse.data;
         console.log('Resume data loaded:', resumeData);
@@ -420,7 +420,8 @@ export const ResumeForm = () => {
           {isLoadingExistingData && (
             <div className="text-center mb-8 sm:mb-12 flex flex-col items-center px-4">
               <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-rich-gold mb-4"></div>
-              <p className="text-base sm:text-lg text-gray-700">Loading your existing resume data...</p>
+              <p className="text-base sm:text-lg text-gray-700">جاري تحميل بيانات سيرتك الذاتية الموجودة...</p>
+              <p className="text-sm text-gray-500 mt-2">سيتم ملء النموذج تلقائياً ببياناتك المحفوظة</p>
             </div>
           )}
 
