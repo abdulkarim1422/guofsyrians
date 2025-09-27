@@ -6,6 +6,17 @@ import requests
 from app.config import env_variables
 
 def send_email(to, subject, message):
+    """
+    Send an HTML email to the specified recipient.
+    
+    Args:
+        to (str): Recipient email address
+        subject (str): Email subject
+        message (str): HTML content for the email body
+    
+    Returns:
+        bool: True if the email was sent successfully, False otherwise
+    """
     SMTP_PORT = env_variables.SMTP_PORT
     SMTP_USER = env_variables.SMTP_USER
     SMTP_PASS = env_variables.SMTP_PASS
@@ -24,7 +35,7 @@ def send_email(to, subject, message):
         msg['From'] = SMTP_USER
         msg['To'] = to
         msg['Subject'] = subject
-        msg.attach(MIMEText(message, 'plain'))
+        msg.attach(MIMEText(message, 'html'))  # Changed 'plain' to 'html' to render HTML content
 
         server = smtplib.SMTP(host=SMTP_HOST, port=int(SMTP_PORT))
         server.starttls()
