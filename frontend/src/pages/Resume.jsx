@@ -85,7 +85,7 @@ export const Resume = () => {
         image: getMemberImageUrl(member.image, member.sex),
       },
       aboutMe: {
-        label: "About Me",
+        label: "نبذة عني",
         description: member.bio || "Professional with diverse experience and skills.",
       },
       skills: {
