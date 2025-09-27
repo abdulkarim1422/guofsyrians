@@ -162,6 +162,24 @@ async def change_password(
     await UserCRUD.update_password(current_user, password_data.new_password)
     return {"message": "Password updated successfully"}
 
+@router.put("/change-password-via-admin")
+async def change_password_via_admin(
+    new_password: str,
+    user_id: str,
+    admin_user: User = Depends(get_admin_user)
+):
+    """Change user password (Admin only)"""
+    user = await UserCRUD.get_user_by_id(user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+
+    # Update password
+    await UserCRUD.update_password(user, new_password)
+    return {"message": "Password updated successfully"}
+
 # Admin routes
 @router.post("/admin/users", response_model=UserResponse)
 async def create_user_by_admin(
