@@ -177,7 +177,7 @@ def send_welcome_email(user: user_model.User, plain_password: str) -> None:
             </div>
             <div class="content">
                 <p>مرحباً {user.name}،</p>
-                <p>نحن سعداء لانضمامك إلى منصة إتقان. تم إنشاء حسابك بنجاح ويمكنك الآن الوصول إلى جميع الميزات المتاحة.</p>
+                <p>يسعدنا انضمامك إلى منصة إتقان . هذه المنصة صُمِّمت خصيصًا لك لتسهيل وصولك إلى الفرص التدريبية والوظيفية المناسبة.</p>
                 
                 <div class="credentials">
                     <h3>معلومات تسجيل الدخول:</h3>
@@ -201,7 +201,7 @@ def send_welcome_email(user: user_model.User, plain_password: str) -> None:
                 </p>
             </div>
             <div class="footer">
-                <p>مع أطيب التحيات،<br>فريق المكتب البرمجي التابع للاتّحاد العام لطلبة سوريا</p>
+                <p>مع أطيب التحيات،<br>فريق المكتب البرمجي التابع للاتّحاد العام لطلبة سوريا - تركيا </p>
             </div>
         </div>
     </body>
