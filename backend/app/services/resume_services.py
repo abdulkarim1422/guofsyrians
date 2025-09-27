@@ -102,8 +102,8 @@ def send_welcome_email(user: user_model.User, plain_password: str) -> None:
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
         <style>
+            @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
             body {{
                 font-family: 'Tajawal', 'Arial', sans-serif;
                 background-color: #f5f5f5;
