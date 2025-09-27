@@ -5,7 +5,7 @@ from typing import List
 
 from app.schemas.auth_schemas import (
     UserCreate, UserLogin, UserResponse, Token, 
-    PasswordUpdate, UserUpdate
+    PasswordUpdate, UserUpdate, ChangePasswordViaAdmin
 )
 from app.crud.user_crud import UserCRUD
 from app.services.auth_services import (
@@ -164,12 +164,11 @@ async def change_password(
 
 @router.put("/change-password-via-admin")
 async def change_password_via_admin(
-    new_password: str,
-    user_id: str,
+    password_data: ChangePasswordViaAdmin,
     admin_user: User = Depends(get_admin_user)
 ):
     """Change user password (Admin only)"""
-    user = await UserCRUD.get_user_by_id(user_id)
+    user = await UserCRUD.get_user_by_id(password_data.user_id)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -177,7 +176,7 @@ async def change_password_via_admin(
         )
 
     # Update password
-    await UserCRUD.update_password(user, new_password)
+    await UserCRUD.update_password(user, password_data.new_password)
     return {"message": "Password updated successfully"}
 
 # Admin routes

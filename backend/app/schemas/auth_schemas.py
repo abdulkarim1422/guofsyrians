@@ -52,3 +52,7 @@ class UserUpdate(BaseModel):
         if v is not None and v not in VALID_ROLES:
             raise ValueError(f'Role must be one of: {", ".join(VALID_ROLES)}')
         return v
+
+class ChangePasswordViaAdmin(BaseModel):
+    user_id: str
+    new_password: str
