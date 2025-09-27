@@ -312,17 +312,17 @@ export const ResumeForm = () => {
     try {
       // Basic validations
       if (!formData.sex) {
-        setSubmitStatus('error'); setSubmitMessage('Please select your gender'); setIsSubmitting(false); return;
+        setSubmitStatus('error'); setSubmitMessage('يرجى اختيار الجنس'); setIsSubmitting(false); return;
       }
       if (!formData.name.trim()) {
-        setSubmitStatus('error'); setSubmitMessage('Please enter your full name'); setIsSubmitting(false); return;
+        setSubmitStatus('error'); setSubmitMessage('يرجى إدخال اسمك الكامل'); setIsSubmitting(false); return;
       }
       if (!formData.professional_title.trim()) {
-        setSubmitStatus('error'); setSubmitMessage('Please enter your professional title'); setIsSubmitting(false); return;
+        setSubmitStatus('error'); setSubmitMessage('يرجى إدخال مسماك الوظيفي'); setIsSubmitting(false); return;
       }
       const isValidPhone = (phone) => /^\+\d{7,15}$/.test(phone.replace(/\s/g, ''));
       if (!isValidPhone(formData.phone)) {
-        setSubmitStatus('error'); setSubmitMessage('Please enter a valid phone number (7-15 digits after country code)'); setIsSubmitting(false); return;
+        setSubmitStatus('error'); setSubmitMessage('يرجى إدخال رقم هاتف صحيح (7-15 رقم بعد رمز البلد)'); setIsSubmitting(false); return;
       }
 
       // Prepare payload
@@ -439,7 +439,7 @@ export const ResumeForm = () => {
                 </p>
                 {isEditMode && (
                   <p className="text-xs sm:text-sm text-rich-gold mt-2 px-2">
-                    You are editing your existing resume as {user?.name}
+                    أنت تقوم بتحرير سيرتك الذاتية الموجودة باسم {user?.name}
                   </p>
                 )}
               </div>
@@ -634,7 +634,7 @@ export const ResumeForm = () => {
                 <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-8 border border-gray-200 mx-2 sm:mx-0">
                   <h2 className="text-lg sm:text-2xl font-semibold text-carbon mb-4 sm:mb-6 flex items-center">
                     <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-rich-gold" />
-                    About Me
+                     نبذة مخنصرة 
                   </h2>
                   <div className="space-y-4">
                     <div>
@@ -649,7 +649,7 @@ export const ResumeForm = () => {
                         required
                         rows={3}
                         className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none text-xs sm:text-base"
-                        placeholder="Brief description about yourself..."
+                        placeholder="وصف موجز عن نفسك..."
                       />
                     </div>
                   </div>
@@ -691,12 +691,12 @@ export const ResumeForm = () => {
                     {isSubmitting ? (
                       <>
                         <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-b-2 border-deep-green"></div>
-                        <span className="ml-2">{isEditMode ? 'Updating Resume...' : 'Saving Resume...'}</span>
+                        <span className="ml-2">{isEditMode ? 'جاري تحديث السيرة الذاتية...' : 'جاري حفظ السيرة الذاتية...'}</span>
                       </>
                     ) : (
                       <>
                         <Send className="w-5 h-5 sm:w-6 sm:h-6" />
-                        <span className="ml-2">{isEditMode ? 'Update Resume' : 'Save Resume Data'}</span>
+                        <span className="ml-2">{isEditMode ? 'تحديث السيرة الذاتية' : 'حفظ بيانات السيرة الذاتية'}</span>
                       </>
                     )}
                   </button>
