@@ -297,9 +297,9 @@ function StudentsList() {
 
         {/* Advanced Filters Panel */}
         {showFilters && (
-          <div className="w-full p-4 bg-gray-800 rounded-lg border border-gray-700 mb-4">
+          <div className="w-full p-4 bg-white rounded-lg border border-gray-200 mb-4 shadow-md">
             <div className="flex flex-wrap items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-white">الفلاتر المتقدمة</h3>
+                            <h3 className="text-lg font-semibold text-carbon">الفلاتر المتقدمة</h3>
               <button
                 onClick={clearAllFilters}
                 className="text-red-400 hover:text-red-300 text-sm font-medium flex items-center space-x-1"
@@ -312,8 +312,8 @@ function StudentsList() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Academic Level Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">المستوى الأكاديمي</label>
-                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
+                <label className="block text-sm font-medium text-carbon mb-2">المستوى الأكاديمي</label>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-50 rounded-lg p-3 border border-gray-200">
                   {['Ön Lisans', 'Lisans', 'Yüksek Lisans', 'Doktora', 'Graduate'].map(year => (
                     <label key={year} className="flex items-center space-x-2 cursor-pointer">
                       <input
@@ -322,7 +322,7 @@ function StudentsList() {
                         onChange={() => handleYearFilterChange(year)}
                         className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="text-sm text-gray-300">{year}</span>
+                      <span className="text-sm text-carbon">{year}</span>
                     </label>
                   ))}
                 </div>
@@ -330,8 +330,8 @@ function StudentsList() {
 
               {/* University Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">الجامعة</label>
-                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
+                <label className="block text-sm font-medium text-carbon mb-2">الجامعة</label>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-50 rounded-lg p-3 border border-gray-200">
                   {uniqueUniversities.map(university => (
                     <label key={university} className="flex items-center space-x-2 cursor-pointer">
                       <input
@@ -340,7 +340,7 @@ function StudentsList() {
                         onChange={() => handleUniversityFilterChange(university)}
                         className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="text-sm text-gray-300">{university}</span>
+                      <span className="text-sm text-carbon">{university}</span>
                     </label>
                   ))}
                 </div>
@@ -348,8 +348,8 @@ function StudentsList() {
 
               {/* Major Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">التخصص</label>
-                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
+                <label className="block text-sm font-medium text-carbon mb-2">التخصص</label>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-50 rounded-lg p-3 border border-gray-200">
                   {uniqueMajors.map(major => (
                     <label key={major} className="flex items-center space-x-2 cursor-pointer">
                       <input
@@ -358,7 +358,7 @@ function StudentsList() {
                         onChange={() => handleMajorFilterChange(major)}
                         className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="text-sm text-gray-300">{major}</span>
+                      <span className="text-sm text-carbon">{major}</span>
                     </label>
                   ))}
                 </div>
@@ -366,8 +366,8 @@ function StudentsList() {
 
               {/* Graduation Year Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">سنة التخرج</label>
-                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
+                <label className="block text-sm font-medium text-carbon mb-2">سنة التخرج</label>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-50 rounded-lg p-3 border border-gray-200">
                   {uniqueGraduationYears.map(year => (
                     <label key={year} className="flex items-center space-x-2 cursor-pointer">
                       <input
@@ -376,7 +376,7 @@ function StudentsList() {
                         onChange={() => handleGraduationYearFilterChange(year)}
                         className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="text-sm text-gray-300">{year}</span>
+                      <span className="text-sm text-carbon">{year}</span>
                     </label>
                   ))}
                 </div>
@@ -385,8 +385,8 @@ function StudentsList() {
 
             {/* Active Filters Summary */}
             {activeFiltersCount > 0 && (
-              <div className="mt-4 p-3 bg-gray-700 rounded-lg">
-                <div className="text-sm text-gray-300 mb-2">المرشحات النشطة:</div>
+              <div className="mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="text-sm text-carbon mb-2">المرشحات النشطة:</div>
                 <div className="flex flex-wrap gap-2">
                   {searchTerm && (
                     <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
