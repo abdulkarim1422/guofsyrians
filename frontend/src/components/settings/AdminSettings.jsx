@@ -12,10 +12,15 @@ const AdminSettings = ({ onSidebarHide }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [editForm, setEditForm] = useState({
     name: '',
     role: '',
     is_active: true
+  });
+  const [passwordForm, setPasswordForm] = useState({
+    newPassword: '',
+    confirmPassword: ''
   });
   const [createForm, setCreateForm] = useState({
     name: '',
@@ -133,6 +138,58 @@ const AdminSettings = ({ onSidebarHide }) => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+  };
+
+  const handleChangePassword = (userData) => {
+    setSelectedUser(userData);
+    setPasswordForm({ newPassword: '', confirmPassword: '' });
+    setShowPasswordModal(true);
+  };
+
+  const handlePasswordInputChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      setMessage({
+        type: 'error',
+        text: 'Passwords do not match'
+      });
+      return;
+    }
+
+    if (passwordForm.newPassword.length < 6) {
+      setMessage({
+        type: 'error',
+        text: 'Password must be at least 6 characters long'
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await userAPI.changePasswordViaAdmin(selectedUser.id, passwordForm.newPassword);
+      setMessage({
+        type: 'success',
+        text: `Password changed successfully for ${selectedUser.name}`
+      });
+      setShowPasswordModal(false);
+      setPasswordForm({ newPassword: '', confirmPassword: '' });
+    } catch (error) {
+      setMessage({
+        type: 'error',
+        text: error.response?.data?.detail || 'Failed to change password'
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCreateUser = async (e) => {
@@ -348,6 +405,12 @@ const AdminSettings = ({ onSidebarHide }) => {
                               className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400"
                             >
                               Edit
+                            </button>
+                            <button
+                              onClick={() => handleChangePassword(userData)}
+                              className="text-blue-600 hover:text-blue-900 dark:text-blue-400"
+                            >
+                              Password
                             </button>
                             {!userData.is_verified && (
                               <button
@@ -572,6 +635,76 @@ const AdminSettings = ({ onSidebarHide }) => {
                     className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md disabled:opacity-50"
                   >
                     {loading ? 'Creating...' : 'Create User'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Change Password Modal */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
+            <div className="mt-3">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                Change Password for: {selectedUser?.name}
+              </h3>
+              <form onSubmit={handlePasswordSubmit}>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      New Password *
+                    </label>
+                    <input
+                      type="password"
+                      name="newPassword"
+                      value={passwordForm.newPassword}
+                      onChange={handlePasswordInputChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      minLength="6"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Confirm Password *
+                    </label>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      value={passwordForm.confirmPassword}
+                      onChange={handlePasswordInputChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      minLength="6"
+                      required
+                    />
+                  </div>
+                  {passwordForm.newPassword && passwordForm.confirmPassword && 
+                   passwordForm.newPassword !== passwordForm.confirmPassword && (
+                    <div className="text-red-600 text-sm">
+                      Passwords do not match
+                    </div>
+                  )}
+                </div>
+                <div className="flex justify-end space-x-3 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPasswordModal(false);
+                      setPasswordForm({ newPassword: '', confirmPassword: '' });
+                    }}
+                    className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-md"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={loading || passwordForm.newPassword !== passwordForm.confirmPassword}
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md disabled:opacity-50"
+                  >
+                    {loading ? 'Changing...' : 'Change Password'}
                   </button>
                 </div>
               </form>

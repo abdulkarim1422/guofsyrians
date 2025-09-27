@@ -89,8 +89,8 @@ export const Resume = () => {
         description: member.bio || "Professional with diverse experience and skills.",
       },
       skills: {
-        skillsLabel: "Skills",
-        interestsLabel: "Interests",
+        skillsLabel: "المهارات",
+        interestsLabel: "الاهتمامات",
         storedSkills: member.skills || [],
         storedInterests: member.interests || [],
       },
@@ -228,6 +228,13 @@ export const Resume = () => {
               : project.start_date
               ? `${new Date(project.start_date).toLocaleDateString()} - Present`
               : "Period not specified",
+          responsibilities: project.responsibilities || [],
+          role: project.role || "",
+          project_type: project.project_type || "",
+          outcomes: project.outcomes || [],
+          tools: project.tools || [],
+          start_date: project.start_date || "",
+          end_date: project.end_date || "",
           description: project.description ? [project.description] : [],
         })),
       },
@@ -258,7 +265,7 @@ export const Resume = () => {
     <>
       <SEO {...profile} {...aboutMe} />
       {!matches && <Menu {...menuSchema} />}
-      <main className="l-main bd-container" id="bd-container">
+      <main className="l-main bd-container" id="bd-container" dir="rtl" lang="ar">
         <div className="resume" id="area-cv">
           <div className="resume__left">
             <Profile {...profile} {...socialMedia} isMobileView={!matches} />
