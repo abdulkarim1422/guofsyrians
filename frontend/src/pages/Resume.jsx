@@ -228,6 +228,13 @@ export const Resume = () => {
               : project.start_date
               ? `${new Date(project.start_date).toLocaleDateString()} - Present`
               : "Period not specified",
+          responsibilities: project.responsibilities || [],
+          role: project.role || "",
+          project_type: project.project_type || "",
+          outcomes: project.outcomes || [],
+          tools: project.tools || [],
+          start_date: project.start_date || "",
+          end_date: project.end_date || "",
           description: project.description ? [project.description] : [],
         })),
       },
