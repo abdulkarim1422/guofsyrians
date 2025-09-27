@@ -24,6 +24,7 @@ class Member(Document):
     professional_title: Optional[str] = None # e.g., Software Engineer, Mechanical Engineer, Doctor
     skills: Optional[List[str]] = Field(default_factory=list)
     interests: Optional[List[str]] = Field(default_factory=list)
+    languages: Optional[List[str]] = Field(default_factory=list)  # e.g., ["English", "Arabic", "French"]
     social_media: Dict[str, str] = Field(default={})
     image: Optional[str] = None
     relocateToSyria: Optional[str] = None

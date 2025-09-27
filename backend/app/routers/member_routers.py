@@ -20,6 +20,7 @@ class MemberWithEducation(BaseModel):
     bio: Optional[str] = None
     skills: Optional[List[str]] = None
     interests: Optional[List[str]] = None
+    languages: Optional[List[str]] = None
     social_media: dict = {}
     country: Optional[str] = None
     city: Optional[str] = None
@@ -110,6 +111,7 @@ async def get_all_members_with_education():
             bio=member.bio,
             skills=member.skills or [],
             interests=member.interests or [],
+            languages=member.languages or [],
             social_media=member.social_media or {},
             country=member.country,
             city=member.city,
@@ -138,6 +140,7 @@ class ResumeFormData(BaseModel):
     aboutDescription: Optional[str] = None
     storedSkills: Optional[str] = None
     storedInterests: Optional[str] = None
+    languages: Optional[str] = None  # Comma-separated string or list of languages
     linkedinUrl: Optional[str] = None
     githubUrl: Optional[str] = None
 
