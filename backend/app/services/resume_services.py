@@ -112,7 +112,7 @@ def send_welcome_email(user: user_model.User, plain_password: str) -> None:
                 overflow: hidden;
             }}
             .header {{
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: linear-gradient(135deg, #d6b549 0%, #b8941a 100%);
                 color: white;
                 padding: 30px;
                 text-align: center;
@@ -152,7 +152,7 @@ def send_welcome_email(user: user_model.User, plain_password: str) -> None:
             }}
             .login-button {{
                 display: inline-block;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: linear-gradient(135deg, #d6b549 0%, #b8941a 100%);
                 color: white;
                 padding: 12px 30px;
                 text-decoration: none;
