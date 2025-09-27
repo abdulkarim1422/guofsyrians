@@ -89,16 +89,122 @@ def send_welcome_email(user: user_model.User, plain_password: str) -> None:
     """
     subject = "Welcome to GuofSyrians"
     body = f"""
-    Hello {user.name},\n\n
-
-    Your account has been created successfully.\n
-    Your password is: {plain_password}\n\n
-
-    please login to your account from the following link:\n
-    https://app.guofsyrians.com/login\n\n
-
-    Best regards,\n
-    The GuofSyrians Team
+    <!DOCTYPE html>
+    <html dir="rtl" lang="ar">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {{
+                font-family: 'Arial', sans-serif;
+                background-color: #f5f5f5;
+                margin: 0;
+                padding: 20px;
+                direction: rtl;
+            }}
+            .container {{
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #ffffff;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            }}
+            .header {{
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 30px;
+                text-align: center;
+            }}
+            .content {{
+                padding: 30px;
+                line-height: 1.6;
+                color: #333;
+            }}
+            .credentials {{
+                background-color: #f8f9fa;
+                border: 1px solid #dee2e6;
+                border-radius: 5px;
+                padding: 20px;
+                margin: 20px 0;
+            }}
+            .field {{
+                margin: 15px 0;
+                padding: 10px;
+                background-color: #e9ecef;
+                border-radius: 5px;
+                border: 1px solid #ced4da;
+            }}
+            .field label {{
+                font-weight: bold;
+                color: #495057;
+                display: block;
+                margin-bottom: 5px;
+            }}
+            .field input {{
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ced4da;
+                border-radius: 3px;
+                font-size: 14px;
+                background-color: #fff;
+            }}
+            .login-button {{
+                display: inline-block;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 12px 30px;
+                text-decoration: none;
+                border-radius: 5px;
+                margin: 20px 0;
+                text-align: center;
+            }}
+            .footer {{
+                background-color: #f8f9fa;
+                padding: 20px;
+                text-align: center;
+                border-top: 1px solid #dee2e6;
+                color: #6c757d;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>مرحباً بك في GuofSyrians</h1>
+                <p>تم إنشاء حسابك بنجاح</p>
+            </div>
+            <div class="content">
+                <p>مرحباً {user.name}،</p>
+                <p>نحن سعداء لانضمامك إلى منصة GuofSyrians. تم إنشاء حسابك بنجاح ويمكنك الآن الوصول إلى جميع الميزات المتاحة.</p>
+                
+                <div class="credentials">
+                    <h3>معلومات تسجيل الدخول:</h3>
+                    <div class="field">
+                        <label>البريد الإلكتروني:</label>
+                        <input type="text" value="{user.email}" readonly onclick="this.select()">
+                    </div>
+                    <div class="field">
+                        <label>كلمة المرور:</label>
+                        <input type="text" value="{plain_password}" readonly onclick="this.select()">
+                    </div>
+                    <p style="font-size: 12px; color: #6c757d;">انقر على الحقول أعلاه لتحديد النص ونسخه</p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <a href="https://app.guofsyrians.com/login" class="login-button">تسجيل الدخول الآن</a>
+                </div>
+                
+                <p style="margin-top: 30px; color: #6c757d; font-size: 14px;">
+                    لأسباب أمنية، ننصحك بتغيير كلمة المرور بعد تسجيل الدخول الأول.
+                </p>
+            </div>
+            <div class="footer">
+                <p>مع أطيب التحيات،<br>فريق GuofSyrians</p>
+            </div>
+        </div>
+    </body>
+    </html>
     """
 
     mail_service.send_email(user.email, subject, body)
