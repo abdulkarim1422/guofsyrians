@@ -140,7 +140,7 @@ function DashboardForm({ onSidebarHide }) {
 
               {/* About Section */}
               <div className="space-y-4">
-                <h4 className="text-white font-semibold text-lg">About Me</h4>
+                <h4 className="text-white font-semibold text-lg">نبذة عني</h4>
                 <FormField
                   label="Professional Summary"
                   name="aboutDescription"

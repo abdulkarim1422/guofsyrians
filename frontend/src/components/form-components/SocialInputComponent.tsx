@@ -404,7 +404,7 @@ export function SocialInputComponent({ formData, setFormData }: SocialInputCompo
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-semibold text-carbon flex items-center">
             <Globe className="w-6 h-6 mr-2 text-rich-gold" />
-            Social Media
+            وسائل التواصل الاجتماعي
           </h2>
           {/* Only show Add button if all current fields are filled or if there are no empty fields */}
           {socialMediaList.every(social => social.platform.trim() !== '') && (
@@ -414,7 +414,7 @@ export function SocialInputComponent({ formData, setFormData }: SocialInputCompo
               className="bg-rich-gold hover:bg-gold-dark text-deep-green px-4 py-2 rounded-lg flex items-center transition-colors font-medium hover:shadow-md"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Social Media
+              إضافة وسائل التواصل
             </button>
           )}
         </div>
@@ -430,7 +430,7 @@ export function SocialInputComponent({ formData, setFormData }: SocialInputCompo
           <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-sand rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
             <div className="relative">
               <label className="block text-sm font-medium text-carbon mb-2">
-                Platform *
+                المنصة *
               </label>
               <div className="relative">
                 <input
@@ -447,7 +447,7 @@ export function SocialInputComponent({ formData, setFormData }: SocialInputCompo
                     }
                   }}
                   className="w-full pl-4 pr-10 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                  placeholder="Search platforms (e.g., LinkedIn, GitHub, Twitter)"
+                  placeholder="ابحث عن المنصات (مثال: LinkedIn، GitHub، Twitter)"
                 />
                 {social.platform && (
                   <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -504,7 +504,7 @@ export function SocialInputComponent({ formData, setFormData }: SocialInputCompo
                   )}
                 </div>
                 <p className="text-xs text-gray-600 mt-1">
-                  Enter full URL, username, or @username - we'll format it automatically
+                  أدخل الرابط الكامل، اسم المستخدم، أو @اسم_المستخدم - سنقوم بتنسيقه تلقائياً
                 </p>
               </div>
               
@@ -513,7 +513,7 @@ export function SocialInputComponent({ formData, setFormData }: SocialInputCompo
                   type="button"
                   onClick={() => removeSocialMedia(index)}
                   className="bg-red-600 hover:bg-red-700 text-white p-3 rounded-lg transition-colors hover:shadow-md"
-                  title="Remove this social media entry"
+                  title="إزالة إدخال وسائل التواصل هذا"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -525,7 +525,7 @@ export function SocialInputComponent({ formData, setFormData }: SocialInputCompo
         {socialMediaList.length === 0 && (
           <div className="text-center py-8 text-gray-600">
             <Globe className="w-12 h-12 mx-auto mb-4 opacity-50" />
-            <p>No social media links added yet. Click "Add Social Media" to get started.</p>
+            <p>لا توجد روابط وسائل التواصل الاجتماعي مضافة بعد. انقر على &quot;إضافة وسائل التواصل&quot; للبدء.</p>
           </div>
         )}
       </div>

@@ -187,7 +187,7 @@ export function ProjectsComponent({ formData, setFormData }) {
       <div className="mb-6">
         <h2 className="text-2xl font-semibold text-carbon flex items-center">
           <Award className="w-6 h-6 mr-2 text-rich-gold" />
-          Projects
+          المشاريع
         </h2>
       </div>
       
@@ -200,7 +200,7 @@ export function ProjectsComponent({ formData, setFormData }) {
                 type="button"
                 onClick={() => removeProjectEntry(index)}
                 className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-colors"
-                title="Remove this project"
+                title="إزالة هذا المشروع"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -211,20 +211,20 @@ export function ProjectsComponent({ formData, setFormData }) {
             {/* Project Name and Type on same line */}
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
-                Project Name *
+                اسم المشروع *
               </label>
               <input
                 type="text"
                 value={project.name}
                 onChange={(e) => handleProjectChange(index, 'name', e.target.value)}
                 className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
-                placeholder="E-commerce Platform, Mobile App, Website Redesign, etc."
+                placeholder="منصة تجارة إلكترونية، تطبيق جوال، إعادة تصميم موقع، إلخ."
                 required
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
-                Project Type *
+                نوع المشروع *
               </label>
               <select
                 value={project.project_type || 'personal'}
@@ -232,21 +232,21 @@ export function ProjectsComponent({ formData, setFormData }) {
                 className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                 required
               >
-                <option value="graduation">Graduation Project</option>
-                <option value="internship">Internship Project</option>
-                <option value="freelance">Freelance Work</option>
-                <option value="volunteer">Volunteer Project</option>
-                <option value="personal">Personal Project</option>
-                <option value="professional">Professional Work</option>
-                <option value="academic">Academic Research</option>
-                <option value="open_source">Open Source Contribution</option>
+                <option value="graduation">مشروع التخرج</option>
+                <option value="internship">مشروع التدريب</option>
+                <option value="freelance">عمل حر</option>
+                <option value="volunteer">مشروع تطوعي</option>
+                <option value="personal">مشروع شخصي</option>
+                <option value="professional">عمل مهني</option>
+                <option value="academic">بحث أكاديمي</option>
+                <option value="open_source">مساهمة مفتوحة المصدر</option>
               </select>
             </div>
             
             {/* Company/Client and Role */}
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
-                Company/Client
+                الشركة/العميل
               </label>
               <input
                 type="text"
@@ -309,10 +309,10 @@ export function ProjectsComponent({ formData, setFormData }) {
                 className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
                 required
               >
-                <option value="ongoing">Ongoing</option>
-                <option value="completed">Completed</option>
-                <option value="expected">Expected Completion</option>
-                <option value="paused">Paused</option>
+                <option value="ongoing">جاري</option>
+                <option value="completed">مكتمل</option>
+                <option value="expected">الإكمال المتوقع</option>
+                <option value="paused">متوقف</option>
               </select>
             </div>
           </div>
@@ -340,7 +340,7 @@ export function ProjectsComponent({ formData, setFormData }) {
                     type="button"
                     onClick={() => removeProjectTool(index, toolIndex)}
                     className="ml-2 text-red-400 hover:text-red-600 transition-colors"
-                    title="Remove this tool"
+                    title="إزالة هذه الأداة"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -405,7 +405,7 @@ export function ProjectsComponent({ formData, setFormData }) {
       {formData.projects.length === 0 && (
         <div className="text-center py-8 text-gray-600">
           <Award className="w-12 h-12 mx-auto mb-4 opacity-50" />
-          <p>No project entries yet. Click "Add Project" to get started.</p>
+          <p>لا توجد إدخالات مشاريع بعد. انقر على &quot;إضافة مشروع&quot; للبدء.</p>
         </div>
       )}
       

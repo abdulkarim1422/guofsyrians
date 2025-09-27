@@ -393,7 +393,7 @@ export function SkillsInputComponent({ formData, setFormData }) {
     <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
       <h2 className="text-2xl font-semibold text-carbon mb-6 flex items-center">
         <Code className="w-6 h-6 mr-2 text-rich-gold" />
-        Skills
+        المهارات
       </h2>
       
       <div className="space-y-6">

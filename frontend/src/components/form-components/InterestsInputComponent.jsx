@@ -304,7 +304,7 @@ export function InterestsInputComponent({ formData, setFormData }) {
     <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
       <h2 className="text-2xl font-semibold text-carbon mb-6 flex items-center">
         <Heart className="w-6 h-6 mr-2 text-rich-gold" />
-        Interests
+        الاهتمامات
       </h2>
       
       <div className="space-y-6">
@@ -367,7 +367,7 @@ export function InterestsInputComponent({ formData, setFormData }) {
                   {searchResults.length === 0 && currentInterest.trim() && (
                     <div className="px-4 py-3 text-gray-500 text-center">
                       <div className="flex items-center justify-center space-x-2">
-                        <span>No suggestions found. Press Enter or click "Add Interest" to add</span>
+                        <span>لا توجد اقتراحات. اضغط Enter أو انقر على &quot;إضافة اهتمام&quot; للإضافة</span>
                       </div>
                       <div className="mt-2">
                         <button
@@ -375,7 +375,7 @@ export function InterestsInputComponent({ formData, setFormData }) {
                           onClick={() => addInterest()}
                           className="text-deep-green hover:text-green-dark font-medium cursor-pointer transition-colors duration-200 hover:bg-green-50 px-2 py-1 rounded"
                         >
-                          Add "{currentInterest.trim()}"
+                          إضافة &quot;{currentInterest.trim()}&quot;
                         </button>
                       </div>
                     </div>
@@ -416,7 +416,7 @@ export function InterestsInputComponent({ formData, setFormData }) {
                     type="button"
                     onClick={() => removeInterest(index)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-all"
-                    title="Remove interest"
+                    title="إزالة الاهتمام"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -430,7 +430,7 @@ export function InterestsInputComponent({ formData, setFormData }) {
         {(!formData.interests || formData.interests.length === 0) && (
           <div className="text-center py-6 text-gray-600">
             <Heart className="w-10 h-10 mx-auto mb-3 opacity-50" />
-            <p className="text-sm">No interests added yet. Search or type an interest above and click "Add Interest".</p>
+            <p className="text-sm">لا توجد اهتمامات مضافة بعد. ابحث أو اكتب اهتماماً أعلاه واضغط &quot;إضافة اهتمام&quot;.</p>
             <p className="text-xs text-gray-500 mt-2">
               Popular suggestions will appear as you type
             </p>

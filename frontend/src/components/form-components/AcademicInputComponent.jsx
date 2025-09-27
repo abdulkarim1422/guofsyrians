@@ -417,7 +417,7 @@ function UniversitySelector({ value, onChange, placeholder }) {
                   <span className="transition-colors duration-200">{result.university}</span>
                   {result.isCustom && (
                     <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full transition-all duration-200">
-                      Custom
+                      مخصص
                     </span>
                   )}
                 </div>
@@ -430,7 +430,7 @@ function UniversitySelector({ value, onChange, placeholder }) {
           {searchResults.length === 0 && currentUniversity.trim() && (
             <div className="px-4 py-3 text-gray-500 text-center">
               <div className="flex items-center justify-center space-x-2">
-                <span>No universities found. Press Enter to use "{currentUniversity.trim()}"</span>
+                <span>لم يتم العثور على جامعات. اضغط Enter لاستخدام &quot;{currentUniversity.trim()}&quot;</span>
               </div>
               <div className="mt-2">
                 <button
@@ -438,7 +438,7 @@ function UniversitySelector({ value, onChange, placeholder }) {
                   onClick={() => handleDropdownItemClick(currentUniversity.trim())}
                   className="text-deep-green hover:text-green-dark font-medium cursor-pointer transition-colors duration-200 hover:bg-green-50 px-2 py-1 rounded"
                 >
-                  Use "{currentUniversity.trim()}"
+                  استخدام &quot;{currentUniversity.trim()}&quot;
                 </button>
               </div>
             </div>
@@ -722,25 +722,38 @@ export function AcademicInputComponent({ formData, setFormData }) {
     }
   };
 
+  // Function to translate category names to Arabic
+  const translateCategory = (category) => {
+    const translations = {
+      "Engineering": "الهندسة",
+      "Medicine & Health": "الطب والصحة", 
+      "Business & Management": "الأعمال والإدارة",
+      "Humanities & Social Sciences": "العلوم الإنسانية والاجتماعية",
+      "Sciences": "العلوم",
+      "Arts & Design": "الفنون والتصميم"
+    };
+    return translations[category] || category;
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
       <div className="mb-6">
         <h2 className="text-2xl font-semibold text-carbon flex items-center">
           <GraduationCap className="w-6 h-6 mr-2 text-rich-gold" />
-          Academic Background
+          الخلفية الأكاديمية
         </h2>
       </div>
       
       {formData.academic.map((edu, index) => (
         <div key={index} className="border border-gray-200 rounded-lg p-6 mb-6 bg-sand relative">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-carbon">Education {index + 1}</h3>
+            <h3 className="text-lg font-semibold text-carbon">التعليم {index + 1}</h3>
             {formData.academic.length > 1 && (
               <button
                 type="button"
                 onClick={() => removeAcademicEntry(index)}
                 className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-colors"
-                title="Remove this education entry"
+                title="إزالة هذا الإدخال التعليمي"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -750,7 +763,7 @@ export function AcademicInputComponent({ formData, setFormData }) {
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
-                Degree Level *
+                 الدرجة العلمية *
               </label>
               <select
                 value={edu.degreeLevel}
@@ -758,21 +771,21 @@ export function AcademicInputComponent({ formData, setFormData }) {
                 className="w-full px-2 sm:px-4 py-1.5 sm:py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all text-xs sm:text-base"
                 required
               >
-                <option value="">Select degree level</option>
-                <option value="Bachelor's">Bachelor's Degree</option>
-                <option value="Master's">Master's Degree</option>
-                <option value="PhD/Doctorate">PhD/Doctorate</option>
-                <option value="Associate">Associate Degree</option>
-                <option value="Certificate/Diploma">Certificate/Diploma</option>
+                <option value="">اختر مستوى الدرجة</option>
+                <option value="Bachelor's">درجة البكالوريوس</option>
+                <option value="Master's">درجة الماجستير</option>
+                <option value="PhD/Doctorate">الدكتوراه</option>
+                <option value="Associate">الدرجة المشتركة</option>
+                <option value="Certificate/Diploma">شهادة/دبلوم</option>
               </select>
               <p className="text-xs text-gray-600 mt-1">
-                Select your degree level to see available fields of study
+                اختر مستوى درجتك لرؤية مجالات الدراسة المتاحة
               </p>
             </div>
             
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
-                Field of Study *
+                التخصص الجامعي*
               </label>
               <select
                 value={edu.major}
@@ -782,31 +795,31 @@ export function AcademicInputComponent({ formData, setFormData }) {
                 disabled={!edu.degreeLevel}
               >
                 <option value="">
-                  {edu.degreeLevel ? "Select field of study" : "First select degree level"}
+                  {edu.degreeLevel ? "اختر مجال الدراسة" : "اختر مستوى الدرجة أولاً"}
                 </option>
                 {edu.degreeLevel && Object.entries(getAvailableMajors(edu.degreeLevel)).map(([category, majors]) => (
-                  <optgroup key={category} label={`${category} (${majors.length} options)`}>
+                  <optgroup key={category} label={`${translateCategory(category)} (${majors.length} خيار)`}>
                     {majors.map(major => (
                       <option key={major} value={major}>{major}</option>
                     ))}
                   </optgroup>
                 ))}
                 {edu.degreeLevel && (
-                  <optgroup label="Other">
-                    <option value="Other">Other (Please specify in institution field)</option>
+                  <optgroup label="أخرى">
+                    <option value="Other">أخرى (يرجى التحديد في حقل المؤسسة)</option>
                   </optgroup>
                 )}
               </select>
               {edu.degreeLevel && (
                 <p className="text-xs text-gray-600 mt-1">
-                  Categories available for {edu.degreeLevel} level. Select "Other" if your field is not listed.
+                  الفئات المتاحة لمستوى {edu.degreeLevel}. اختر &quot;أخرى&quot; إذا لم يكن مجالك مدرجاً.
                 </p>
               )}
             </div>
             
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
-                Graduation Date *
+                تاريخ التخرج *
               </label>
               <input
                 type="date"
@@ -816,28 +829,28 @@ export function AcademicInputComponent({ formData, setFormData }) {
                 required
               />
               <p className="text-xs text-gray-600 mt-1">
-                Select your graduation date or expected graduation date
+                اختر تاريخ تخرجك أو تاريخ التخرج المتوقع
               </p>
             </div>
             
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
-                Institution *
+                الجامعة *
               </label>
               <UniversitySelector
                 value={edu.institution}
                 onChange={(value) => handleAcademicChange(index, 'institution', value)}
-                placeholder="Search for Turkish universities..."
+                placeholder="ابحث عن الجامعات التركية..."
               />
               <p className="text-xs text-gray-600 mt-1">
-                Search and select from Turkish universities or type your own
+                ابحث واختر من الجامعات التركية أو اكتب جامعتك
               </p>
             </div>
             
             {/* Optional GPA and Rank Fields */}
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
-                GPA (Optional)
+                المعدل التراكمي (اختياري)
               </label>
               <input
                 type="number"
@@ -850,39 +863,39 @@ export function AcademicInputComponent({ formData, setFormData }) {
                 placeholder="3.75"
               />
               <p className="text-xs text-gray-600 mt-1">
-                Grade Point Average (0.00 - 4.00 scale)
+                المعدل التراكمي (مقياس 0.00 - 4.00)
               </p>
             </div>
             
             <div>
               <label className="block text-sm font-medium text-carbon mb-2">
-                Rank/Level (Optional)
+                الترتيب/المستوى (اختياري)
               </label>
               <select
                 value={edu.rank || ''}
                 onChange={(e) => handleAcademicChange(index, 'rank', e.target.value)}
                 className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all"
               >
-                <option value="">Select rank (optional)</option>
-                <option value="summa_cum_laude">Summa Cum Laude</option>
-                <option value="magna_cum_laude">Magna Cum Laude</option>
-                <option value="cum_laude">Cum Laude</option>
-                <option value="honors">With Honors</option>
-                <option value="high_honors">High Honors</option>
-                <option value="distinction">With Distinction</option>
-                <option value="first_class">First Class</option>
-                <option value="upper_second">Upper Second Class</option>
-                <option value="lower_second">Lower Second Class</option>
-                <option value="third_class">Third Class</option>
-                <option value="dean_list">Dean's List</option>
-                <option value="valedictorian">Valedictorian</option>
-                <option value="salutatorian">Salutatorian</option>
-                <option value="top_5_percent">Top 5%</option>
-                <option value="top_10_percent">Top 10%</option>
-                <option value="top_quarter">Top 25%</option>
+                <option value="">اختر الترتيب (اختياري)</option>
+                <option value="summa_cum_laude">مرتبة الشرف العليا</option>
+                <option value="magna_cum_laude">مرتبة الشرف الكبرى</option>
+                <option value="cum_laude">مرتبة الشرف</option>
+                <option value="honors">بامتياز</option>
+                <option value="high_honors">بامتياز عالي</option>
+                <option value="distinction">بتميز</option>
+                <option value="first_class">الدرجة الأولى</option>
+                <option value="upper_second">الدرجة الثانية العليا</option>
+                <option value="lower_second">الدرجة الثانية السفلى</option>
+                <option value="third_class">الدرجة الثالثة</option>
+                <option value="dean_list">قائمة العميد</option>
+                <option value="valedictorian">الأول على الدفعة</option>
+                <option value="salutatorian">الثاني على الدفعة</option>
+                <option value="top_5_percent">أفضل 5%</option>
+                <option value="top_10_percent">أفضل 10%</option>
+                <option value="top_quarter">أفضل 25%</option>
               </select>
               <p className="text-xs text-gray-600 mt-1">
-                Academic honors, class ranking, or distinction level
+                الأوسمة الأكاديمية، ترتيب الصف، أو مستوى التميز
               </p>
             </div>
           </div>
@@ -892,7 +905,7 @@ export function AcademicInputComponent({ formData, setFormData }) {
       {formData.academic.length === 0 && (
         <div className="text-center py-8 text-gray-600">
           <GraduationCap className="w-12 h-12 mx-auto mb-4 opacity-50" />
-          <p>No education entries yet. Click "Add Education" to get started.</p>
+          <p>لا توجد إدخالات تعليمية بعد. انقر على &quot;إضافة تعليم&quot; للبدء.</p>
         </div>
       )}
       
