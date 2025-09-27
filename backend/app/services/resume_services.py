@@ -201,7 +201,7 @@ def send_welcome_email(user: user_model.User, plain_password: str) -> None:
                 </p>
             </div>
             <div class="footer">
-                <p>مع أطيب التحيات،<br>فريق المكتب البرمجي التابع للاتّحاد العام لطلبة سوريا</p>
+                <p>مع أطيب التحيات،<br>فريق المكتب البرمجي التابع للاتّحاد العام لطلبة سوريا - تركيا </p>
             </div>
         </div>
     </body>
