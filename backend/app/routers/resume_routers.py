@@ -291,7 +291,9 @@ async def get_resume_by_member_id(member_id: str):
     try:
         member = await member_crud.get_member_by_member_id(obj_id)
         if not member:
-            raise HTTPException(status_code=404, detail="Resume not found")
+            member = await member_crud.get_member_by_user_id(member_id) # perhaps a user_id was provided
+            if not member:
+                raise HTTPException(status_code=404, detail="Resume not found")
 
         work_experiences = await member_crud.get_all_work_experiences_by_member_id(obj_id)
         education = await member_crud.get_all_educations_by_member_id(obj_id)
