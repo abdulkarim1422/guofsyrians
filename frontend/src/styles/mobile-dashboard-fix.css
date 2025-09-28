@@ -83,6 +83,135 @@
     height: calc(var(--vh, 1vh) * 100);
   }
 
+  /* Mobile Sidebar Text Visibility Fixes */
+  .sidebar-mobile-fixed {
+    background-color: #ffffff !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* CRITICAL: Override responsive hiding classes for mobile sidebar */
+  .sidebar-mobile-fixed .hidden,
+  .sidebar-mobile-fixed .lg\:block {
+    display: block !important;
+  }
+
+  .sidebar-mobile-fixed .sm\:hidden {
+    display: block !important;
+  }
+
+  /* Force visibility of all text elements that might be hidden */
+  .sidebar-mobile-fixed * {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* Override all text colors for mobile sidebar visibility */
+  .sidebar-mobile-fixed,
+  .sidebar-mobile-fixed * {
+    color: #1f1f1f !important;
+  }
+
+  .sidebar-mobile-fixed .text-deep-green,
+  .sidebar-mobile-fixed .dashboard-logo-text,
+  .sidebar-mobile-fixed .dashboard-welcome-text {
+    color: #1f1f1f !important;
+    font-weight: 700 !important;
+  }
+
+  .sidebar-mobile-fixed .text-gray-800,
+  .sidebar-mobile-fixed .text-gray-700,
+  .sidebar-mobile-fixed .text-gray-600,
+  .sidebar-mobile-fixed .text-gray-500 {
+    color: #1f1f1f !important;
+    font-weight: 500 !important;
+  }
+
+  .sidebar-mobile-fixed .dashboard-username {
+    color: #1f1f1f !important;
+    font-weight: 700 !important;
+  }
+
+  .sidebar-mobile-fixed .dashboard-user-role {
+    color: #1f1f1f !important;
+    opacity: 0.7 !important;
+    font-weight: 500 !important;
+  }
+
+  /* Force all headings to be visible */
+  .sidebar-mobile-fixed h1,
+  .sidebar-mobile-fixed h2,
+  .sidebar-mobile-fixed h3 {
+    color: #1f1f1f !important;
+    font-weight: 700 !important;
+    display: block !important;
+  }
+
+  /* Ensure all paragraphs are visible */
+  .sidebar-mobile-fixed p {
+    color: #1f1f1f !important;
+    opacity: 0.8 !important;
+    font-weight: 500 !important;
+    display: block !important;
+  }
+
+  /* Menu items visibility */
+  .sidebar-mobile-fixed .sidebar-item {
+    color: #1f1f1f !important;
+  }
+
+  .sidebar-mobile-fixed .sidebar-item:hover {
+    color: #214937 !important;
+    background-color: rgba(33, 73, 55, 0.1) !important;
+  }
+
+  .sidebar-mobile-fixed .sidebar-item-selected {
+    color: #dcb557 !important;
+    background-color: rgba(220, 181, 87, 0.15) !important;
+  }
+
+  /* User profile section styling */
+  .sidebar-mobile-fixed .user-menu-container {
+    background-color: #f8f9fa !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Button text visibility */
+  .sidebar-mobile-fixed button {
+    color: #1f1f1f !important;
+  }
+
+  .sidebar-mobile-fixed button:not([class*="bg-"]):not([class*="text-white"]) {
+    background-color: #1f1f1f !important;
+    color: white !important;
+  }
+
+  /* White text should stay white */
+  .sidebar-mobile-fixed .text-white,
+  .sidebar-mobile-fixed button.text-white,
+  .sidebar-mobile-fixed [class*="text-white"] {
+    color: white !important;
+  }
+
+  /* Ensure SVG icons are visible */
+  .sidebar-mobile-fixed svg {
+    color: currentColor !important;
+    fill: currentColor !important;
+  }
+
+  /* Special handling for elements that should show text on mobile */
+  .sidebar-mobile-fixed .min-w-0 {
+    display: block !important;
+    min-width: 0 !important;
+  }
+
+  /* Override text size restrictions for mobile */
+  .sidebar-mobile-fixed .text-\[12px\],
+  .sidebar-mobile-fixed .text-\[9px\] {
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
+
   /* Additional mobile optimizations */
   .dashboard-mobile-container * {
     -webkit-tap-highlight-color: transparent;
