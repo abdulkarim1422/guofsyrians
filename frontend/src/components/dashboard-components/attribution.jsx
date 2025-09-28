@@ -20,7 +20,7 @@ export const AttributionComponent = () => {
         className="text-[#214937] hover:text-[#dcb557] font-semibold text-xs transition-colors duration-200 underline-offset-2 hover:underline text-center"
         style={{ lineHeight: 1.3 }}
       >
-        تمّ تطويره بواسطة المكتب البرمجي
+        طوّرت بواسطة المكتب البرمجي - الاتحادالعام
       </a>
     </div>
   );

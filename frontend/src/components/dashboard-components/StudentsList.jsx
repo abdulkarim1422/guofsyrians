@@ -11,6 +11,7 @@ function StudentsList() {
   const [universityFilter, setUniversityFilter] = useState([]);
   const [majorFilter, setMajorFilter] = useState([]);
   const [graduationYearFilter, setGraduationYearFilter] = useState([]);
+  const [relocateToSyriaFilter, setRelocateToSyriaFilter] = useState([]);
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
   const [showMore, setShowMore] = useState(false);
@@ -44,7 +45,8 @@ function StudentsList() {
           phone: member.phone || '',
           country: member.country || '',
           city: member.city || '',
-          social_media: member.social_media || {}
+          social_media: member.social_media || {},
+          relocateToSyria: member.relocateToSyria || 'Not specified'
         }));
         
         setStudentsData(transformedData);
@@ -81,8 +83,10 @@ function StudentsList() {
     const matchesMajor = majorFilter.length === 0 || majorFilter.includes(student.major);
     const matchesGraduationYear = graduationYearFilter.length === 0 || 
                                  graduationYearFilter.includes(new Date(student.graduationDate).getFullYear().toString());
+    const matchesRelocateToSyria = relocateToSyriaFilter.length === 0 || 
+                                   relocateToSyriaFilter.includes(student.relocateToSyria);
     
-    return matchesSearch && matchesYear && matchesUniversity && matchesMajor && matchesGraduationYear;
+    return matchesSearch && matchesYear && matchesUniversity && matchesMajor && matchesGraduationYear && matchesRelocateToSyria;
   });
 
   // Sort filtered students
@@ -134,6 +138,7 @@ function StudentsList() {
     setUniversityFilter([]);
     setMajorFilter([]);
     setGraduationYearFilter([]);
+    setRelocateToSyriaFilter([]);
     setSortBy('name');
     setSortOrder('asc');
   };
@@ -144,7 +149,8 @@ function StudentsList() {
     ...yearFilter, 
     ...universityFilter, 
     ...majorFilter, 
-    ...graduationYearFilter
+    ...graduationYearFilter,
+    ...relocateToSyriaFilter
   ].filter(filter => filter !== '').length;
 
   // Helper functions for checkbox filters
@@ -177,6 +183,14 @@ function StudentsList() {
       prev.includes(year) 
         ? prev.filter(y => y !== year)
         : [...prev, year]
+    );
+  };
+
+  const handleRelocateToSyriaFilterChange = (option) => {
+    setRelocateToSyriaFilter(prev => 
+      prev.includes(option) 
+        ? prev.filter(o => o !== option)
+        : [...prev, option]
     );
   };
   return (
@@ -297,9 +311,9 @@ function StudentsList() {
 
         {/* Advanced Filters Panel */}
         {showFilters && (
-          <div className="w-full p-4 bg-gray-800 rounded-lg border border-gray-700 mb-4">
+          <div className="w-full p-4 bg-white rounded-lg border border-gray-200 mb-4 shadow-md">
             <div className="flex flex-wrap items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-white">الفلاتر المتقدمة</h3>
+                            <h3 className="text-lg font-semibold text-carbon">الفلاتر المتقدمة</h3>
               <button
                 onClick={clearAllFilters}
                 className="text-red-400 hover:text-red-300 text-sm font-medium flex items-center space-x-1"
@@ -309,11 +323,11 @@ function StudentsList() {
               </button>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               {/* Academic Level Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">المستوى الأكاديمي</label>
-                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
+                <label className="block text-sm font-medium text-carbon mb-2">المستوى الأكاديمي</label>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-50 rounded-lg p-3 border border-gray-200">
                   {['Ön Lisans', 'Lisans', 'Yüksek Lisans', 'Doktora', 'Graduate'].map(year => (
                     <label key={year} className="flex items-center space-x-2 cursor-pointer">
                       <input
@@ -322,7 +336,7 @@ function StudentsList() {
                         onChange={() => handleYearFilterChange(year)}
                         className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="text-sm text-gray-300">{year}</span>
+                      <span className="text-sm text-carbon">{year}</span>
                     </label>
                   ))}
                 </div>
@@ -330,8 +344,8 @@ function StudentsList() {
 
               {/* University Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">الجامعة</label>
-                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
+                <label className="block text-sm font-medium text-carbon mb-2">الجامعة</label>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-50 rounded-lg p-3 border border-gray-200">
                   {uniqueUniversities.map(university => (
                     <label key={university} className="flex items-center space-x-2 cursor-pointer">
                       <input
@@ -340,7 +354,7 @@ function StudentsList() {
                         onChange={() => handleUniversityFilterChange(university)}
                         className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="text-sm text-gray-300">{university}</span>
+                      <span className="text-sm text-carbon">{university}</span>
                     </label>
                   ))}
                 </div>
@@ -348,8 +362,8 @@ function StudentsList() {
 
               {/* Major Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">التخصص</label>
-                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
+                <label className="block text-sm font-medium text-carbon mb-2">التخصص</label>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-50 rounded-lg p-3 border border-gray-200">
                   {uniqueMajors.map(major => (
                     <label key={major} className="flex items-center space-x-2 cursor-pointer">
                       <input
@@ -358,7 +372,7 @@ function StudentsList() {
                         onChange={() => handleMajorFilterChange(major)}
                         className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="text-sm text-gray-300">{major}</span>
+                      <span className="text-sm text-carbon">{major}</span>
                     </label>
                   ))}
                 </div>
@@ -366,8 +380,8 @@ function StudentsList() {
 
               {/* Graduation Year Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">سنة التخرج</label>
-                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-700 rounded-lg p-3">
+                <label className="block text-sm font-medium text-carbon mb-2">سنة التخرج</label>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-50 rounded-lg p-3 border border-gray-200">
                   {uniqueGraduationYears.map(year => (
                     <label key={year} className="flex items-center space-x-2 cursor-pointer">
                       <input
@@ -376,17 +390,43 @@ function StudentsList() {
                         onChange={() => handleGraduationYearFilterChange(year)}
                         className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="text-sm text-gray-300">{year}</span>
+                      <span className="text-sm text-carbon">{year}</span>
                     </label>
                   ))}
+                </div>
+              </div>
+
+              {/* Relocate to Syria Filter */}
+              <div>
+                <label className="block text-sm font-medium text-carbon mb-2">العودة إلى سوريا</label>
+                <div className="space-y-2 max-h-40 overflow-y-auto bg-gray-50 rounded-lg p-3 border border-gray-200">
+                  {['Yes', 'No', 'Maybe', 'Not specified'].map(option => {
+                    const arabicLabels = {
+                      'Yes': 'نعم',
+                      'No': 'لا', 
+                      'Maybe': 'ربما',
+                      'Not specified': 'غير محدد'
+                    };
+                    return (
+                      <label key={option} className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={relocateToSyriaFilter.includes(option)}
+                          onChange={() => handleRelocateToSyriaFilterChange(option)}
+                          className="rounded border-gray-600 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span className="text-sm text-carbon">{arabicLabels[option]}</span>
+                      </label>
+                    );
+                  })}
                 </div>
               </div>
             </div>
 
             {/* Active Filters Summary */}
             {activeFiltersCount > 0 && (
-              <div className="mt-4 p-3 bg-gray-700 rounded-lg">
-                <div className="text-sm text-gray-300 mb-2">المرشحات النشطة:</div>
+              <div className="mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="text-sm text-carbon mb-2">المرشحات النشطة:</div>
                 <div className="flex flex-wrap gap-2">
                   {searchTerm && (
                     <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
@@ -418,6 +458,20 @@ function StudentsList() {
                       <button onClick={() => handleGraduationYearFilterChange(year)} className="hover:text-gray-200">×</button>
                     </span>
                   ))}
+                  {relocateToSyriaFilter.map(option => {
+                    const arabicLabels = {
+                      'Yes': 'نعم',
+                      'No': 'لا', 
+                      'Maybe': 'ربما',
+                      'Not specified': 'غير محدد'
+                    };
+                    return (
+                      <span key={option} className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs flex items-center space-x-1">
+                        <span>العودة إلى سوريا: {arabicLabels[option]}</span>
+                        <button onClick={() => handleRelocateToSyriaFilterChange(option)} className="hover:text-gray-200">×</button>
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             )}

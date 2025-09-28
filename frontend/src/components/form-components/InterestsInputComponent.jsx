@@ -397,7 +397,7 @@ export function InterestsInputComponent({ formData, setFormData }) {
           
           {/* Helper text */}
           <p className="text-xs text-gray-600 mt-2">
-            Start typing to search from popular interests or add your own custom interest. Use ↑↓ arrows to navigate, Enter to add, Esc to close.
+            ابدأ بالكتابة للبحث عن اهتمامات شائعة. يمكنك إضافة اهتمامات مخصصة أيضاً!
           </p>
         </div>
         
@@ -432,7 +432,7 @@ export function InterestsInputComponent({ formData, setFormData }) {
             <Heart className="w-10 h-10 mx-auto mb-3 opacity-50" />
             <p className="text-sm">لا توجد اهتمامات مضافة بعد. ابحث أو اكتب اهتماماً أعلاه واضغط &quot;إضافة اهتمام&quot;.</p>
             <p className="text-xs text-gray-500 mt-2">
-              Popular suggestions will appear as you type
+              إضافة اهتمامات تساعد في إبراز ملفك الشخصي وتجعل سيرتك الذاتية أكثر جاذبية لأصحاب العمل.
             </p>
           </div>
         )}

@@ -74,7 +74,7 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
       return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
     };
     const s = fmt(start_date);
-    if (currently_working) return `${s} - Present`;
+    if (currently_working) return `${s} - حالياً`;
     if (end_date) {
       const e = fmt(end_date);
       return e ? `${s} - ${e}` : s;
@@ -262,7 +262,7 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
               />
               <div className="flex justify-between items-center mt-1">
                 <p className="text-xs text-gray-600">
-                  Focus on what you were responsible for and how you contributed to the team/company
+                  ركز على ما كنت مسؤولاً عنه وكيف ساهمت في الفريق/الشركة
                 </p>
                 <span className={`text-xs ${
                   work.responsibilities.trim().length >= 10 ? 'text-green-600' : 'text-gray-400'
@@ -272,7 +272,7 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
               </div>
               {work.responsibilities.trim().length > 0 && work.responsibilities.trim().length < 10 && (
                 <p className="text-red-500 text-sm mt-1">
-                  Please provide at least 10 characters describing your responsibilities
+                  يرجى كتابة 10 أحرف على الأقل لوصف مسؤولياتك
                 </p>
               )}
             </div>
@@ -281,18 +281,18 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
             <div className="mb-4">
               <label className="block text-sm font-medium text-carbon mb-2 flex items-center">
                 <Award className="w-4 h-4 mr-2" />
-                Key Achievements & Impact
-                <span className="text-gray-400 text-xs ml-2">(Optional)</span>
+                الإنجازات الرئيسية والتأثير
+                <span className="text-gray-400 text-xs ml-2">(اختياري)</span>
               </label>
               <textarea
                 value={work.achievements}
                 onChange={(e) => updateWorkExperience(index, 'achievements', e.target.value)}
                 className="w-full px-4 py-3 bg-white border-2 border-gray-200 text-carbon rounded-lg focus:ring-2 focus:ring-rich-gold focus:border-rich-gold transition-all resize-none"
                 rows="3"
-                placeholder="Highlight your accomplishments, measurable results, awards, or recognition. Include metrics when possible (e.g., 'Increased sales by 25%', 'Led team of 8 developers', 'Reduced processing time by 40%')..."
+                placeholder="اذكر إنجازاتك، النتائج القابلة للقياس، الجوائز، أو التقدير. اشمل المقاييس عند الإمكان (مثل: 'زيادة المبيعات بنسبة 25%'، 'قيادة فريق من 8 مطورين'، 'تقليل وقت المعالجة بنسبة 40%')..."
               />
               <p className="text-xs text-gray-600 mt-1">
-                Quantify your impact with numbers, percentages, or specific outcomes when possible
+                قس تأثيرك بالأرقام، النسب المئوية، أو النتائج المحددة عند الإمكان
               </p>
             </div>
 
@@ -305,7 +305,7 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
                   ) : (
                     <div className="w-4 h-4 rounded-full border-2 border-gray-300" />
                   )}
-                  <span className="text-sm text-gray-600">Basic Info</span>
+                  <span className="text-sm text-gray-600">المعلومات الأساسية</span>
                 </div>
               </div>
               <div className="flex-1">
@@ -315,7 +315,7 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
                   ) : (
                     <div className="w-4 h-4 rounded-full border-2 border-gray-300" />
                   )}
-                  <span className="text-sm text-gray-600">Responsibilities</span>
+                  <span className="text-sm text-gray-600">المسؤوليات</span>
                 </div>
               </div>
               <div className="flex-1">
@@ -325,7 +325,7 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
                   ) : (
                     <div className="w-4 h-4 rounded-full border-2 border-gray-300" />
                   )}
-                  <span className="text-sm text-gray-600">Achievements</span>
+                  <span className="text-sm text-gray-600">الإنجازات</span>
                 </div>
               </div>
             </div>
@@ -335,7 +335,7 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
         {workExperiences.length === 0 && (
           <div className="text-center py-8 text-gray-600">
             <Building className="w-12 h-12 mx-auto mb-4 opacity-50" />
-            <p>No work experience added yet. Click &quot;Add Experience&quot; to get started.</p>
+            <p>لا توجد خبرة عملية مضافة بعد. انقر على &quot;إضافة خبرة&quot; للبدء.</p>
           </div>
         )}
 
@@ -349,16 +349,16 @@ const WorkExperienceComponent = ({ formData, setFormData }) => {
                 <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
               )}
               <span className="font-medium text-carbon">
-                Work Experience Section
+                قسم الخبرة العملية
               </span>
             </div>
             <span className="text-sm text-gray-600">
-              {isFormValid() ? 'Complete' : 'Incomplete'}
+              {isFormValid() ? 'مكتمل' : 'غير مكتمل'}
             </span>
           </div>
           {!isFormValid() && (
             <p className="text-sm text-gray-600 mt-2">
-              Please ensure all work experiences have job title, company, and detailed responsibilities.
+              يرجى التأكد من أن جميع الخبرات العملية تحتوي على المسمى الوظيفي، الشركة، والمسؤوليات المفصلة.
             </p>
           )}
         </div>

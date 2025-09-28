@@ -78,7 +78,7 @@ export const ResumeForm = () => {
       }
     ],
     
-    // Projects
+    // Projects - المشاريع
     projects: [
       {
         name: '',
@@ -436,12 +436,12 @@ export const ResumeForm = () => {
               {/* Header Section - Mobile Optimized */}
               <div className="text-center mb-8 sm:mb-12 flex flex-col items-center px-2">
                 <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-carbon mb-3 sm:mb-4 leading-tight">
-                  {isEditMode ? 'Edit Resume' : 'Resume Form'}
+                  {isEditMode ? 'تعديل السيرة الذاتية' : 'إنشاء السيرة الذاتية'}
                 </h1>
                 <p className="text-sm sm:text-lg text-gray-700 max-w-2xl leading-relaxed px-2">
                   {isEditMode 
-                    ? 'Update your professional information, skills, experience, and projects.'
-                    : 'Create your professional resume by filling out the information below.'
+                    ? 'قم بتحديث معلومات سيرتك الذاتية أدناه وحفظ التغييرات.'
+                    : 'قم بإنشاء سيرتك الذاتية المهنية من خلال ملء المعلومات أدناه.'
                   }
                 </p>
                 {isEditMode && (

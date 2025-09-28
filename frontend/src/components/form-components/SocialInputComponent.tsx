@@ -420,7 +420,7 @@ export function SocialInputComponent({ formData, setFormData }: SocialInputCompo
         </div>
         {socialMediaList.length === 1 && socialMediaList[0].platform === '' && (
           <p className="text-sm text-gray-600 mt-2">
-            Start typing a platform name to add your social media. New fields will appear automatically as you fill them out.
+            ابدأ بإضافة روابط وسائل التواصل الاجتماعي الخاصة بك. يمكنك إضافة المزيد لاحقاً!
           </p>
         )}
       </div>

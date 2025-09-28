@@ -134,7 +134,7 @@ const About = () => (
         </div>
       ))}
     </div>
-    <div className="mt-8 text-gray-400 text-xs">&copy; {new Date().getFullYear()} guofyrians. All rights reserved.</div>
+    <div className="mt-8 text-gray-400 text-xs">&copy; {new Date().getFullYear()} كل الحقوق محفوظة - الاتحاد العام لطلبة سوريا - تركيا</div>
   </div>
 );
 
