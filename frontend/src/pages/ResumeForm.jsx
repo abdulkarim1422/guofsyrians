@@ -10,6 +10,7 @@ import { SocialInputComponent } from '@/components/form-components/SocialInputCo
 import WorkExperienceComponent from '@/components/form-components/WorkExperienceComponent';
 import { ProjectsComponent } from '@/components/form-components/ProjectsComponent';
 import { AcademicInputComponent } from '@/components/form-components/AcademicInputComponent';
+import { LanguagesInputComponent } from '@/components/form-components/LanguagesInputComponent';
 import { getMemberImageUrl, getDefaultAvatarPath } from '@/utils/imageUtils';
 import { useAuth } from '@/contexts/AuthContext';
 import api, { formApi } from '@/utils/api';
@@ -43,6 +44,9 @@ export const ResumeForm = () => {
     
     // Interests
     interests: [],
+    
+    // Languages
+    languages: [],
     
     // Social Media
     social_media: {},
@@ -158,6 +162,7 @@ export const ResumeForm = () => {
           bio: memberData.bio || '',
           skills: memberData.skills || [],
           interests: memberData.interests || [],
+          languages: memberData.languages || [],
           social_media: memberData.social_media || {},
           
           // Transform work experiences from backend format
@@ -339,6 +344,7 @@ export const ResumeForm = () => {
         bio: formData.bio || null,
         skills: Array.isArray(formData.skills) ? formData.skills : [],
         interests: Array.isArray(formData.interests) ? formData.interests : [],
+        languages: Array.isArray(formData.languages) ? formData.languages : [],
         social_media: formData.social_media || {},
         works: formData.works
           .filter(w => w.title && w.company && w.start_date)
@@ -664,6 +670,11 @@ export const ResumeForm = () => {
                 {/* Interests Section */}
                 <div className="mx-2 sm:mx-0">
                   <InterestsInputComponent formData={formData} setFormData={setFormData} />
+                </div>
+
+                {/* Languages Section */}
+                <div className="mx-2 sm:mx-0">
+                  <LanguagesInputComponent formData={formData} setFormData={setFormData} />
                 </div>
 
                 {/* Social Media Section */}
