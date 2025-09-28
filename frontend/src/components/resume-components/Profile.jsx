@@ -10,6 +10,7 @@ export const Profile = ({
   telephone,
   image,
   social,
+  languages,
   isMobileView,
 }) => {
   console.log({ isMobileView })
@@ -38,6 +39,9 @@ export const Profile = ({
             </span>
             <span className="home__information no-print">
               <i className="bx bx-phone home__icon" /> {telephone ? `الهاتف: ${telephone}` : "الهاتف غير محدد"}
+            </span>
+            <span className="home__information no-print">
+              <i className="bx bx-globe home__icon" /> {languages && languages.length ? `اللغات: ${languages.join(", ")}` : "اللغات غير محددة"}
             </span>
           </div>
         </div>

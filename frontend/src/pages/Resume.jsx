@@ -83,6 +83,7 @@ export const Resume = () => {
         email: member.email || "",
         telephone: member.phone || "",
         image: getMemberImageUrl(member.image, member.sex),
+        languages: member.languages || [],
       },
       aboutMe: {
         label: "نبذة عني",
