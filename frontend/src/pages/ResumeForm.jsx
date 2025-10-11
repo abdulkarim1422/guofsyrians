@@ -423,41 +423,48 @@ export const ResumeForm = () => {
       />
       
       {/* Success Popup */}
-      {showSuccessPopup && (
-        <div className="fixed inset-0 bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-            <div className="p-6">
-              <div className="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 rounded-full mb-4">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-              </div>
-              <div className="text-center">
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  {isEditMode ? 'تم تحديث سيرتك الذاتية بنجاح!' : 'تم إرسال طلبك بنجاح!'}
-                </h3>
-                {!isEditMode && (
-                  <p className="text-sm text-gray-600 mb-4" dir="rtl">
-                    إذا لم تتلق بريداً إلكترونياً خلال 24 ساعة، يرجى التواصل معنا على الرقم:
-                    <br />
-                    <span className="font-mono text-blue-600">905075308810+</span>
-                  </p>
-                )}
-                <button
-                  onClick={() => setShowSuccessPopup(false)}
-                  className="w-full bg-rich-gold hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
-                >
-                  موافق
-                </button>
-              </div>
+        {showSuccessPopup && (
+          <div className="fixed inset-0 bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+          <div className="p-6">
+            <div className="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 rounded-full mb-4">
+              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+            {isEditMode ? 'تم تحديث سيرتك الذاتية بنجاح!' : 'تم إرسال طلبك بنجاح!'}
+              </h3>
+              {!isEditMode && (
+            <p className="text-sm text-gray-600 mb-4" dir="rtl">
+              إذا لم تتلق بريداً إلكترونياً خلال 24 ساعة، يرجى التواصل معنا على الرقم:
+              <br />
+              <a 
+                href="https://wa.me/905075308810" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="font-mono text-blue-600 hover:text-blue-800 hover:underline cursor-pointer transition-colors"
+              >
+                905075308810+
+              </a>
+            </p>
+              )}
+              <button
+            onClick={() => setShowSuccessPopup(false)}
+            className="w-full bg-rich-gold hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+              >
+            موافق
+              </button>
             </div>
           </div>
-        </div>
-      )}
-      
-      <div className="min-h-screen bg-sand overflow-auto">
-        <div className="w-full flex flex-col items-center px-2 sm:px-4 py-4 sm:py-8 max-w-none">
-          {/* Loading State */}
+            </div>
+          </div>
+        )}
+        
+        <div className="min-h-screen bg-sand overflow-auto">
+          <div className="w-full flex flex-col items-center px-2 sm:px-4 py-4 sm:py-8 max-w-none">
+            {/* Loading State */}
           {isLoadingExistingData && (
             <div className="text-center mb-8 sm:mb-12 flex flex-col items-center px-4">
               <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-rich-gold mb-4"></div>
