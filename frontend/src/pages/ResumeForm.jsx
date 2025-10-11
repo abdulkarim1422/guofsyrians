@@ -424,7 +424,7 @@ export const ResumeForm = () => {
       
       {/* Success Popup */}
       {showSuccessPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
             <div className="p-6">
               <div className="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 rounded-full mb-4">
@@ -440,7 +440,7 @@ export const ResumeForm = () => {
                   <p className="text-sm text-gray-600 mb-4" dir="rtl">
                     إذا لم تتلق بريداً إلكترونياً خلال 24 ساعة، يرجى التواصل معنا على الرقم:
                     <br />
-                    <span className="font-mono text-blue-600">+905075308810</span>
+                    <span className="font-mono text-blue-600">905075308810+</span>
                   </p>
                 )}
                 <button
