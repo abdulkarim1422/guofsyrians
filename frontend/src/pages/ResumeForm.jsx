@@ -102,6 +102,7 @@ export const ResumeForm = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [submitMessage, setSubmitMessage] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   // Ensure scrolling is enabled when this component mounts
   useEffect(() => {
@@ -395,8 +396,9 @@ export const ResumeForm = () => {
       
       const result = response.data;
       console.log('Resume submitted successfully:', result);
+      setShowSuccessPopup(true);
       setSubmitStatus('success');
-      setSubmitMessage(isEditMode ? 'Resume updated successfully!' : (result.message || 'Resume submitted successfully!'));
+      setSubmitMessage(isEditMode ? 'تم تحديث سيرتك الذاتية بنجاح!' : 'تم إرسال طلبك بنجاح! إذا لم تتلق بريداً إلكترونياً خلال 24 ساعة، يرجى التواصل معنا على الرقم: +905075308810');
     } catch (error) {
       console.error('Error submitting resume:', error);
       setSubmitStatus('error');
@@ -419,6 +421,39 @@ export const ResumeForm = () => {
         location="Istanbul, Turkey"
         description="Edit and update resume information including profile, skills, experience, and projects."
       />
+      
+      {/* Success Popup */}
+      {showSuccessPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div className="p-6">
+              <div className="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 rounded-full mb-4">
+                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <div className="text-center">
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  {isEditMode ? 'تم تحديث سيرتك الذاتية بنجاح!' : 'تم إرسال طلبك بنجاح!'}
+                </h3>
+                {!isEditMode && (
+                  <p className="text-sm text-gray-600 mb-4" dir="rtl">
+                    إذا لم تتلق بريداً إلكترونياً خلال 24 ساعة، يرجى التواصل معنا على الرقم:
+                    <br />
+                    <span className="font-mono text-blue-600">+905075308810</span>
+                  </p>
+                )}
+                <button
+                  onClick={() => setShowSuccessPopup(false)}
+                  className="w-full bg-rich-gold hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                >
+                  موافق
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       
       <div className="min-h-screen bg-sand overflow-auto">
         <div className="w-full flex flex-col items-center px-2 sm:px-4 py-4 sm:py-8 max-w-none">
