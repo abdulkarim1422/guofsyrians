@@ -39,11 +39,12 @@ export function MailInputComponent({ formData, setFormData, setFormValid }) {
                         autoComplete="off"
                         dir="ltr"
                     />
-                    {!isValid && touched && (
-                        <span className="absolute left-2 top-2 text-xs text-red-500">البريد الإلكتروني غير صالح</span>
-                    )}
                 </div>
             </div>
+            {/* Error message below the box */}
+            {!isValid && touched && (
+                <div className="mt-1 text-xs text-red-500">البريد الإلكتروني غير صالح</div>
+            )}
         </div>
     );
 }
