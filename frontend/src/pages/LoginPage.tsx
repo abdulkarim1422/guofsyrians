@@ -228,13 +228,15 @@ const LoginPage: React.FC = () => {
           <div className="mt-8 text-center">
             <p className="text-sm" style={{ color: '#214937' }}>
               Don't have an account?{' '}
-              <button
-                onClick={() => {/* Handle registration navigation */}}
-                className="font-medium transition-colors hover:opacity-80"
+                <a
+                href="https://wa.me/905075308810"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium transition-colors hover:opacity-80 cursor-pointer"
                 style={{ color: '#dcb557' }}
-              >
+                >
                 تواصل مع الإدارة
-              </button>
+                </a>
             </p>
             <p className="text-sm mt-2" style={{ color: '#214937' }}>
               أو املأ {' '}
